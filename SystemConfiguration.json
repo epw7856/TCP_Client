@@ -1,0 +1,50 @@
+{
+	"LocalControlApplication": 
+	{
+		"Application Settings": {
+				"SocketPort": 101,
+				"TransmissionPeriodicity": 500,
+				"TargetSlotAddress": 3
+		},
+		"EnumRegistry": [
+			{
+				"Name": "Boolean",
+				"Values": ["True", "False"]
+			}
+		],
+		"DataFromServer": [
+			{
+				"Name": "TestInputSignal1",
+				"DataType": "Numeric",
+				"Format": "%.2f",
+				"Units": "kW"
+			},
+			{
+				"Name": "TestInputSignal2",
+				"DataType": "Boolean",
+				"Format": "",
+				"Units": "Unitless"
+			}
+		],
+		"DataToServer": [
+			{
+				"Name": "TestOutputSignal1",
+				"DataType": "Numeric",
+				"DefaultValue": 1.23,
+				"MinValue": 0.00,
+				"MaxValue": 1000.00,
+				"Format": "%.2f",
+				"Units": "Radians"
+			},
+			{
+				"Name": "TestOutputSignal2",
+				"DataType": "Boolean",
+				"DefaultValue": "True",
+				"MinValue": "",
+				"MaxValue": "",
+				"Format": "",
+				"Units": "Unitless"
+			}
+		]
+	}	
+}
