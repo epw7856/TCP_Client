@@ -1,7 +1,7 @@
 #ifndef DATAINTERFACE_H
 #define DATAINTERFACE_H
 
-#include <string>
+#include <QString>
 #include <vector>
 
 class DataInterface
@@ -11,9 +11,9 @@ public:
     virtual ~DataInterface() = default;
 
     // Enum Registry
-    virtual std::vector<std::string> getEnumStrings(std::string enumName) const = 0;
-    virtual std::string getEnumStringValue(std::string enumName, unsigned val) const = 0;
-    virtual unsigned getEnumUintValue(std::string enumName, std::string enumString) const = 0;
+    virtual std::vector<QString> getEnumStrings(QString enumName) const = 0;
+    virtual QString getEnumStringValue(QString enumName, unsigned val) const = 0;
+    virtual unsigned getEnumUintValue(QString enumName, QString enumString) const = 0;
 
     // Data From Server
 
