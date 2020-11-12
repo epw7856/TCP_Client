@@ -25,22 +25,24 @@ public:
     QString getDataItemType() const;
     QString getDataItemName() const;
     unsigned getRawValue() const;
+    QString getDisplayValue() const;
     QString getDataItemUnits() const;
     QString getDataItemFormat() const;
     std::pair<QString, QString> getDataItemRange() const;
     bool isRangeCheckingEnabled() const;
 
     void setRawValue(unsigned updatedValue);
+    void setDisplayValue(const QString& updatedValue);
 
 private:
     QString type = "";
     QString name = "";
     unsigned rawValue = 0U;
+    QString displayValue = "???";
     QString units = "";
     QString format = "";
     std::pair<QString, QString> range = {};
     bool rangeCheckEnable = false;
-
 };
 
 inline QString DataItem::getDataItemType() const
@@ -56,6 +58,11 @@ inline QString DataItem::getDataItemName() const
 inline unsigned DataItem::getRawValue() const
 {
     return rawValue;
+}
+
+inline QString DataItem::getDisplayValue() const
+{
+    return displayValue;
 }
 
 inline QString DataItem::getDataItemUnits() const
@@ -81,6 +88,11 @@ inline bool DataItem::isRangeCheckingEnabled() const
 inline void DataItem::setRawValue(unsigned updatedValue)
 {
     rawValue = updatedValue;
+}
+
+inline void DataItem::setDisplayValue(const QString& updatedValue)
+{
+    displayValue = updatedValue;
 }
 
 #endif // DATAITEM_H
