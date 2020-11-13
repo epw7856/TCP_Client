@@ -4,6 +4,7 @@
 #include "ApplicationInterface.h"
 #include "ApplicationSettings.h"
 #include "EnumRegistryInterface.h"
+#include "EnumType.h"
 #include "InboundDataInterface.h"
 #include <memory>
 #include "OutboundDataInterface.h"
@@ -43,7 +44,7 @@ public:
 
 private:
     ApplicationSettings appSettings;
-    std::unordered_map<std::string, std::vector<QString>> enumRegistry = {};
+    std::unordered_map<std::string, std::shared_ptr<EnumType>> enumRegistry = {};
     std::vector<std::shared_ptr<DataItem>> inboundDataItems = {};
     std::vector<std::shared_ptr<DataItem>> outboundDataItems = {};
 

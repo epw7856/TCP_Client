@@ -4,7 +4,7 @@ std::vector<QString> SystemDataSource::getEnumStrings(const QString& enumName) c
 {
     if(enumRegistry.find(enumName.toStdString()) != enumRegistry.end())
     {
-        return enumRegistry.at(enumName.toStdString());
+        return enumRegistry.at(enumName.toStdString())->getEnumStrings();
     }
     else
     {
@@ -16,18 +16,22 @@ QString SystemDataSource::getEnumStringValue(const QString& enumName, unsigned v
 {
     if(enumRegistry.find(enumName.toStdString()) != enumRegistry.end())
     {
-        return enumRegistry.at(enumName.toStdString()).at(value);
+        return enumRegistry.at(enumName.toStdString())->getEnumString(value);
     }
     else
     {
-        return QString();
+        return "UNKNOWN";
     }
 }
 
 unsigned SystemDataSource::getEnumUintValue(const QString& enumName, const QString& enumString) const
 {
-    std::vector<QString> enumStrings = enumRegistry.at(enumName.toStdString());
-    auto itr = std::find(enumStrings.begin(), enumStrings.end(), enumString);
-
-    return (itr != enumStrings.end()) ? std::distance(enumStrings.begin(), itr) : 0U;
+    if(enumRegistry.find(enumName.toStdString()) != enumRegistry.end())
+    {
+        return enumRegistry.at(enumName.toStdString())->getEnumUintValue(enumString);
+    }
+    else
+    {
+        return 0U;
+    }
 }

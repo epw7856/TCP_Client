@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     DataUtilities.cpp \
+    EnumType.cpp \
     MainWindowController.cpp \
     SystemDataSource.cpp \
     SystemDataSourceApplication.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     DataItem.h \
     DataUtilities.h \
     EnumRegistryInterface.h \
+    EnumType.h \
     InboundDataInterface.h \
     MainWindow.h \
     MainWindowController.h \

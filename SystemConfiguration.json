@@ -3,13 +3,21 @@
 	{
 		"Application Settings": {
 				"SocketPort": 101,
-				"TransmissionPeriodicity": 500,
-				"TargetSlotAddress": 3
+				"TransmissionPeriodicity": 500
 		},
 		"EnumRegistry": [
 			{
-				"Name": "Boolean",
-				"Values": ["True", "False"]
+				"SetName": "Boolean",
+				"EnumNames": [
+					{
+						"Name": "True",
+						"Value": 0
+					},
+					{
+						"Name": "False",
+						"Value": 1
+					}
+				]
 			}
 		],
 		"DataFromServer": [
