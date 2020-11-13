@@ -15,7 +15,7 @@ public:
         const std::pair<QString, QString>& itemRange
     )
     :
-        type(itemType),
+        type(itemType.toLower()),
         name(itemName),
         units(itemUnits),
         format(itemFormat),
