@@ -11,16 +11,13 @@ public:
         const QString& itemType,
         const QString& itemName,
         const QString& itemUnits,
-        const QString& itemFormat,
-        const std::pair<QString, QString>& itemRange
+        const QString& itemFormat
     )
     :
         type(itemType.toLower()),
         name(itemName),
         units(itemUnits),
-        format(itemFormat),
-        range(itemRange),
-        rangeCheckEnable(!range.first.isEmpty() && !range.second.isEmpty()) {}
+        format(itemFormat) {}
 
     QString getDataItemType() const;
     QString getDataItemName() const;
@@ -28,20 +25,27 @@ public:
     QString getDisplayValue() const;
     QString getDataItemUnits() const;
     QString getDataItemFormat() const;
-    std::pair<QString, QString> getDataItemRange() const;
+    std::pair<unsigned, unsigned> getDataItemRange() const;
     bool isRangeCheckingEnabled() const;
 
     void setRawValue(unsigned updatedValue);
     void setDisplayValue(const QString& updatedValue);
 
 private:
+
+    struct DataItemRange
+    {
+        unsigned minValue = 0U;
+        unsigned maxValue = 0U;
+    };
+
     QString type = "";
     QString name = "";
     unsigned rawValue = 0U;
     QString displayValue = "???";
     QString units = "";
     QString format = "";
-    std::pair<QString, QString> range = {};
+    DataItemRange range;
     bool rangeCheckEnable = false;
 };
 
@@ -75,9 +79,9 @@ inline QString DataItem::getDataItemFormat() const
     return type;
 }
 
-inline std::pair<QString, QString> DataItem::getDataItemRange() const
+inline std::pair<unsigned, unsigned> DataItem::getDataItemRange() const
 {
-    return range;
+    return {range.minValue, range.minValue};
 }
 
 inline bool DataItem::isRangeCheckingEnabled() const

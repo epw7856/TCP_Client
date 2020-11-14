@@ -68,8 +68,11 @@ private:
     void parseOutboundData();
 
     // Private helper functions for data conversions
-    void updateDataItemDisplayValue(DataItem& dataItem);
-    void updateDataItemRawValue(DataItem& dataItem);
+    QString convertRawToDisplayValue(const QString& type,
+                                     unsigned rawValue,
+                                     const QString& format = QString()) const;
+    unsigned convertDisplayToRawValue(const QString& type,
+                                      const QString& displayValue) const;
     unsigned jsonStringToUInt(QString jsonValue);
 };
 

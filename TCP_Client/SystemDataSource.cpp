@@ -7,6 +7,7 @@
 
 bool SystemDataSource::loadSystemConfig(const QString& configFilePath)
 {
+    appSettings.systemConfigFilePath = QString();
     systemConfigFile.setFileName(configFilePath);
 
     if(!systemConfigFile.open((QIODevice::ReadOnly | QIODevice::Text)))
@@ -49,7 +50,7 @@ void SystemDataSource::parseEnumerations()
     QJsonValue jsonEnums = obj.value("Enumerations");
     for (const QJsonValue& item : jsonEnums.toArray())
     {
-        const QString& setName = QString(item.toObject().value("Set Name").toString());
+        const QString setName = QString(item.toObject().value("Set Name").toString());
         std::shared_ptr<EnumType> enumSet = std::make_shared<EnumType>(setName);
 
         QJsonArray enumNames = item.toObject().value("Enum Names").toArray();
@@ -72,7 +73,15 @@ void SystemDataSource::parseEnumerations()
 
 void SystemDataSource::parseInboundData()
 {
-
+    QJsonValue jsonDataFromServer = obj.value("Data From Server");
+    for (const QJsonValue& item : jsonDataFromServer.toArray())
+    {
+        std::shared_ptr<DataItem> dataItem = std::make_shared<DataItem>(QString(item.toObject().value("Data Type").toString()),
+                                                                        QString(item.toObject().value("Name").toString()),
+                                                                        QString(item.toObject().value("Units").toString()),
+                                                                        QString(item.toObject().value("Format").toString()));
+        inboundDataItems.push_back(dataItem);
+    }
 }
 
 void SystemDataSource::parseOutboundData()
@@ -80,47 +89,42 @@ void SystemDataSource::parseOutboundData()
 
 }
 
-void SystemDataSource::updateDataItemDisplayValue(DataItem& dataItem)
+QString SystemDataSource::convertRawToDisplayValue(const QString& type,
+                                                   unsigned rawValue,
+                                                   const QString& format) const
 {
-    const QString& type = dataItem.getDataItemType();
-    unsigned rawValue = dataItem.getRawValue();
-
     if(rawValue == UINT_MAX)
     {
-        dataItem.setDisplayValue("ERROR");
-        return;
+        return "ERROR";
     }
 
     if(type == "unsigned")
     {
-        dataItem.setDisplayValue(QString::number(rawValue));
+        return QString::number(rawValue);
     }
     else if(type == "integer")
     {
-        dataItem.setDisplayValue(QString::number(unsignedToInt(rawValue)));
+        return QString::number(unsignedToInt(rawValue));
     }
     else if(type == "float")
     {
-        dataItem.setDisplayValue(QString().asprintf(dataItem.getDataItemFormat().toStdString().c_str(),
-                                                    unsignedToFloat(rawValue)));
+        return formatFloatDisplayValue(unsignedToFloat(rawValue), format);
     }
     else
     {
         // Data Type is an enum
-        dataItem.setDisplayValue(getEnumStringValue(type, rawValue));
+        return getEnumStringValue(type, rawValue);
     }
 }
 
-void SystemDataSource::updateDataItemRawValue(DataItem& dataItem)
+unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
+                                                    const QString& displayValue) const
 {
-    const QString& type = dataItem.getDataItemType();
-    const QString& displayValue = dataItem.getDisplayValue();
     bool status = false;
 
     if(displayValue == "ERROR")
     {
-        dataItem.setRawValue(UINT_MAX);
-        return;
+        return UINT_MAX;
     }
 
     if(type == "unsigned")
@@ -128,7 +132,7 @@ void SystemDataSource::updateDataItemRawValue(DataItem& dataItem)
         unsigned intermediate = displayValue.toUInt(&status);
         if(status)
         {
-            dataItem.setRawValue(intermediate);
+            return intermediate;
         }
     }
     else if(type == "integer")
@@ -136,7 +140,7 @@ void SystemDataSource::updateDataItemRawValue(DataItem& dataItem)
         int intermediate = displayValue.toInt(&status);
         if(status)
         {
-            dataItem.setRawValue(intToUnsigned(intermediate));
+            return intToUnsigned(intermediate);
         }
     }
     else if(type == "float")
@@ -144,19 +148,16 @@ void SystemDataSource::updateDataItemRawValue(DataItem& dataItem)
         float intermediate = displayValue.toFloat(&status);
         if(status)
         {
-            dataItem.setRawValue(floatToUnsigned(intermediate));
+            return floatToUnsigned(intermediate);
         }
     }
     else
     {
         // Data Type is an enum
-        dataItem.setRawValue(getEnumUintValue(type, displayValue));
+        return getEnumUintValue(type, displayValue);
     }
 
-    if(!status)
-    {
-        dataItem.setRawValue(UINT_MAX);
-    }
+    return UINT_MAX;
 }
 
 unsigned SystemDataSource::jsonStringToUInt(QString jsonValue)
@@ -219,7 +220,9 @@ void SystemDataSource::setInboundRawValues(const std::vector<unsigned>& rawValue
         for(unsigned i = 0; i < rawValues.size(); ++i)
         {
             inboundDataItems[i]->setRawValue(rawValues[i]);
-            updateDataItemDisplayValue(*(inboundDataItems[i]));
+            inboundDataItems[i]->setDisplayValue(convertRawToDisplayValue(inboundDataItems[i]->getDataItemType(),
+                                                                          rawValues[i],
+                                                                          inboundDataItems[i]->getDataItemFormat()));
         }
     }
 }
@@ -264,7 +267,9 @@ void SystemDataSource::setOutboundRawValues(const std::vector<unsigned>& rawValu
         for(unsigned i = 0; i < rawValues.size(); ++i)
         {
             outboundDataItems[i]->setRawValue(rawValues[i]);
-            updateDataItemDisplayValue(*(outboundDataItems[i]));
+            outboundDataItems[i]->setDisplayValue(convertRawToDisplayValue(outboundDataItems[i]->getDataItemType(),
+                                                                           rawValues[i],
+                                                                           outboundDataItems[i]->getDataItemFormat()));
         }
     }
 }
@@ -272,7 +277,9 @@ void SystemDataSource::setOutboundRawValues(const std::vector<unsigned>& rawValu
 void SystemDataSource::setOutboundRawValue(unsigned index, unsigned rawValue)
 {
     outboundDataItems[index]->setRawValue(rawValue);
-    updateDataItemDisplayValue(*(outboundDataItems[index]));
+    outboundDataItems[index]->setDisplayValue(convertRawToDisplayValue(outboundDataItems[index]->getDataItemType(),
+                                                                       rawValue,
+                                                                       outboundDataItems[index]->getDataItemFormat()));
 }
 
 std::vector<QString> SystemDataSource::getOutboundDataItemNames() const
