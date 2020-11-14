@@ -21,9 +21,6 @@ SOURCES += \
     EnumType.cpp \
     MainWindowController.cpp \
     SystemDataSource.cpp \
-    SystemDataSourceApplication.cpp \
-    SystemDataSourceEnum.cpp \
-    SystemDataSourceInbound.cpp \
     main.cpp \
     MainWindow.cpp
 

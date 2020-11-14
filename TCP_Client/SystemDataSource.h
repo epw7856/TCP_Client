@@ -41,6 +41,9 @@ public:
     std::vector<QString> getInboundDisplayValues() const override;
 
     // Implementation of Outbound Data Interface
+    void setOutboundRawValues(const std::vector<unsigned>& rawValues) override;
+    void setOutboundRawValue(unsigned index, unsigned rawValue) override;
+    std::vector<QString> getOutboundDisplayValues() const override;
 
 private:
     ApplicationSettings appSettings;
@@ -52,5 +55,35 @@ private:
     void updateDataItemDisplayValue(DataItem& dataItem);
     void updateDataItemRawValue(DataItem& dataItem);
 };
+
+inline QString SystemDataSource::getSystemConfigFilePath() const
+{
+    return appSettings.systemConfigFilePath;
+}
+
+inline unsigned SystemDataSource::getSocketPort() const
+{
+   return appSettings.socketPort;
+}
+
+inline unsigned SystemDataSource::getTransmissionPeriodicity() const
+{
+   return appSettings.transmissionPeriodicity;
+}
+
+inline void SystemDataSource::setSystemConfigFilePath(const QString& path)
+{
+    appSettings.systemConfigFilePath = path;
+}
+
+inline void SystemDataSource::setSocketPort(unsigned port)
+{
+    appSettings.socketPort = port;
+}
+
+inline void SystemDataSource::setTransmissionPeriodicity(unsigned periodicity)
+{
+    appSettings.transmissionPeriodicity = periodicity;
+}
 
 #endif // SYSTEMDATASOURCE_H
