@@ -8,6 +8,8 @@
 #include "InboundDataInterface.h"
 #include <memory>
 #include "OutboundDataInterface.h"
+#include <QFile>
+#include <QJsonObject>
 #include <unordered_map>
 
 class DataItem;
@@ -20,7 +22,7 @@ class SystemDataSource : public ApplicationInterface,
 public:
     SystemDataSource() {}
 
-    // Public Helper Functions
+    // Public helper functions
     void initializeSystemConfig(const QString& configFilePath);
 
     // Implementation of Application Interface
@@ -50,14 +52,26 @@ public:
     std::vector<unsigned> getOutboundRawValues() const override;
 
 private:
+    QFile systemConfigFile;
+    QJsonObject obj;
+
     ApplicationSettings appSettings;
     std::unordered_map<std::string, std::shared_ptr<EnumType>> enumRegistry = {};
     std::vector<std::shared_ptr<DataItem>> inboundDataItems = {};
     std::vector<std::shared_ptr<DataItem>> outboundDataItems = {};
 
-    // Private Helper Functions
+    // Private helper functions for JSON file loading and parsing
+    void loadSystemConfig(const QString& configFilePath);
+    void clearSystemData();
+    void parseApplicationSettings();
+    void parseEnumerations();
+    void parseInboundData();
+    void parseOutboundData();
+
+    // Private helper functions for data conversions
     void updateDataItemDisplayValue(DataItem& dataItem);
     void updateDataItemRawValue(DataItem& dataItem);
+    unsigned jsonStringToUInt(QString jsonValue);
 };
 
 inline QString SystemDataSource::getSystemConfigFilePath() const

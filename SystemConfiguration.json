@@ -1,14 +1,14 @@
 {
-	"LocalControlApplication": 
+	"Local Control Application": 
 	{
 		"Application Settings": {
-				"SocketPort": 101,
-				"TransmissionPeriodicity": 500
+				"Socket Port": 101,
+				"Transmission Periodicity (ms)": 500
 		},
-		"EnumRegistry": [
+		"Enumerations": [
 			{
-				"SetName": "Boolean",
-				"EnumNames": [
+				"Set Name": "Boolean",
+				"Enum Names": [
 					{
 						"Name": "True",
 						"Value": 0
@@ -20,36 +20,36 @@
 				]
 			}
 		],
-		"DataFromServer": [
+		"Data From Server": [
 			{
 				"Name": "TestInputSignal1",
-				"DataType": "Numeric",
+				"Data Type": "Numeric",
 				"Format": "%.2f",
 				"Units": "kW"
 			},
 			{
 				"Name": "TestInputSignal2",
-				"DataType": "Boolean",
+				"Data Type": "Boolean",
 				"Format": "",
 				"Units": "Unitless"
 			}
 		],
-		"DataToServer": [
+		"Data To Server": [
 			{
 				"Name": "TestOutputSignal1",
-				"DataType": "Numeric",
-				"DefaultValue": 1.23,
-				"MinValue": 0.00,
-				"MaxValue": 1000.00,
+				"Data Type": "Numeric",
+				"Default Value": 1.23,
+				"Min Value": 0.00,
+				"Max Value": 1000.00,
 				"Format": "%.2f",
 				"Units": "Radians"
 			},
 			{
 				"Name": "TestOutputSignal2",
-				"DataType": "Boolean",
-				"DefaultValue": "True",
-				"MinValue": "",
-				"MaxValue": "",
+				"Data Type": "Boolean",
+				"Default Value": "True",
+				"Min Value": "",
+				"Max Value": "",
 				"Format": "",
 				"Units": "Unitless"
 			}

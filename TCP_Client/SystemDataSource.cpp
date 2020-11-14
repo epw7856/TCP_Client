@@ -1,8 +1,63 @@
 #include "DataItem.h"
 #include "DataUtilities.h"
+#include <QJsonDocument>
+#include <QJsonValue>
 #include "SystemDataSource.h"
 
 void SystemDataSource::initializeSystemConfig(const QString& configFilePath)
+{
+    loadSystemConfig(configFilePath);
+}
+
+void SystemDataSource::loadSystemConfig(const QString& configFilePath)
+{
+    systemConfigFile.setFileName(configFilePath);
+
+    if(!systemConfigFile.open((QIODevice::ReadOnly | QIODevice::Text)))
+    {
+        // Throw exception?
+        return;
+    }
+
+    appSettings.systemConfigFilePath = configFilePath;
+
+    QByteArray rawData = systemConfigFile.readAll();
+    systemConfigFile.close();
+    QJsonDocument doc = QJsonDocument::fromJson(rawData);
+    obj = doc.object().value("Local Control Application").toObject();
+
+    clearSystemData();
+    parseApplicationSettings();
+    parseEnumerations();
+    parseInboundData();
+    parseOutboundData();
+}
+
+void SystemDataSource::clearSystemData()
+{
+    enumRegistry.clear();
+    inboundDataItems.clear();
+    outboundDataItems.clear();
+}
+
+void SystemDataSource::parseApplicationSettings()
+{
+    QJsonValue jsonAppSettings = obj.value("Application Settings");
+    appSettings.socketPort = jsonStringToUInt(jsonAppSettings.toObject().value("Socket Port").toString());
+    appSettings.transmissionPeriodicity = jsonStringToUInt(jsonAppSettings.toObject().value("Transmission Periodicity (ms)").toString());
+}
+
+void SystemDataSource::parseEnumerations()
+{
+
+}
+
+void SystemDataSource::parseInboundData()
+{
+
+}
+
+void SystemDataSource::parseOutboundData()
 {
 
 }
@@ -77,6 +132,23 @@ void SystemDataSource::updateDataItemRawValue(DataItem& dataItem)
     if(!status)
     {
         dataItem.setRawValue(UINT_MAX);
+    }
+}
+
+unsigned SystemDataSource::jsonStringToUInt(QString jsonValue)
+{
+    if(jsonValue.contains("."))
+    {
+        return floatToUnsigned(jsonValue.toFloat());
+    }
+    else if(jsonValue.toLower().contains("x"))
+    {
+        bool status;
+        return jsonValue.toUInt(&status, 16);
+    }
+    else
+    {
+        return jsonValue.toUInt();
     }
 }
 
