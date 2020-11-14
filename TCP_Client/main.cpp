@@ -17,8 +17,7 @@ int main(int argc, char *argv[])
                                  QCoreApplication::translate("main", "JSON configuration file to load on startup."));
 
     parser.process(app);
-
-    MainWindow w(parser.positionalArguments().at(0));
+    MainWindow w((!parser.positionalArguments().isEmpty()) ? parser.positionalArguments().at(0) : QString());
     w.show();
 
     return app.exec();

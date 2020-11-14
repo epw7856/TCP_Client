@@ -23,7 +23,7 @@ public:
     SystemDataSource() {}
 
     // Public helper functions
-    void initializeSystemConfig(const QString& configFilePath);
+    bool loadSystemConfig(const QString& configFilePath);
 
     // Implementation of Application Interface
     QString getSystemConfigFilePath() const override;
@@ -61,7 +61,6 @@ private:
     std::vector<std::shared_ptr<DataItem>> outboundDataItems = {};
 
     // Private helper functions for JSON file loading and parsing
-    void loadSystemConfig(const QString& configFilePath);
     void clearSystemData();
     void parseApplicationSettings();
     void parseEnumerations();

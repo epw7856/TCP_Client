@@ -4,19 +4,13 @@
 #include <QJsonValue>
 #include "SystemDataSource.h"
 
-void SystemDataSource::initializeSystemConfig(const QString& configFilePath)
-{
-    loadSystemConfig(configFilePath);
-}
-
-void SystemDataSource::loadSystemConfig(const QString& configFilePath)
+bool SystemDataSource::loadSystemConfig(const QString& configFilePath)
 {
     systemConfigFile.setFileName(configFilePath);
 
     if(!systemConfigFile.open((QIODevice::ReadOnly | QIODevice::Text)))
     {
-        // Throw exception?
-        return;
+        return false;
     }
 
     appSettings.systemConfigFilePath = configFilePath;
@@ -31,6 +25,8 @@ void SystemDataSource::loadSystemConfig(const QString& configFilePath)
     parseEnumerations();
     parseInboundData();
     parseOutboundData();
+
+    return true;
 }
 
 void SystemDataSource::clearSystemData()
@@ -43,8 +39,8 @@ void SystemDataSource::clearSystemData()
 void SystemDataSource::parseApplicationSettings()
 {
     QJsonValue jsonAppSettings = obj.value("Application Settings");
-    appSettings.socketPort = jsonStringToUInt(jsonAppSettings.toObject().value("Socket Port").toString());
-    appSettings.transmissionPeriodicity = jsonStringToUInt(jsonAppSettings.toObject().value("Transmission Periodicity (ms)").toString());
+    appSettings.socketPort = jsonStringToUInt(jsonAppSettings.toObject().value("Socket Port").toVariant().toString());
+    appSettings.transmissionPeriodicity = jsonStringToUInt(jsonAppSettings.toObject().value("Transmission Periodicity (ms)").toVariant().toString());
 }
 
 void SystemDataSource::parseEnumerations()
