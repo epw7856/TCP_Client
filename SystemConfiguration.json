@@ -10,11 +10,11 @@
 				"Set Name": "Boolean",
 				"Enum Names": [
 					{
-						"Name": "True",
+						"Name": "False",
 						"Value": 0
 					},
 					{
-						"Name": "False",
+						"Name": "True",
 						"Value": 1
 					}
 				]

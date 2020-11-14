@@ -1,5 +1,6 @@
 #include "DataItem.h"
 #include "DataUtilities.h"
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonValue>
 #include "SystemDataSource.h"
@@ -45,7 +46,28 @@ void SystemDataSource::parseApplicationSettings()
 
 void SystemDataSource::parseEnumerations()
 {
+    QJsonValue jsonEnums = obj.value("Enumerations");
+    for (const QJsonValue& item : jsonEnums.toArray())
+    {
+        const QString& setName = QString(item.toObject().value("Set Name").toString());
+        std::shared_ptr<EnumType> enumSet = std::make_shared<EnumType>(setName);
 
+        QJsonArray enumNames = item.toObject().value("Enum Names").toArray();
+        for(const QJsonValue& name : enumNames)
+        {
+            if(name.toObject().contains("Value"))
+            {
+                unsigned value = appSettings.socketPort = jsonStringToUInt(name.toObject().value("Value").toVariant().toString());
+                enumSet->addEnumEntry(name.toObject().value("Name").toString(), value);
+            }
+            else
+            {
+                enumSet->addEnumEntry(name.toObject().value("Name").toString());
+            }
+        }
+
+        enumRegistry.insert({setName.toStdString(), enumSet});
+    }
 }
 
 void SystemDataSource::parseInboundData()
@@ -94,6 +116,12 @@ void SystemDataSource::updateDataItemRawValue(DataItem& dataItem)
     const QString& type = dataItem.getDataItemType();
     const QString& displayValue = dataItem.getDisplayValue();
     bool status = false;
+
+    if(displayValue == "ERROR")
+    {
+        dataItem.setRawValue(UINT_MAX);
+        return;
+    }
 
     if(type == "unsigned")
     {
@@ -168,7 +196,7 @@ QString SystemDataSource::getEnumStringValue(const QString& enumName, unsigned v
     }
     else
     {
-        return "UNKNOWN";
+        return "ERROR";
     }
 }
 
@@ -180,7 +208,7 @@ unsigned SystemDataSource::getEnumUintValue(const QString& enumName, const QStri
     }
     else
     {
-        return 0U;
+        return UINT_MAX;
     }
 }
 

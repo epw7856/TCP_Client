@@ -21,7 +21,7 @@ QString EnumType::getEnumString(unsigned value) const
         }
     }
 
-    return "UNKNOWN";
+    return "ERROR";
 }
 
 unsigned EnumType::getEnumUintValue(const QString& enumString) const
@@ -34,7 +34,7 @@ unsigned EnumType::getEnumUintValue(const QString& enumString) const
         }
     }
 
-    return 0U;
+    return UINT_MAX;
 }
 
 void EnumType::addEnumEntry(const QString& enumString)
