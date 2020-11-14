@@ -128,6 +128,17 @@ void SystemDataSource::setInboundRawValues(const std::vector<unsigned>& rawValue
     }
 }
 
+std::vector<QString> SystemDataSource::getInboundDataItemNames() const
+{
+    std::vector<QString> displayName = {};
+    for(const auto& item : inboundDataItems)
+    {
+        displayName.push_back(item->getDataItemName());
+    }
+
+    return displayName;
+}
+
 std::vector<QString> SystemDataSource::getInboundDisplayValues() const
 {
     std::vector<QString> displayValues = {};
@@ -139,17 +150,64 @@ std::vector<QString> SystemDataSource::getInboundDisplayValues() const
     return displayValues;
 }
 
+std::vector<unsigned> SystemDataSource::getInboundRawValues() const
+{
+    std::vector<unsigned> rawValues = {};
+    for(const auto& item : inboundDataItems)
+    {
+        rawValues.push_back(item->getRawValue());
+    }
+
+    return rawValues;
+}
+
 void SystemDataSource::setOutboundRawValues(const std::vector<unsigned>& rawValues)
 {
-
+    if(rawValues.size() == inboundDataItems.size())
+    {
+        for(unsigned i = 0; i < rawValues.size(); ++i)
+        {
+            outboundDataItems[i]->setRawValue(rawValues[i]);
+            updateDataItemDisplayValue(*(outboundDataItems[i]));
+        }
+    }
 }
 
 void SystemDataSource::setOutboundRawValue(unsigned index, unsigned rawValue)
 {
+    outboundDataItems[index]->setRawValue(rawValue);
+    updateDataItemDisplayValue(*(outboundDataItems[index]));
+}
 
+std::vector<QString> SystemDataSource::getOutboundDataItemNames() const
+{
+    std::vector<QString> displayName = {};
+    for(const auto& item : outboundDataItems)
+    {
+        displayName.push_back(item->getDataItemName());
+    }
+
+    return displayName;
 }
 
 std::vector<QString> SystemDataSource::getOutboundDisplayValues() const
 {
+    std::vector<QString> displayValues = {};
+    for(const auto& item : outboundDataItems)
+    {
+        displayValues.push_back(item->getDisplayValue());
+    }
 
+    return displayValues;
+}
+
+std::vector<unsigned> SystemDataSource::getOutboundRawValues() const
+{
+    std::vector<unsigned> rawValues = {};
+    for(const auto& item : outboundDataItems)
+    {
+        rawValues.push_back(item->getRawValue());
+    }
+
+    return rawValues;
 }

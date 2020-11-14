@@ -38,12 +38,16 @@ public:
 
     // Implementation of Inbound Data Interface
     void setInboundRawValues(const std::vector<unsigned>& rawValues) override;
+    std::vector<QString> getInboundDataItemNames() const override;
     std::vector<QString> getInboundDisplayValues() const override;
+    std::vector<unsigned> getInboundRawValues() const override;
 
     // Implementation of Outbound Data Interface
     void setOutboundRawValues(const std::vector<unsigned>& rawValues) override;
     void setOutboundRawValue(unsigned index, unsigned rawValue) override;
+    std::vector<QString> getOutboundDataItemNames() const override;
     std::vector<QString> getOutboundDisplayValues() const override;
+    std::vector<unsigned> getOutboundRawValues() const override;
 
 private:
     ApplicationSettings appSettings;

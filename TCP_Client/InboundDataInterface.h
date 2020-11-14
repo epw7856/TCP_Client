@@ -10,9 +10,11 @@ public:
     InboundDataInterface() {}
     virtual ~InboundDataInterface() = default;
 
-    // Data From Server API
+    // Data from server API
     virtual void setInboundRawValues(const std::vector<unsigned>& rawValues) = 0;
+    virtual std::vector<QString> getInboundDataItemNames() const = 0;
     virtual std::vector<QString> getInboundDisplayValues() const = 0;
+    virtual std::vector<unsigned> getInboundRawValues() const = 0;
 };
 
 #endif // INBOUNDDATAINTERFACE_H
