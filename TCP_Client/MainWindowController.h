@@ -16,6 +16,9 @@ public:
 
 private:
     std::unique_ptr<SystemDataSource> sds;
+
+    void loadConfiguration(const QString& configFilePath);
+    void showConfigFileErrorPopup(const QString& message);
 };
 
 #endif // MAINWINDOWCONTROLLER_H
