@@ -130,16 +130,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QTreeView" name="treeViewStatusData">
-                 <property name="font">
-                  <font>
-                   <family>Segoe UI</family>
-                   <pointsize>9</pointsize>
-                   <weight>50</weight>
-                   <bold>false</bold>
-                  </font>
-                 </property>
-                </widget>
+                <widget class="QTableView" name="tableViewStatusData"/>
                </item>
                <item>
                 <spacer name="horizontalSpacer_5">
@@ -243,16 +234,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QTreeView" name="treeViewControlData">
-                 <property name="font">
-                  <font>
-                   <family>Segoe UI</family>
-                   <pointsize>9</pointsize>
-                   <weight>50</weight>
-                   <bold>false</bold>
-                  </font>
-                 </property>
-                </widget>
+                <widget class="QTableView" name="tableViewControlData"/>
                </item>
                <item>
                 <spacer name="horizontalSpacer_7">
