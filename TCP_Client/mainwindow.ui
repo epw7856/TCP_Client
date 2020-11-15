@@ -332,8 +332,8 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>115</width>
-                <height>30</height>
+                <width>120</width>
+                <height>35</height>
                </size>
               </property>
               <property name="text">
@@ -367,8 +367,8 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>115</width>
-                <height>30</height>
+                <width>120</width>
+                <height>35</height>
                </size>
               </property>
               <property name="text">
@@ -444,26 +444,28 @@
    <widget class="QMenu" name="menuConfiguration">
     <property name="font">
      <font>
+      <family>Segoe UI</family>
       <pointsize>10</pointsize>
      </font>
     </property>
     <property name="title">
      <string>Configuration</string>
     </property>
-    <addaction name="actionLoad_System_Configuration_File"/>
-    <addaction name="actionView_Application_Configuration"/>
+    <addaction name="actionLoadSystemConfigurationFile"/>
+    <addaction name="actionViewApplicationConfiguration"/>
    </widget>
    <widget class="QMenu" name="menuConnection">
     <property name="font">
      <font>
+      <family>Segoe UI</family>
       <pointsize>10</pointsize>
      </font>
     </property>
     <property name="title">
      <string>Connection</string>
     </property>
-    <addaction name="actionConnect_to_Server"/>
-    <addaction name="actionDisconnect_from_Server"/>
+    <addaction name="actionConnectToServer"/>
+    <addaction name="actionDisconnectFromServer"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfiguration"/>
@@ -492,7 +494,7 @@
     </font>
    </property>
   </action>
-  <action name="actionLoad_System_Configuration_File">
+  <action name="actionLoadSystemConfigurationFile">
    <property name="text">
     <string>Load System Configuration File</string>
    </property>
@@ -503,7 +505,7 @@
     </font>
    </property>
   </action>
-  <action name="actionView_Application_Configuration">
+  <action name="actionViewApplicationConfiguration">
    <property name="text">
     <string>View Application Configuration</string>
    </property>
@@ -514,7 +516,7 @@
     </font>
    </property>
   </action>
-  <action name="actionConnect_to_Server">
+  <action name="actionConnectToServer">
    <property name="text">
     <string>Connect to Server</string>
    </property>
@@ -525,7 +527,7 @@
     </font>
    </property>
   </action>
-  <action name="actionDisconnect_from_Server">
+  <action name="actionDisconnectFromServer">
    <property name="text">
     <string>Disconnect from Server</string>
    </property>

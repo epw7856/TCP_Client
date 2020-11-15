@@ -19,6 +19,14 @@ public:
     MainWindow(const QString& configFilePathArg, QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void onActionAboutTriggered();
+    void onActionExitTriggered();
+    void onActionLoadSystemConfigurationFileTriggered();
+    void onActionViewApplicationConfigurationTriggered();
+    void onActionConnectToServerTriggered();
+    void onActionDisconnectFromServerTriggered();
+
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<MainWindowController> mainWindowController;

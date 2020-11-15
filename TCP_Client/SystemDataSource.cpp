@@ -187,11 +187,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
 
 unsigned SystemDataSource::jsonStringToUnsigned(QString jsonValue)
 {
-    if(jsonValue.contains("."))
-    {
-        return floatToUnsigned(jsonValue.toFloat());
-    }
-    else if(jsonValue.toLower().contains("x"))
+    if(jsonValue.toLower().contains("x"))
     {
         bool status;
         return jsonValue.toUInt(&status, 16);
