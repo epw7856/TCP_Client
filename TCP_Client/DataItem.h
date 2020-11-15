@@ -14,7 +14,7 @@ public:
         const QString& itemFormat
     )
     :
-        type(itemType.toLower()),
+        type(itemType),
         name(itemName),
         units(itemUnits),
         format(itemFormat) {}

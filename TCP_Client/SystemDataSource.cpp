@@ -50,7 +50,7 @@ void SystemDataSource::parseEnumerations()
     QJsonValue jsonEnums = obj.value("Enumerations");
     for (const QJsonValue& item : jsonEnums.toArray())
     {
-        const QString setName = QString(item.toObject().value("Set Name").toString());
+        QString setName = QString(item.toObject().value("Set Name").toString());
         std::shared_ptr<EnumType> enumSet = std::make_shared<EnumType>(setName);
 
         QJsonArray enumNames = item.toObject().value("Enum Names").toArray();
@@ -58,7 +58,7 @@ void SystemDataSource::parseEnumerations()
         {
             if(name.toObject().contains("Value"))
             {
-                unsigned value = appSettings.socketPort = jsonStringToUInt(name.toObject().value("Value").toVariant().toString());
+                unsigned value = jsonStringToUInt(name.toObject().value("Value").toVariant().toString());
                 enumSet->addEnumEntry(name.toObject().value("Name").toString(), value);
             }
             else
@@ -86,7 +86,7 @@ void SystemDataSource::parseInboundData()
 
 void SystemDataSource::parseOutboundData()
 {
-    QJsonValue jsonDataToServer = obj.value("Data From Server");
+    QJsonValue jsonDataToServer = obj.value("Data To Server");
     for (const QJsonValue& item : jsonDataToServer.toArray())
     {
         std::shared_ptr<DataItem> dataItem = std::make_shared<DataItem>(QString(item.toObject().value("Data Type").toString()),
@@ -100,8 +100,8 @@ void SystemDataSource::parseOutboundData()
 
         if(!defaultValString.isEmpty())
         {
-            setOutboundRawValue(outboundDataItems.size() - 1,
-                                convertDisplayToRawValue(dataItem->getDataItemType(), defaultValString));
+            (outboundDataItems[outboundDataItems.size() - 1])->setDisplayValue(defaultValString);
+            (outboundDataItems[outboundDataItems.size() - 1])->setRawValue(convertDisplayToRawValue(dataItem->getDataItemType(), defaultValString));
         }
 
         const QString minValString = item.toObject().value("Min Value").toVariant().toString();
@@ -124,15 +124,15 @@ QString SystemDataSource::convertRawToDisplayValue(const QString& type,
         return "ERROR";
     }
 
-    if(type == "unsigned")
+    if(type == "Unsigned")
     {
         return QString::number(rawValue);
     }
-    else if(type == "integer")
+    else if(type == "Integer")
     {
         return QString::number(unsignedToInt(rawValue));
     }
-    else if(type == "float")
+    else if(type == "Numeric")
     {
         return formatFloatDisplayValue(unsignedToFloat(rawValue), format);
     }
@@ -153,7 +153,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
         return UINT_MAX;
     }
 
-    if(type == "unsigned")
+    if(type == "Unsigned")
     {
         unsigned intermediate = displayValue.toUInt(&status);
         if(status)
@@ -161,7 +161,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
             return intermediate;
         }
     }
-    else if(type == "integer")
+    else if(type == "Integer")
     {
         int intermediate = displayValue.toInt(&status);
         if(status)
@@ -169,7 +169,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
             return intToUnsigned(intermediate);
         }
     }
-    else if(type == "float")
+    else if(type == "Numeric")
     {
         float intermediate = displayValue.toFloat(&status);
         if(status)
