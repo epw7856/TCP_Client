@@ -30,6 +30,7 @@ public:
 
     void setRawValue(unsigned updatedValue);
     void setDisplayValue(const QString& updatedValue);
+    void setValueRange(unsigned min, unsigned max);
 
 private:
 
@@ -97,6 +98,13 @@ inline void DataItem::setRawValue(unsigned updatedValue)
 inline void DataItem::setDisplayValue(const QString& updatedValue)
 {
     displayValue = updatedValue;
+}
+
+void DataItem::setValueRange(unsigned min, unsigned max)
+{
+    range.minValue = min;
+    range.maxValue = max;
+    rangeCheckEnable = range.minValue != range.maxValue;
 }
 
 #endif // DATAITEM_H

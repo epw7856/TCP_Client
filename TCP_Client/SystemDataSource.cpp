@@ -86,7 +86,33 @@ void SystemDataSource::parseInboundData()
 
 void SystemDataSource::parseOutboundData()
 {
+    QJsonValue jsonDataToServer = obj.value("Data From Server");
+    for (const QJsonValue& item : jsonDataToServer.toArray())
+    {
+        std::shared_ptr<DataItem> dataItem = std::make_shared<DataItem>(QString(item.toObject().value("Data Type").toString()),
+                                                                        QString(item.toObject().value("Name").toString()),
+                                                                        QString(item.toObject().value("Units").toString()),
+                                                                        QString(item.toObject().value("Format").toString()));
 
+        outboundDataItems.push_back(dataItem);
+
+        const QString defaultValString = item.toObject().value("Default Value").toVariant().toString();
+
+        if(!defaultValString.isEmpty())
+        {
+            setOutboundRawValue(outboundDataItems.size() - 1,
+                                convertDisplayToRawValue(dataItem->getDataItemType(), defaultValString));
+        }
+
+        const QString minValString = item.toObject().value("Min Value").toVariant().toString();
+        const QString maxValString = item.toObject().value("Max Value").toVariant().toString();
+
+        if(!minValString.isEmpty() && !maxValString.isEmpty())
+        {
+            (outboundDataItems[outboundDataItems.size() - 1])->setValueRange(convertDisplayToRawValue(dataItem->getDataItemType(), minValString),
+                                                                             convertDisplayToRawValue(dataItem->getDataItemType(), maxValString));
+        }
+    }
 }
 
 QString SystemDataSource::convertRawToDisplayValue(const QString& type,
