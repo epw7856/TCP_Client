@@ -29,7 +29,7 @@ unsigned floatToUnsigned(float value)
     return uValue;
 }
 
-QString formatFloatDisplayValue(float value, const QString &format)
+QString formatFloatDisplayValue(float value, const QString& format)
 {
     return (format.isEmpty()) ? QString::number(value) :
                                 QString().asprintf(format.toStdString().c_str(), value);

@@ -4,6 +4,7 @@
 #include <memory>
 #include <QObject>
 
+class ConfigFileVerificationHandler;
 class SystemDataSource;
 
 class MainWindowController : public QObject
@@ -16,6 +17,9 @@ public:
 
 private:
     std::unique_ptr<SystemDataSource> sds;
+    std::unique_ptr<ConfigFileVerificationHandler> verifier;
+
+    void loadConfiguration(const QString& configFilePath);
 };
 
 #endif // MAINWINDOWCONTROLLER_H
