@@ -40,25 +40,25 @@ void SystemDataSource::clearSystemData()
 
 void SystemDataSource::parseApplicationSettings()
 {
-    QJsonValue jsonAppSettings = obj.value("Application Settings");
-    appSettings.socketPort = jsonStringToUInt(jsonAppSettings.toObject().value("Socket Port").toVariant().toString());
-    appSettings.transmissionPeriodicity = jsonStringToUInt(jsonAppSettings.toObject().value("Transmission Periodicity (ms)").toVariant().toString());
+    const QJsonValue jsonAppSettings = obj.value("Application Settings");
+    appSettings.socketPort = jsonStringToUnsigned(jsonAppSettings.toObject().value("Socket Port").toVariant().toString());
+    appSettings.transmissionPeriodicity = jsonStringToUnsigned(jsonAppSettings.toObject().value("Transmission Periodicity (ms)").toVariant().toString());
 }
 
 void SystemDataSource::parseEnumerations()
 {
-    QJsonValue jsonEnums = obj.value("Enumerations");
+    const QJsonValue jsonEnums = obj.value("Enumerations");
     for (const QJsonValue& item : jsonEnums.toArray())
     {
-        QString setName = QString(item.toObject().value("Set Name").toString());
+        const QString setName = QString(item.toObject().value("Set Name").toString());
         std::shared_ptr<EnumType> enumSet = std::make_shared<EnumType>(setName);
 
-        QJsonArray enumNames = item.toObject().value("Enum Names").toArray();
+        const QJsonArray enumNames = item.toObject().value("Enum Names").toArray();
         for(const QJsonValue& name : enumNames)
         {
             if(name.toObject().contains("Value"))
             {
-                unsigned value = jsonStringToUInt(name.toObject().value("Value").toVariant().toString());
+                unsigned value = jsonStringToUnsigned(name.toObject().value("Value").toVariant().toString());
                 enumSet->addEnumEntry(name.toObject().value("Name").toString(), value);
             }
             else
@@ -73,7 +73,7 @@ void SystemDataSource::parseEnumerations()
 
 void SystemDataSource::parseInboundData()
 {
-    QJsonValue jsonDataFromServer = obj.value("Data From Server");
+    const QJsonValue jsonDataFromServer = obj.value("Data From Server");
     for (const QJsonValue& item : jsonDataFromServer.toArray())
     {
         std::shared_ptr<DataItem> dataItem = std::make_shared<DataItem>(QString(item.toObject().value("Data Type").toString()),
@@ -86,7 +86,7 @@ void SystemDataSource::parseInboundData()
 
 void SystemDataSource::parseOutboundData()
 {
-    QJsonValue jsonDataToServer = obj.value("Data To Server");
+    const QJsonValue jsonDataToServer = obj.value("Data To Server");
     for (const QJsonValue& item : jsonDataToServer.toArray())
     {
         std::shared_ptr<DataItem> dataItem = std::make_shared<DataItem>(QString(item.toObject().value("Data Type").toString()),
@@ -100,8 +100,7 @@ void SystemDataSource::parseOutboundData()
 
         if(!defaultValString.isEmpty())
         {
-            (outboundDataItems[outboundDataItems.size() - 1])->setDisplayValue(defaultValString);
-            (outboundDataItems[outboundDataItems.size() - 1])->setRawValue(convertDisplayToRawValue(dataItem->getDataItemType(), defaultValString));
+            setOutboundDisplayValue(outboundDataItems.size() - 1, defaultValString);
         }
 
         const QString minValString = item.toObject().value("Min Value").toVariant().toString();
@@ -186,7 +185,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
     return UINT_MAX;
 }
 
-unsigned SystemDataSource::jsonStringToUInt(QString jsonValue)
+unsigned SystemDataSource::jsonStringToUnsigned(QString jsonValue)
 {
     if(jsonValue.contains("."))
     {
@@ -286,26 +285,24 @@ std::vector<unsigned> SystemDataSource::getInboundRawValues() const
     return rawValues;
 }
 
-void SystemDataSource::setOutboundRawValues(const std::vector<unsigned>& rawValues)
+void SystemDataSource::setOutboundDisplayValue(unsigned index, const QString& displayValue)
 {
-    if(rawValues.size() == inboundDataItems.size())
-    {
-        for(unsigned i = 0; i < rawValues.size(); ++i)
-        {
-            outboundDataItems[i]->setRawValue(rawValues[i]);
-            outboundDataItems[i]->setDisplayValue(convertRawToDisplayValue(outboundDataItems[i]->getDataItemType(),
-                                                                           rawValues[i],
-                                                                           outboundDataItems[i]->getDataItemFormat()));
-        }
-    }
-}
-
-void SystemDataSource::setOutboundRawValue(unsigned index, unsigned rawValue)
-{
+    unsigned rawValue = convertDisplayToRawValue(outboundDataItems[index]->getDataItemType(), displayValue);
     outboundDataItems[index]->setRawValue(rawValue);
     outboundDataItems[index]->setDisplayValue(convertRawToDisplayValue(outboundDataItems[index]->getDataItemType(),
                                                                        rawValue,
                                                                        outboundDataItems[index]->getDataItemFormat()));
+}
+
+void SystemDataSource::setOutboundDisplayValues(const std::vector<QString>& displayValues)
+{
+    if(displayValues.size() == outboundDataItems.size())
+    {
+        for(unsigned i = 0; i < displayValues.size(); ++i)
+        {
+            setOutboundDisplayValue(i, displayValues[i]);
+        }
+    }
 }
 
 std::vector<QString> SystemDataSource::getOutboundDataItemNames() const

@@ -45,8 +45,8 @@ public:
     std::vector<unsigned> getInboundRawValues() const override;
 
     // Implementation of Outbound Data Interface
-    void setOutboundRawValues(const std::vector<unsigned>& rawValues) override;
-    void setOutboundRawValue(unsigned index, unsigned rawValue) override;
+    void setOutboundDisplayValue(unsigned index, const QString& displayValue) override;
+    void setOutboundDisplayValues(const std::vector<QString>& displayValues) override;
     std::vector<QString> getOutboundDataItemNames() const override;
     std::vector<QString> getOutboundDisplayValues() const override;
     std::vector<unsigned> getOutboundRawValues() const override;
@@ -73,7 +73,7 @@ private:
                                      const QString& format = QString()) const;
     unsigned convertDisplayToRawValue(const QString& type,
                                       const QString& displayValue) const;
-    unsigned jsonStringToUInt(QString jsonValue);
+    unsigned jsonStringToUnsigned(QString jsonValue);
 };
 
 inline QString SystemDataSource::getSystemConfigFilePath() const

@@ -77,7 +77,7 @@ inline QString DataItem::getDataItemUnits() const
 
 inline QString DataItem::getDataItemFormat() const
 {
-    return type;
+    return format;
 }
 
 inline std::pair<unsigned, unsigned> DataItem::getDataItemRange() const
