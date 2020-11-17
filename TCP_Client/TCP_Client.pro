@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    CommunicationsManager.cpp \
     ConfigFileVerificationHandler.cpp \
     DataUtilities.cpp \
     EnumType.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 HEADERS += \
     ApplicationInterface.h \
     ApplicationSettings.h \
+    CommunicationsManager.h \
     ConfigFileVerificationHandler.h \
     DataItem.h \
     DataUtilities.h \
