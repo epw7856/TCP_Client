@@ -1,56 +1,51 @@
 #include "CommunicationsManager.h"
 #include "QTcpSocket"
+#include "SocketProtocol.h"
 
 CommunicationsManager::CommunicationsManager(unsigned port)
 :
-    socketPort(port)
+    socketComms(std::make_unique<SocketProtocol>(port))
 {
+    // Connections from CommunicationsManager to SocketProtocol
+    connect(this, &CommunicationsManager::requestDisconnectFromServer, socketComms.get(), &SocketProtocol::requestDisconnectFromServer);
+    connect(this, &CommunicationsManager::requestConnectToServer, socketComms.get(), &SocketProtocol::requestConnectToServer);
 
+    // Connections from SocketProtocol to CommunicationsManager
+    connect(socketComms.get(), &SocketProtocol::notifyConnectedToServer, this, &CommunicationsManager::receivedConnectedNotification);
+    connect(socketComms.get(), &SocketProtocol::notifyDisconnectedFromServer, this, &CommunicationsManager::receivedDisconnectedNotification);
+
+    socketComms->moveToThread(&commsThread);
+    commsThread.start();
 }
 
-CommunicationsManager::~CommunicationsManager() = default;
+CommunicationsManager::~CommunicationsManager()
+{
+    emit requestDisconnectFromServer();
+    commsThread.quit();
+    commsThread.wait(2000);
+}
 
 void CommunicationsManager::setSocketPort(unsigned port)
 {
-
+    emit requestSetSocketPort(port);
 }
 
-void CommunicationsManager::requestConnectToServer()
+void CommunicationsManager::connectToServer()
 {
-
+    emit requestConnectToServer();
 }
 
-void CommunicationsManager::sendOutboundDataToServer(const std::vector<unsigned> data)
+void CommunicationsManager::disconnectFromServer()
 {
-
+    emit requestConnectToServer();
 }
 
-void CommunicationsManager::requestDisconnectFromServer()
+void CommunicationsManager::receivedConnectedNotification()
 {
-
+    isConnected = true;
 }
 
-void CommunicationsManager::connectedToServer()
+void CommunicationsManager::receivedDisconnectedNotification()
 {
-
-}
-
-void CommunicationsManager::processIncomingTransmission()
-{
-
-}
-
-void CommunicationsManager::disconnectedFromServer()
-{
-
-}
-
-QByteArray CommunicationsManager::serializeData(std::vector<unsigned>& data)
-{
-
-}
-
-std::vector<unsigned> CommunicationsManager::deserializeData(QByteArray& data)
-{
-
+    isConnected = false;
 }

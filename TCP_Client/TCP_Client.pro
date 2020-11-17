@@ -23,6 +23,7 @@ SOURCES += \
     EnumType.cpp \
     Main.cpp \
     MainWindowController.cpp \
+    SocketProtocol.cpp \
     SystemDataSource.cpp \
     MainWindow.cpp
 
@@ -40,6 +41,7 @@ HEADERS += \
     MainWindowController.h \
     OutboundDataInterface.h \
     SemanticVersion.h \
+    SocketProtocol.h \
     SystemDataSource.h
 
 FORMS += \

@@ -23,7 +23,7 @@ public:
     SystemDataSource() {}
 
     // Public helper functions
-    bool loadSystemConfig(const QString& configFilePath);
+    bool loadSystemConfiguration(const QString& configFilePath);
 
     // Implementation of Application Interface
     QString getSystemConfigFilePath() const override;
@@ -71,8 +71,10 @@ private:
     QString convertRawToDisplayValue(const QString& type,
                                      unsigned rawValue,
                                      const QString& format = QString()) const;
+
     unsigned convertDisplayToRawValue(const QString& type,
                                       const QString& displayValue) const;
+
     unsigned jsonStringToUnsigned(QString jsonValue);
 };
 

@@ -5,7 +5,7 @@
 #include <QJsonValue>
 #include "SystemDataSource.h"
 
-bool SystemDataSource::loadSystemConfig(const QString& configFilePath)
+bool SystemDataSource::loadSystemConfiguration(const QString& configFilePath)
 {
     appSettings.systemConfigFilePath = QString();
     systemConfigFile.setFileName(configFilePath);

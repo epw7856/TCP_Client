@@ -2,10 +2,9 @@
 #define COMMUNICATIONSMANAGER_H
 
 #include <memory>
-#include <QByteArray>
-#include <QObject>
+#include <QThread>
 
-class QTcpSocket;
+class SocketProtocol;
 
 class CommunicationsManager : public QObject
 {
@@ -14,29 +13,29 @@ class CommunicationsManager : public QObject
 public:
     explicit CommunicationsManager(unsigned port = 0U);
     ~CommunicationsManager();
+    bool isConnectedToServer() const;
+    void setSocketPort(unsigned port);
+    void connectToServer();
+    void disconnectFromServer();
 
 public slots:
-    void setSocketPort(unsigned port);
-    void requestConnectToServer();
-    void sendOutboundDataToServer(const std::vector<unsigned> data);
-    void requestDisconnectFromServer();
-
-private slots:
-    void connectedToServer();
-    void processIncomingTransmission();
-    void disconnectedFromServer();
+    void receivedConnectedNotification();
+    void receivedDisconnectedNotification();
 
 signals:
-    void notifyConnectedToServer();
-    void notifyDisconnectedFromServer();
-    void finishedProcessingInboundData(std::vector<unsigned> data);
+    void requestSetSocketPort(unsigned port);
+    void requestConnectToServer();
+    void requestDisconnectFromServer();
 
 private:
-    unsigned socketPort = 0U;
-    std::unique_ptr<QTcpSocket> socket;
-
-    QByteArray serializeData(std::vector<unsigned>& data);
-    std::vector<unsigned> deserializeData(QByteArray& data);
+    bool isConnected = false;
+    QThread commsThread;
+    std::unique_ptr<SocketProtocol> socketComms;
 };
+
+inline bool CommunicationsManager::isConnectedToServer() const
+{
+    return isConnected;
+}
 
 #endif // COMMUNICATIONSMANAGER_H
