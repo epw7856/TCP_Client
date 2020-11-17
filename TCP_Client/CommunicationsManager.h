@@ -27,6 +27,8 @@ private slots:
     void disconnectedFromServer();
 
 signals:
+    void notifyConnectedToServer();
+    void notifyDisconnectedFromServer();
     void finishedProcessingInboundData(std::vector<unsigned> data);
 
 private:
