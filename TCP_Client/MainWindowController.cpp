@@ -13,7 +13,7 @@ MainWindowController::MainWindowController(const QString& configFilePath)
         loadConfiguration(configFilePath);
     }
 
-    commsManager = std::make_unique<CommunicationsManager>(sds->getSocketPort());
+    commsManager = std::make_unique<CommunicationsManager>(*sds, *sds, sds->getSocketPort());
 }
 
 MainWindowController::~MainWindowController() = default;

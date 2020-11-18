@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     CommunicationsManager.cpp \
+    CommunicationsUtilities.cpp \
     ConfigFileVerificationHandler.cpp \
     DataUtilities.cpp \
     EnumType.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     ApplicationInterface.h \
     ApplicationSettings.h \
     CommunicationsManager.h \
+    CommunicationsUtilities.h \
     ConfigFileVerificationHandler.h \
     DataItem.h \
     DataUtilities.h \

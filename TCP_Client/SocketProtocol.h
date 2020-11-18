@@ -12,14 +12,13 @@ class SocketProtocol : public QObject
     Q_OBJECT
 
 public:
-    explicit SocketProtocol(unsigned port = 0U);
+    explicit SocketProtocol();
     ~SocketProtocol();
 
 public slots:
-    void setSocketPort(unsigned port);
-    void requestConnectToServer();
-    void sendOutboundDataToServer(const std::vector<unsigned> data);
-    void requestDisconnectFromServer();
+    void requestConnectToServer(unsigned port);
+    void sendDataToServer(const std::vector<unsigned> data);
+    void disconnectFromServer();
 
 private slots:
     void connectedToServer();
@@ -27,16 +26,16 @@ private slots:
     void disconnectedFromServer();
 
 signals:
-    void notifyConnectedToServer();
-    void notifyDisconnectedFromServer();
+    void notifyConnectionStatusUpdate(bool connectionStatus);
     void finishedProcessingInboundData(std::vector<unsigned> data);
+    void sendErrorMsg(QString msg);
 
 private:
     unsigned socketPort = 0U;
     std::unique_ptr<QTcpSocket> socket;
 
-    QByteArray serializeData(std::vector<unsigned>& data);
-    std::vector<unsigned> deserializeData(QByteArray& data);
+    QByteArray serializeData(std::vector<unsigned> data);
+    std::vector<unsigned> deserializeData(QByteArray data);
 };
 
 #endif // SOCKETPROTOCOL_H
