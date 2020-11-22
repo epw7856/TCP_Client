@@ -61,7 +61,8 @@ void MainWindow::configureInboundDataTableView()
 {
     // Add table model data and disable selection
     ui->tableViewStatusData->setModel(&inboundDataTableModel);
-    ui->tableViewStatusData->setSelectionMode(QAbstractItemView::NoSelection);
+    ui->tableViewStatusData->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableViewStatusData->setSelectionMode(QAbstractItemView::SingleSelection);
 
     // Set bold font for the header
     QFont font(ui->tableViewStatusData->font());
@@ -69,11 +70,12 @@ void MainWindow::configureInboundDataTableView()
     ui->tableViewStatusData->horizontalHeader()->setFont(font);
     ui->tableViewStatusData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }");
 
-    // Disable cell resizing and selections
     ui->tableViewStatusData->horizontalHeader()->setFixedHeight(25);
+    ui->tableViewStatusData->resizeColumnToContents(2);
+    ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     ui->tableViewStatusData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableViewStatusData->verticalHeader()->hide();
     ui->tableViewStatusData->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableViewStatusData->setFocusPolicy(Qt::NoFocus);
-    ui->tableViewStatusData->setSelectionMode(QAbstractItemView::NoSelection);
 }
