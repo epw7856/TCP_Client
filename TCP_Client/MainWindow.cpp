@@ -6,7 +6,8 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    mainWindowController(std::make_unique<MainWindowController>(configFilePathArg))
+    mainWindowController(std::make_unique<MainWindowController>(configFilePathArg)),
+    inboundDataTableModel(mainWindowController->getInboundDataInterface())
 {
     ui->setupUi(this);
 
@@ -17,6 +18,8 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(ui->actionViewApplicationConfiguration, &QAction::triggered, this, &MainWindow::onActionViewApplicationConfigurationTriggered);
     connect(ui->actionConnectToServer, &QAction::triggered, this, &MainWindow::onActionConnectToServerTriggered);
     connect(ui->actionDisconnectFromServer, &QAction::triggered, this, &MainWindow::onActionDisconnectFromServerTriggered);
+
+    configureInboundDataTableView();
 }
 
 MainWindow::~MainWindow()
@@ -52,4 +55,25 @@ void MainWindow::onActionConnectToServerTriggered()
 void MainWindow::onActionDisconnectFromServerTriggered()
 {
 
+}
+
+void MainWindow::configureInboundDataTableView()
+{
+    // Add table model data and disable selection
+    ui->tableViewStatusData->setModel(&inboundDataTableModel);
+    ui->tableViewStatusData->setSelectionMode(QAbstractItemView::NoSelection);
+
+    // Set bold font for the header
+    QFont font(ui->tableViewStatusData->font());
+    font.setBold(true);
+    ui->tableViewStatusData->horizontalHeader()->setFont(font);
+    ui->tableViewStatusData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }");
+
+    // Disable cell resizing and selections
+    ui->tableViewStatusData->horizontalHeader()->setFixedHeight(25);
+    ui->tableViewStatusData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tableViewStatusData->verticalHeader()->hide();
+    ui->tableViewStatusData->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableViewStatusData->setFocusPolicy(Qt::NoFocus);
+    ui->tableViewStatusData->setSelectionMode(QAbstractItemView::NoSelection);
 }

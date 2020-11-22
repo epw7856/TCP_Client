@@ -16,6 +16,11 @@ MainWindowController::MainWindowController(const QString& configFilePath)
     commsManager = std::make_unique<CommunicationsManager>(*sds, *sds, sds->getSocketPort());
 }
 
+InboundDataInterface& MainWindowController::getInboundDataInterface() const
+{
+    return *sds;
+}
+
 MainWindowController::~MainWindowController() = default;
 
 void MainWindowController::loadConfiguration(const QString& configFilePath)

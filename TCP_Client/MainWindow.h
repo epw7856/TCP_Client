@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "InboundDataTableModel.h"
 #include <memory>
 #include <QMainWindow>
 
@@ -30,5 +31,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<MainWindowController> mainWindowController;
+    InboundDataTableModel inboundDataTableModel;
+
+    void configureInboundDataTableView();
 };
 #endif // MAINWINDOW_H

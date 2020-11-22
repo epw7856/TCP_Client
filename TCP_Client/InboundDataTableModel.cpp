@@ -2,6 +2,13 @@
 #include "InboundDataInterface.h"
 #include "InboundDataTableModel.h"
 
+InboundDataTableModel::InboundDataTableModel(InboundDataInterface &localInboundDataInterface)
+:
+    inboundDataInterface(localInboundDataInterface)
+{
+    inboundDataItems = inboundDataInterface.getInboundDataItems();
+}
+
 int InboundDataTableModel::rowCount(const QModelIndex&) const
 {
     return static_cast<int>(inboundDataItems.size());
@@ -44,7 +51,7 @@ QVariant InboundDataTableModel::data(const QModelIndex& index, int role) const
         if((index.row() < numRows) &&
            (index.column() < numColumns))
         {
-            return (index.column() == 0) ? Qt::AlignLeft : Qt::AlignCenter;
+            return (index.column() == 0) ? Qt::AlignVCenter : Qt::AlignCenter;
         }
     }
 
@@ -72,9 +79,4 @@ QVariant InboundDataTableModel::headerData(int section, Qt::Orientation orientat
         }
     }
     return {};
-}
-
-void InboundDataTableModel::setInboundDataItems()
-{
-    inboundDataItems = inboundDataInterface.getInboundDataItems();
 }

@@ -6,6 +6,7 @@
 
 class CommunicationsManager;
 class ConfigFileVerificationHandler;
+class InboundDataInterface;
 class SystemDataSource;
 
 class MainWindowController : public QObject
@@ -15,6 +16,8 @@ class MainWindowController : public QObject
 public:
     MainWindowController(const QString& configFilePath);
     ~MainWindowController();
+    InboundDataInterface& getInboundDataInterface() const;
+
 
 private:
     std::unique_ptr<SystemDataSource> sds;
