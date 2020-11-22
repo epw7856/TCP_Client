@@ -100,7 +100,7 @@ inline void DataItem::setDisplayValue(const QString& updatedValue)
     displayValue = updatedValue;
 }
 
-void DataItem::setValueRange(unsigned min, unsigned max)
+inline void DataItem::setValueRange(unsigned min, unsigned max)
 {
     range.minValue = min;
     range.maxValue = max;

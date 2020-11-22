@@ -40,6 +40,7 @@ public:
 
     // Implementation of Inbound Data Interface
     void setInboundRawValues(const std::vector<unsigned>& rawValues) override;
+    std::vector<DataItem*> getInboundDataItems() const override;
     std::vector<QString> getInboundDataItemNames() const override;
     std::vector<QString> getInboundDisplayValues() const override;
     std::vector<unsigned> getInboundRawValues() const override;

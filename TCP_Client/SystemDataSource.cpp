@@ -248,6 +248,17 @@ void SystemDataSource::setInboundRawValues(const std::vector<unsigned>& rawValue
     }
 }
 
+std::vector<DataItem *> SystemDataSource::getInboundDataItems() const
+{
+    std::vector<DataItem*> dataItems = {};
+    for(const auto& item : inboundDataItems)
+    {
+        dataItems.push_back(item.get());
+    }
+
+    return dataItems;
+}
+
 std::vector<QString> SystemDataSource::getInboundDataItemNames() const
 {
     std::vector<QString> displayName = {};

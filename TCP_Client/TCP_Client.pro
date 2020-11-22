@@ -22,6 +22,7 @@ SOURCES += \
     ConfigFileVerificationHandler.cpp \
     DataUtilities.cpp \
     EnumType.cpp \
+    InboundDataTableModel.cpp \
     Main.cpp \
     MainWindowController.cpp \
     SocketProtocol.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     EnumRegistryInterface.h \
     EnumType.h \
     InboundDataInterface.h \
+    InboundDataTableModel.h \
     MainWindow.h \
     MainWindowController.h \
     OutboundDataInterface.h \
