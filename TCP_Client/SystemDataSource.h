@@ -3,7 +3,7 @@
 
 #include "ApplicationInterface.h"
 #include "ApplicationSettings.h"
-#include "EnumRegistryInterface.h"
+#include "EnumInterface.h"
 #include "EnumType.h"
 #include "InboundDataInterface.h"
 #include <memory>
@@ -15,7 +15,7 @@
 class DataItem;
 
 class SystemDataSource : public ApplicationInterface,
-                         public EnumRegistryInterface,
+                         public EnumInterface,
                          public InboundDataInterface,
                          public OutboundDataInterface
 {

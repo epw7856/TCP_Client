@@ -35,9 +35,10 @@ HEADERS += \
     CommunicationsManager.h \
     CommunicationsUtilities.h \
     ConfigFileVerificationHandler.h \
+    ConnectionStatus.h \
     DataItem.h \
     DataUtilities.h \
-    EnumRegistryInterface.h \
+    EnumInterface.h \
     EnumType.h \
     InboundDataInterface.h \
     InboundDataTableModel.h \

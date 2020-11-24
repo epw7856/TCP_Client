@@ -1,18 +1,18 @@
-#ifndef ENUMREGISTRYINTERFACE_H
-#define ENUMREGISTRYINTERFACE_H
+#ifndef ENUMINTERFACE_H
+#define ENUMINTERFACE_H
 
 #include <QString>
 #include <vector>
 
-class EnumRegistryInterface
+class EnumInterface
 {
 public:
-    EnumRegistryInterface() {}
-    virtual ~EnumRegistryInterface() = default;
+    EnumInterface() {}
+    virtual ~EnumInterface() = default;
 
     // Enum registry API
     virtual std::vector<QString> getEnumStrings(const QString& enumName) const = 0;
     virtual QString getEnumStringValue(const QString& enumName, unsigned value) const = 0;
     virtual unsigned getEnumUintValue(const QString& enumName, const QString& enumString) const = 0;
 };
-#endif // ENUMREGISTRYINTERFACE_H
+#endif // ENUMINTERFACE_H

@@ -14,7 +14,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 
     // Connections with the menu bar in the UI
     connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::onActionAboutTriggered);
-    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::onActionAboutTriggered);
+    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::onActionExitTriggered);
     connect(ui->actionLoadSystemConfigurationFile, &QAction::triggered, this, &MainWindow::onActionLoadSystemConfigurationFileTriggered);
     connect(ui->actionViewApplicationConfiguration, &QAction::triggered, this, &MainWindow::onActionViewApplicationConfigurationTriggered);
     connect(ui->actionConnectToServer, &QAction::triggered, this, &MainWindow::onActionConnectToServerTriggered);
@@ -27,10 +27,16 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     // Connections from MainWindowController to MainWindow
     connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
     connect(mainWindowController.get(), &MainWindowController::notifyInboundDataUpdated, this, &MainWindow::refreshStatusDataDisplay);
+    connect(mainWindowController.get(), &MainWindowController::notifyStatusChange, this, &MainWindow::periodicUpdate);
 
+    // Setup UI components
     configureInboundDataTableView();
     configureOutboundDataTableView();
     setupStatusBar();
+
+    // Perform initial setup and refresh the UI
+    mainWindowController->performInitialSetup();
+    periodicUpdate();
 }
 
 MainWindow::~MainWindow()
@@ -42,7 +48,6 @@ void MainWindow::setupStatusBar()
 {
     statusBarLabel = std::make_unique<QLabel>();
     statusBarLabel->setFont(QFont("Segoe UI", 10));
-
     ui->statusBar->setStyleSheet("QStatusBar{border-top: 1px outset grey;}");
     ui->statusBar->addPermanentWidget(statusBarLabel.get());
     ui->statusBar->setSizeGripEnabled(false);
@@ -58,6 +63,14 @@ void MainWindow::refreshStatusDataDisplay()
 {
     inboundDataTableModel.layoutChanged();
     ui->tableViewStatusData->update();
+}
+
+void MainWindow::periodicUpdate()
+{
+    ui->actionConnectToServer->setEnabled(mainWindowController->enableActionConnectToServer());
+    ui->actionDisconnectFromServer->setEnabled(mainWindowController->enableActionDisconnectFromServer());
+    ui->pushButtonSaveToFile->setEnabled(mainWindowController->enableButtonSaveToFile());
+    ui->pushButtonRestoreFromFile->setEnabled(mainWindowController->enableButtonRestoreFromFile());
 }
 
 void MainWindow::onActionAboutTriggered()
@@ -87,7 +100,7 @@ void MainWindow::onActionConnectToServerTriggered()
 
 void MainWindow::onActionDisconnectFromServerTriggered()
 {
-
+    mainWindowController->requestDisconnectFromServer();
 }
 
 void MainWindow::onButtonSaveToFileClicked()

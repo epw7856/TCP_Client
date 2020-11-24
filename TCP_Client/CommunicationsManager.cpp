@@ -30,7 +30,7 @@ CommunicationsManager::CommunicationsManager(InboundDataInterface& localInboundD
     // Connections from SocketProtocol to CommunicationsManager
     connect(socketComms.get(), &SocketProtocol::notifyConnectionStatusUpdate, this, &CommunicationsManager::receivedConnectionStatusNotification);
     connect(socketComms.get(), &SocketProtocol::finishedProcessingInboundData, this, &CommunicationsManager::updateInboundDataItems);
-    connect(socketComms.get(), &SocketProtocol::sendErrorMsg, this, &CommunicationsManager::receivedErrorMsgFromSocket);
+    connect(socketComms.get(), &SocketProtocol::sendErrorMsg, this, &CommunicationsManager::showSocketErrorMsgPopup);
 
     socketComms->moveToThread(&commsThread);
     commsThread.start();
@@ -50,6 +50,8 @@ void CommunicationsManager::setSocketPort(unsigned port)
 
 void CommunicationsManager::connectToServer()
 {
+    status = ConnectionStatus::InProgress;
+
     emit requestConnectToServer(socketPort);
     emit sendStatusUpdate("Connecting to server...");
 }
@@ -61,17 +63,20 @@ void CommunicationsManager::sendOutboundDataToServer()
 
 void CommunicationsManager::disconnectFromServer()
 {
+    status = ConnectionStatus::InProgress;
+
     emit requestDisconnectFromServer();
     emit sendStatusUpdate("Disconnecting from server...");
 }
 
 void CommunicationsManager::receivedConnectionStatusNotification(bool connectionStatus)
 {
-    isConnected = connectionStatus;
+    (connectionStatus) ? status = ConnectionStatus::Connected :
+                         status = ConnectionStatus::Unconnected;
 
     QString msg = QString();
-    (isConnected) ? msg = "Connected to server on Port " + QString::number(socketPort) + "." :
-                    msg = "Disconnected from server.";
+    (status == ConnectionStatus::Connected) ? msg = "Connected to server on Port " + QString::number(socketPort) + "." :
+                                              msg = "Disconnected from server.";
 
     if(showConnectionNotifications)
     {
@@ -88,8 +93,10 @@ void CommunicationsManager::receivedConnectionStatusNotification(bool connection
     emit sendStatusUpdate(msg);
 }
 
-void CommunicationsManager::receivedErrorMsgFromSocket(QString msg)
+void CommunicationsManager::showSocketErrorMsgPopup(QString msg)
 {
+    status = ConnectionStatus::Unconnected;
+
     QMessageBox msgBox;
     msgBox.setWindowTitle("Connection Error");
     msgBox.setText("<p align='center'>" + msg + "</p>");

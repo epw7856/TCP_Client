@@ -1,6 +1,7 @@
 #ifndef COMMUNICATIONSMANAGER_H
 #define COMMUNICATIONSMANAGER_H
 
+#include "ConnectionStatus.h"
 #include <memory>
 #include <QThread>
 
@@ -16,7 +17,8 @@ public:
     explicit CommunicationsManager(InboundDataInterface& localInboundDataInterface,
                                    OutboundDataInterface& localOutboundDataInterface);
     ~CommunicationsManager();
-    bool isConnectedToServer() const;
+
+    ConnectionStatus getConnectionStatus() const;
     void setConnectionNoticationEnable(bool enabled);
     void setSocketPort(unsigned port);
     void connectToServer();
@@ -25,7 +27,7 @@ public:
 
 public slots:
     void receivedConnectionStatusNotification(bool connectionStatus);
-    void receivedErrorMsgFromSocket(QString msg);
+    void showSocketErrorMsgPopup(QString msg);
     void updateInboundDataItems(std::vector<unsigned> rawData);
 
 signals:
@@ -40,14 +42,14 @@ private:
     OutboundDataInterface& outboundDataInterface;
     bool showConnectionNotifications = false;
     unsigned socketPort = 0U;
-    bool isConnected = false;
+    ConnectionStatus status = ConnectionStatus::Unconnected;
     QThread commsThread;
-    std::unique_ptr<SocketProtocol> socketComms;  
+    std::unique_ptr<SocketProtocol> socketComms;
 };
 
-inline bool CommunicationsManager::isConnectedToServer() const
+inline ConnectionStatus CommunicationsManager::getConnectionStatus() const
 {
-    return isConnected;
+    return status;
 }
 
 inline void CommunicationsManager::setConnectionNoticationEnable(bool enabled)

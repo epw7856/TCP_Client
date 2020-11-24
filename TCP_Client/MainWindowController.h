@@ -16,8 +16,16 @@ class MainWindowController : public QObject
 public:
     MainWindowController(const QString& configFilePath);
     ~MainWindowController();
+
+    void performInitialSetup();
     InboundDataInterface& getInboundDataInterface() const;
     void requestConnectToServer();
+    void requestDisconnectFromServer();
+
+    bool enableActionConnectToServer() const;
+    bool enableActionDisconnectFromServer() const;
+    bool enableButtonSaveToFile() const;
+    bool enableButtonRestoreFromFile() const;
 
 public slots:
     void updateInboundDataDisplay();
@@ -26,6 +34,7 @@ public slots:
 signals:
     void notifyInboundDataUpdated();
     void sendStatusBarMessage(QString msg);
+    void notifyStatusChange();
 
 private:
     std::unique_ptr<SystemDataSource> sds;
@@ -34,6 +43,9 @@ private:
     bool configurationLoaded = false;
 
     void loadConfiguration(const QString& configFilePath);
+    void executeConnect();
+    void executeDisconnect();
+    void showUserActionErrorPopup(const QString& title, const QString& msg);
 };
 
 #endif // MAINWINDOWCONTROLLER_H

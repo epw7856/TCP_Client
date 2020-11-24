@@ -23,6 +23,7 @@ public:
 public slots:
     void showStatusBarMessage(QString msg);
     void refreshStatusDataDisplay();
+    void periodicUpdate();
 
 private slots:
     void onActionAboutTriggered();
