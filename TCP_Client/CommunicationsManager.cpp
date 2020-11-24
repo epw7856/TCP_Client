@@ -51,6 +51,7 @@ void CommunicationsManager::setSocketPort(unsigned port)
 void CommunicationsManager::connectToServer()
 {
     emit requestConnectToServer(socketPort);
+    emit sendStatusUpdate("Connecting to server...");
 }
 
 void CommunicationsManager::sendOutboundDataToServer()
@@ -61,6 +62,7 @@ void CommunicationsManager::sendOutboundDataToServer()
 void CommunicationsManager::disconnectFromServer()
 {
     emit requestDisconnectFromServer();
+    emit sendStatusUpdate("Disconnecting from server...");
 }
 
 void CommunicationsManager::receivedConnectionStatusNotification(bool connectionStatus)
@@ -83,7 +85,7 @@ void CommunicationsManager::receivedConnectionStatusNotification(bool connection
         msgBox.exec();
     }
 
-    emit sendStatusUpdate("Connection timeout.");
+    emit sendStatusUpdate(msg);
 }
 
 void CommunicationsManager::receivedErrorMsgFromSocket(QString msg)
@@ -97,7 +99,7 @@ void CommunicationsManager::receivedErrorMsgFromSocket(QString msg)
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
 
-    emit sendStatusUpdate(msg);
+    emit sendStatusUpdate("Connection timeout.");
 }
 
 void CommunicationsManager::updateInboundDataItems(std::vector<unsigned> rawData)

@@ -24,7 +24,7 @@ public slots:
     void receivedStatusUpdate(QString msg);
 
 signals:
-    void notifyInboundDataUpdate();
+    void notifyInboundDataUpdated();
     void sendStatusBarMessage(QString msg);
 
 private:

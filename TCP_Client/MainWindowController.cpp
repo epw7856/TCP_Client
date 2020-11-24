@@ -16,8 +16,8 @@ MainWindowController::MainWindowController(const QString& configFilePath)
     commsManager = std::make_unique<CommunicationsManager>(*sds, *sds);
 
     // Connections from CommunicationsManager to MainWindowController
-    connect(commsManager.get(), &CommunicationsManager::inboundDataUpdated, this, &MainWindowController::notifyInboundDataUpdate);
     connect(commsManager.get(), &CommunicationsManager::sendStatusUpdate, this, &MainWindowController::receivedStatusUpdate);
+    connect(commsManager.get(), &CommunicationsManager::inboundDataUpdated, this, &MainWindowController::notifyInboundDataUpdated);
 
     if(sds->getSocketPort() != 0U)
     {
@@ -44,7 +44,7 @@ void MainWindowController::requestConnectToServer()
 
 void MainWindowController::updateInboundDataDisplay()
 {
-    emit notifyInboundDataUpdate();
+    emit notifyInboundDataUpdated();
 }
 
 void MainWindowController::receivedStatusUpdate(QString msg)

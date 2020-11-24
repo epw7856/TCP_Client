@@ -23,15 +23,21 @@
 		"Data From Server": [
 			{
 				"Name": "TestInputSignal1",
-				"Data Type": "Numeric",
+				"Data Type": "Unsigned",
 				"Format": "%.2f",
 				"Units": "kW"
 			},
 			{
 				"Name": "TestInputSignal2",
-				"Data Type": "Boolean",
+				"Data Type": "Unsigned",
 				"Format": "",
 				"Units": "Unitless"
+			},
+			{
+				"Name": "TestInputSignal3",
+				"Data Type": "Unsigned",
+				"Format": "",
+				"Units": "Radians"
 			}
 		],
 		"Data To Server": [

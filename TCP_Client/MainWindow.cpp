@@ -20,8 +20,13 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(ui->actionConnectToServer, &QAction::triggered, this, &MainWindow::onActionConnectToServerTriggered);
     connect(ui->actionDisconnectFromServer, &QAction::triggered, this, &MainWindow::onActionDisconnectFromServerTriggered);
 
+    // Connections with the pushbuttons in the UI
+    connect(ui->pushButtonSaveToFile, &QPushButton::clicked, this, &MainWindow::onButtonSaveToFileClicked);
+    connect(ui->pushButtonRestoreFromFile, &QPushButton::clicked, this, &MainWindow::onButtonRestoreFromFileClicked);
+
     // Connections from MainWindowController to MainWindow
     connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
+    connect(mainWindowController.get(), &MainWindowController::notifyInboundDataUpdated, this, &MainWindow::refreshStatusDataDisplay);
 
     configureInboundDataTableView();
     setupStatusBar();
@@ -49,10 +54,10 @@ void MainWindow::showStatusBarMessage(QString msg)
     statusBarLabel->setText("Status: " + msg + "  ");
 }
 
-void MainWindow::refreshInboundDataDisplay()
+void MainWindow::refreshStatusDataDisplay()
 {
     inboundDataTableModel.layoutChanged();
-    //ui->tableViewStatusData->update();
+    ui->tableViewStatusData->update();
 }
 
 void MainWindow::onActionAboutTriggered()
@@ -82,6 +87,16 @@ void MainWindow::onActionConnectToServerTriggered()
 }
 
 void MainWindow::onActionDisconnectFromServerTriggered()
+{
+
+}
+
+void MainWindow::onButtonSaveToFileClicked()
+{
+
+}
+
+void MainWindow::onButtonRestoreFromFileClicked()
 {
 
 }

@@ -22,7 +22,7 @@ public:
 
 public slots:
     void showStatusBarMessage(QString msg);
-    void refreshInboundDataDisplay();
+    void refreshStatusDataDisplay();
 
 private slots:
     void onActionAboutTriggered();
@@ -31,6 +31,8 @@ private slots:
     void onActionViewApplicationConfigurationTriggered();
     void onActionConnectToServerTriggered();
     void onActionDisconnectFromServerTriggered();
+    void onButtonSaveToFileClicked();
+    void onButtonRestoreFromFileClicked();
 
 private:
     Ui::MainWindow *ui;
