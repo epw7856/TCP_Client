@@ -20,6 +20,9 @@ public:
     MainWindow(const QString& configFilePathArg, QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void refreshInboundDataDisplay();
+
 private slots:
     void onActionAboutTriggered();
     void onActionExitTriggered();

@@ -13,12 +13,36 @@ MainWindowController::MainWindowController(const QString& configFilePath)
         loadConfiguration(configFilePath);
     }
 
-    commsManager = std::make_unique<CommunicationsManager>(*sds, *sds, sds->getSocketPort());
+    commsManager = std::make_unique<CommunicationsManager>(*sds, *sds);
+
+    connect(commsManager.get(), &CommunicationsManager::inboundDataUpdated, this, &MainWindowController::notifyInboundDataUpdate);
+
+    if(sds->getSocketPort() != 0U)
+    {
+        commsManager->setSocketPort(sds->getSocketPort());
+        commsManager->connectToServer();
+    }
+
+    commsManager->setConnectionNoticationEnable(true);
 }
 
 InboundDataInterface& MainWindowController::getInboundDataInterface() const
 {
     return *sds;
+}
+
+void MainWindowController::requestConnectToServer()
+{
+    // Move conditional logic to enable function
+    if((sds->getSocketPort() != 0U) && (!commsManager->isConnectedToServer()))
+    {
+        commsManager->connectToServer();
+    }
+}
+
+void MainWindowController::updateInboundDataDisplay()
+{
+    emit notifyInboundDataUpdate();
 }
 
 MainWindowController::~MainWindowController() = default;

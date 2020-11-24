@@ -14,10 +14,10 @@ class CommunicationsManager : public QObject
 
 public:
     explicit CommunicationsManager(InboundDataInterface& localInboundDataInterface,
-                                   OutboundDataInterface& localOutboundDataInterface,
-                                   unsigned port = 0U);
+                                   OutboundDataInterface& localOutboundDataInterface);
     ~CommunicationsManager();
     bool isConnectedToServer() const;
+    void setConnectionNoticationEnable(bool enabled);
     void setSocketPort(unsigned port);
     void connectToServer();
     void sendOutboundDataToServer();
@@ -32,10 +32,12 @@ signals:
     void requestConnectToServer(unsigned port);
     void sendData(std::vector<unsigned> data);
     void requestDisconnectFromServer();
+    void inboundDataUpdated();
 
 private:
     InboundDataInterface& inboundDataInterface;
     OutboundDataInterface& outboundDataInterface;
+    bool showConnectionNotifications = false;
     unsigned socketPort = 0U;
     bool isConnected = false;
     QThread commsThread;
@@ -45,6 +47,11 @@ private:
 inline bool CommunicationsManager::isConnectedToServer() const
 {
     return isConnected;
+}
+
+inline void CommunicationsManager::setConnectionNoticationEnable(bool enabled)
+{
+    showConnectionNotifications = enabled;
 }
 
 #endif // COMMUNICATIONSMANAGER_H

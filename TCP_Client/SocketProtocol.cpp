@@ -5,21 +5,23 @@
 #include <QTcpSocket>
 #include "SocketProtocol.h"
 
-SocketProtocol::SocketProtocol()
-:
-    socket(std::make_unique<QTcpSocket>())
-{
-    // Connections from internal TCP socket signals to SocketProtocol private slots
-    connect(socket.get(), &QTcpSocket::connected, this, &SocketProtocol::connectedToServer);
-    connect(socket.get(), &QTcpSocket::disconnected, this, &SocketProtocol::disconnectedFromServer);
-    connect(socket.get(), &QTcpSocket::readyRead, this, &SocketProtocol::processIncomingTransmission);
-}
+SocketProtocol::SocketProtocol() {}
 
 SocketProtocol::~SocketProtocol() = default;
 
 void SocketProtocol::requestConnectToServer(unsigned port)
 {
-    if(socket->state() != QAbstractSocket::SocketState::ConnectedState)
+    if(socket == nullptr)
+    {
+        socket = std::make_unique<QTcpSocket>();
+
+        // Connections from internal TCP socket signals to SocketProtocol private slots
+        connect(socket.get(), &QTcpSocket::connected, this, &SocketProtocol::connectedToServer);
+        connect(socket.get(), &QTcpSocket::disconnected, this, &SocketProtocol::disconnectedFromServer);
+        connect(socket.get(), &QTcpSocket::readyRead, this, &SocketProtocol::processIncomingTransmission);
+    }
+
+    if(socket->state() != QAbstractSocket::ConnectedState)
     {
         socket->connectToHost(QHostAddress::LocalHost, port);
         if(!socket->waitForConnected(3000))
@@ -33,7 +35,7 @@ void SocketProtocol::requestConnectToServer(unsigned port)
 
 void SocketProtocol::sendDataToServer(std::vector<unsigned> data)
 {
-    if((socket->state() == QAbstractSocket::SocketState::ConnectedState) &&
+    if((socket->state() == QAbstractSocket::ConnectedState) &&
        (data.size() > 0U))
     {
         socket->write(serializeData(data));

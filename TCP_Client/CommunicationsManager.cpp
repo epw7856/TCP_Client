@@ -5,15 +5,23 @@
 #include "QTcpSocket"
 #include "SocketProtocol.h"
 
+Q_DECLARE_METATYPE(QString);
+Q_DECLARE_METATYPE(std::vector<unsigned>);
+Q_DECLARE_METATYPE(unsigned);
+Q_DECLARE_METATYPE(bool);
+
 CommunicationsManager::CommunicationsManager(InboundDataInterface& localInboundDataInterface,
-                                             OutboundDataInterface& localOutboundDataInterface,
-                                             unsigned port)
+                                             OutboundDataInterface& localOutboundDataInterface)
 :
     inboundDataInterface(localInboundDataInterface),
     outboundDataInterface(localOutboundDataInterface),
-    socketPort(port),
     socketComms(std::make_unique<SocketProtocol>())
 {
+    qRegisterMetaType<QString>();
+    qRegisterMetaType<std::vector<unsigned>>();
+    qRegisterMetaType<unsigned>();
+    qRegisterMetaType<bool>();
+
     // Connections from CommunicationsManager to SocketProtocol
     connect(this, &CommunicationsManager::requestDisconnectFromServer, socketComms.get(), &SocketProtocol::disconnectFromServer);
     connect(this, &CommunicationsManager::sendData, socketComms.get(), &SocketProtocol::sendDataToServer);
@@ -22,6 +30,7 @@ CommunicationsManager::CommunicationsManager(InboundDataInterface& localInboundD
     // Connections from SocketProtocol to CommunicationsManager
     connect(socketComms.get(), &SocketProtocol::notifyConnectionStatusUpdate, this, &CommunicationsManager::receivedConnectionStatusNotification);
     connect(socketComms.get(), &SocketProtocol::finishedProcessingInboundData, this, &CommunicationsManager::updateInboundDataItems);
+    connect(socketComms.get(), &SocketProtocol::sendErrorMsg, this, &CommunicationsManager::receivedErrorMsgFromSocket);
 
     socketComms->moveToThread(&commsThread);
     commsThread.start();
@@ -57,6 +66,22 @@ void CommunicationsManager::disconnectFromServer()
 void CommunicationsManager::receivedConnectionStatusNotification(bool connectionStatus)
 {
     isConnected = connectionStatus;
+
+    if(showConnectionNotifications)
+    {
+        QString msg;
+        (isConnected) ? msg = "Connected to server on Port " + QString::number(socketPort) + "." :
+                        msg = "Disconnected from server.";
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Connection Status");
+        msgBox.setText("<p align='center'>" + msg + "</p>");
+        msgBox.setFont(QFont("Segoe UI", 10));
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.exec();
+    }
 }
 
 void CommunicationsManager::receivedErrorMsgFromSocket(QString msg)
@@ -74,4 +99,5 @@ void CommunicationsManager::receivedErrorMsgFromSocket(QString msg)
 void CommunicationsManager::updateInboundDataItems(std::vector<unsigned> rawData)
 {
     inboundDataInterface.setInboundRawValues(rawData);
+    emit inboundDataUpdated();
 }

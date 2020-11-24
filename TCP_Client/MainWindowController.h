@@ -17,7 +17,13 @@ public:
     MainWindowController(const QString& configFilePath);
     ~MainWindowController();
     InboundDataInterface& getInboundDataInterface() const;
+    void requestConnectToServer();
 
+public slots:
+    void updateInboundDataDisplay();
+
+signals:
+    void notifyInboundDataUpdate();
 
 private:
     std::unique_ptr<SystemDataSource> sds;

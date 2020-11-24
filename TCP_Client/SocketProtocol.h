@@ -12,7 +12,7 @@ class SocketProtocol : public QObject
     Q_OBJECT
 
 public:
-    explicit SocketProtocol();
+    SocketProtocol();
     ~SocketProtocol();
 
 public slots:

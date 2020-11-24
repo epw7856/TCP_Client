@@ -2,7 +2,7 @@
 	"Local Control Application": 
 	{
 		"Application Settings": {
-				"Socket Port": 101,
+				"Socket Port": 100,
 				"Transmission Periodicity (ms)": 500
 		},
 		"Enumerations": [

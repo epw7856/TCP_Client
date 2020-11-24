@@ -27,6 +27,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::refreshInboundDataDisplay()
+{
+    inboundDataTableModel.layoutChanged();
+    //ui->tableViewStatusData->update();
+}
+
 void MainWindow::onActionAboutTriggered()
 {
 
@@ -49,7 +55,7 @@ void MainWindow::onActionViewApplicationConfigurationTriggered()
 
 void MainWindow::onActionConnectToServerTriggered()
 {
-
+    mainWindowController->requestConnectToServer();
 }
 
 void MainWindow::onActionDisconnectFromServerTriggered()
@@ -63,6 +69,8 @@ void MainWindow::configureInboundDataTableView()
     ui->tableViewStatusData->setModel(&inboundDataTableModel);
     ui->tableViewStatusData->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableViewStatusData->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableViewStatusData->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableViewStatusData->setFocusPolicy(Qt::NoFocus);
 
     // Set bold font for the header
     QFont font(ui->tableViewStatusData->font());
@@ -76,6 +84,4 @@ void MainWindow::configureInboundDataTableView()
 
     ui->tableViewStatusData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableViewStatusData->verticalHeader()->hide();
-    ui->tableViewStatusData->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableViewStatusData->setFocusPolicy(Qt::NoFocus);
 }
