@@ -41,6 +41,7 @@ private:
     std::unique_ptr<QLabel> statusBarLabel;
 
     void configureInboundDataTableView();
+    void configureOutboundDataTableView();
     void setupStatusBar();
 };
 #endif // MAINWINDOW_H

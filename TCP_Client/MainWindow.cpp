@@ -29,6 +29,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(mainWindowController.get(), &MainWindowController::notifyInboundDataUpdated, this, &MainWindow::refreshStatusDataDisplay);
 
     configureInboundDataTableView();
+    configureOutboundDataTableView();
     setupStatusBar();
 }
 
@@ -45,7 +46,6 @@ void MainWindow::setupStatusBar()
     ui->statusBar->setStyleSheet("QStatusBar{border-top: 1px outset grey;}");
     ui->statusBar->addPermanentWidget(statusBarLabel.get());
     ui->statusBar->setSizeGripEnabled(false);
-    showStatusBarMessage("Ready");
 }
 
 void MainWindow::showStatusBarMessage(QString msg)
@@ -83,7 +83,6 @@ void MainWindow::onActionViewApplicationConfigurationTriggered()
 void MainWindow::onActionConnectToServerTriggered()
 {
     mainWindowController->requestConnectToServer();
-    showStatusBarMessage("Connecting...");
 }
 
 void MainWindow::onActionDisconnectFromServerTriggered()
@@ -122,4 +121,9 @@ void MainWindow::configureInboundDataTableView()
 
     ui->tableViewStatusData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableViewStatusData->verticalHeader()->hide();
+}
+
+void MainWindow::configureOutboundDataTableView()
+{
+
 }

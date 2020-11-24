@@ -22,7 +22,16 @@ MainWindowController::MainWindowController(const QString& configFilePath)
     if(sds->getSocketPort() != 0U)
     {
         commsManager->setSocketPort(sds->getSocketPort());
-        commsManager->connectToServer();
+
+        // Connect only if configuration loaded and setting enabled
+        if(configurationLoaded && true)
+        {
+            requestConnectToServer();
+        }
+        else
+        {
+            emit sendStatusBarMessage("Ready");
+        }
     }
 
     commsManager->setConnectionNoticationEnable(true);
@@ -39,6 +48,7 @@ void MainWindowController::requestConnectToServer()
     if((sds->getSocketPort() != 0U) && (!commsManager->isConnectedToServer()))
     {
         commsManager->connectToServer();
+        emit sendStatusBarMessage("Connecting...");
     }
 }
 
@@ -56,6 +66,8 @@ MainWindowController::~MainWindowController() = default;
 
 void MainWindowController::loadConfiguration(const QString& configFilePath)
 {
+    configurationLoaded = false;
+
     if(!verifier->verifyFilePath(configFilePath))
     {
         return;
@@ -65,5 +77,8 @@ void MainWindowController::loadConfiguration(const QString& configFilePath)
     {
         const QString msg = QString("%1").arg("Error encountered while attempting to open configuration file '" + configFilePath + "'.");
         verifier->showConfigFileErrorPopup(msg);
+        return;
     }
+
+    configurationLoaded = true;
 }

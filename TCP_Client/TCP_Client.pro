@@ -45,6 +45,7 @@ HEADERS += \
     MainWindowController.h \
     OutboundDataInterface.h \
     SemanticVersion.h \
+    SettingsInterface.h \
     SocketProtocol.h \
     SystemDataSource.h
 

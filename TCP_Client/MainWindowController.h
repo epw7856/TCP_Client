@@ -31,6 +31,7 @@ private:
     std::unique_ptr<SystemDataSource> sds;
     std::unique_ptr<ConfigFileVerificationHandler> verifier;
     std::unique_ptr<CommunicationsManager> commsManager;
+    bool configurationLoaded = false;
 
     void loadConfiguration(const QString& configFilePath);
 };
