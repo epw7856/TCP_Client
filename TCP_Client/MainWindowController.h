@@ -21,9 +21,11 @@ public:
 
 public slots:
     void updateInboundDataDisplay();
+    void receivedStatusUpdate(QString msg);
 
 signals:
     void notifyInboundDataUpdate();
+    void sendStatusBarMessage(QString msg);
 
 private:
     std::unique_ptr<SystemDataSource> sds;

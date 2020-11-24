@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "MainWindowController.h"
+#include <QLabel>
 #include "ui_MainWindow.h"
 
 MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
@@ -11,7 +12,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Menu bar signal/slot connections
+    // Connections with the menu bar in the UI
     connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::onActionAboutTriggered);
     connect(ui->actionExit, &QAction::triggered, this, &MainWindow::onActionAboutTriggered);
     connect(ui->actionLoadSystemConfigurationFile, &QAction::triggered, this, &MainWindow::onActionLoadSystemConfigurationFileTriggered);
@@ -19,12 +20,33 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(ui->actionConnectToServer, &QAction::triggered, this, &MainWindow::onActionConnectToServerTriggered);
     connect(ui->actionDisconnectFromServer, &QAction::triggered, this, &MainWindow::onActionDisconnectFromServerTriggered);
 
+    // Connections from MainWindowController to MainWindow
+    connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
+
     configureInboundDataTableView();
+    setupStatusBar();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setupStatusBar()
+{
+    statusBarLabel = std::make_unique<QLabel>();
+    statusBarLabel->setFont(QFont("Segoe UI", 10));
+
+    ui->statusBar->setStyleSheet("QStatusBar{border-top: 1px outset grey;}");
+    ui->statusBar->addPermanentWidget(statusBarLabel.get());
+    ui->statusBar->setSizeGripEnabled(false);
+    showStatusBarMessage("Ready");
+}
+
+void MainWindow::showStatusBarMessage(QString msg)
+{
+    statusBarLabel->clear();
+    statusBarLabel->setText("Status: " + msg + "  ");
 }
 
 void MainWindow::refreshInboundDataDisplay()
@@ -56,6 +78,7 @@ void MainWindow::onActionViewApplicationConfigurationTriggered()
 void MainWindow::onActionConnectToServerTriggered()
 {
     mainWindowController->requestConnectToServer();
+    showStatusBarMessage("Connecting...");
 }
 
 void MainWindow::onActionDisconnectFromServerTriggered()

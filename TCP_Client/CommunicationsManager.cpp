@@ -67,12 +67,12 @@ void CommunicationsManager::receivedConnectionStatusNotification(bool connection
 {
     isConnected = connectionStatus;
 
+    QString msg = QString();
+    (isConnected) ? msg = "Connected to server on Port " + QString::number(socketPort) + "." :
+                    msg = "Disconnected from server.";
+
     if(showConnectionNotifications)
     {
-        QString msg;
-        (isConnected) ? msg = "Connected to server on Port " + QString::number(socketPort) + "." :
-                        msg = "Disconnected from server.";
-
         QMessageBox msgBox;
         msgBox.setWindowTitle("Connection Status");
         msgBox.setText("<p align='center'>" + msg + "</p>");
@@ -82,6 +82,8 @@ void CommunicationsManager::receivedConnectionStatusNotification(bool connection
         msgBox.setIcon(QMessageBox::Information);
         msgBox.exec();
     }
+
+    emit sendStatusUpdate("Connection timeout.");
 }
 
 void CommunicationsManager::receivedErrorMsgFromSocket(QString msg)
@@ -94,6 +96,8 @@ void CommunicationsManager::receivedErrorMsgFromSocket(QString msg)
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
+
+    emit sendStatusUpdate(msg);
 }
 
 void CommunicationsManager::updateInboundDataItems(std::vector<unsigned> rawData)

@@ -33,6 +33,7 @@ signals:
     void sendData(std::vector<unsigned> data);
     void requestDisconnectFromServer();
     void inboundDataUpdated();
+    void sendStatusUpdate(QString msg);
 
 private:
     InboundDataInterface& inboundDataInterface;

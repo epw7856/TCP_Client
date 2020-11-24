@@ -6,7 +6,7 @@
 #include <QMainWindow>
 
 class MainWindowController;
-class QString;
+class QLabel;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,6 +21,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void showStatusBarMessage(QString msg);
     void refreshInboundDataDisplay();
 
 private slots:
@@ -35,7 +36,9 @@ private:
     Ui::MainWindow *ui;
     std::unique_ptr<MainWindowController> mainWindowController;
     InboundDataTableModel inboundDataTableModel;
+    std::unique_ptr<QLabel> statusBarLabel;
 
     void configureInboundDataTableView();
+    void setupStatusBar();
 };
 #endif // MAINWINDOW_H
