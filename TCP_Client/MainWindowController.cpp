@@ -2,12 +2,14 @@
 #include "ConfigFileVerificationHandler.h"
 #include "MainWindowController.h"
 #include <QMessageBox>
+#include "SettingsManager.h"
 #include "SystemDataSource.h"
 
 MainWindowController::MainWindowController(const QString& configFilePath)
 :
     sds(std::make_unique<SystemDataSource>()),
-    verifier(std::make_unique<ConfigFileVerificationHandler>())
+    verifier(std::make_unique<ConfigFileVerificationHandler>()),
+    settingsManager(std::make_unique<SettingsManager>())
 {
     if(!configFilePath.isEmpty())
     {
@@ -121,8 +123,7 @@ void MainWindowController::performInitialSetup()
     {
         commsManager->setSocketPort(sds->getSocketPort());
 
-        // Connect only if configuration loaded and setting enabled
-        if(configurationLoaded && true)
+        if(configurationLoaded && settingsManager->getAutoConnectSetting())
         {
             executeConnect();
         }

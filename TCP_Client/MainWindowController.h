@@ -8,6 +8,7 @@ class CommunicationsManager;
 class ConfigFileVerificationHandler;
 class InboundDataInterface;
 class OutboundDataInterface;
+class SettingsManager;
 class SystemDataSource;
 
 class MainWindowController : public QObject
@@ -43,6 +44,7 @@ private:
     std::unique_ptr<SystemDataSource> sds;
     std::unique_ptr<ConfigFileVerificationHandler> verifier;
     std::unique_ptr<CommunicationsManager> commsManager;
+    std::unique_ptr<SettingsManager> settingsManager;
     bool configurationLoaded = false;
 
     void loadConfiguration(const QString& configFilePath);
