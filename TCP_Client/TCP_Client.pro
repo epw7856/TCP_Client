@@ -25,6 +25,7 @@ SOURCES += \
     InboundDataTableModel.cpp \
     Main.cpp \
     MainWindowController.cpp \
+    SettingsManager.cpp \
     SocketProtocol.cpp \
     SystemDataSource.cpp \
     MainWindow.cpp
@@ -47,6 +48,7 @@ HEADERS += \
     OutboundDataInterface.h \
     SemanticVersion.h \
     SettingsInterface.h \
+    SettingsManager.h \
     SocketProtocol.h \
     SystemDataSource.h
 

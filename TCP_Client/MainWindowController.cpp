@@ -28,6 +28,11 @@ InboundDataInterface& MainWindowController::getInboundDataInterface() const
     return *sds;
 }
 
+OutboundDataInterface &MainWindowController::getOutboundDataInterface() const
+{
+    return *sds;
+}
+
 void MainWindowController::requestConnectToServer()
 {
     if(sds->getSocketPort() <= 0U)

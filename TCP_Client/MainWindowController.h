@@ -7,6 +7,7 @@
 class CommunicationsManager;
 class ConfigFileVerificationHandler;
 class InboundDataInterface;
+class OutboundDataInterface;
 class SystemDataSource;
 
 class MainWindowController : public QObject
@@ -17,8 +18,10 @@ public:
     MainWindowController(const QString& configFilePath);
     ~MainWindowController();
 
-    void performInitialSetup();
     InboundDataInterface& getInboundDataInterface() const;
+    OutboundDataInterface& getOutboundDataInterface() const;
+
+    void performInitialSetup();
     void requestConnectToServer();
     void requestDisconnectFromServer();
 

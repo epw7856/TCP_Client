@@ -115,7 +115,7 @@ void MainWindow::onButtonRestoreFromFileClicked()
 
 void MainWindow::configureInboundDataTableView()
 {
-    // Add table model data and disable selection
+    // Add table model data
     ui->tableViewStatusData->setModel(&inboundDataTableModel);
     ui->tableViewStatusData->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableViewStatusData->setSelectionMode(QAbstractItemView::SingleSelection);

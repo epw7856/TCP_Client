@@ -12,12 +12,12 @@ public:
 
     // Persistent application settings API
     virtual QString getFileSelectionPathSetting() const = 0;
-    virtual bool getAutoConnectionSetting() const = 0;
+    virtual bool getAutoConnectSetting() const = 0;
     virtual QSize getMainWindowSizeSetting() const = 0;
     virtual bool getDisplayConnectionNotificationsSetting() const = 0;
 
     virtual void setFileSelectionPathSetting(const QString& path) = 0;
-    virtual void setAutoConnectionSetting(bool enabled) = 0;
+    virtual void setAutoConnectSetting(bool enabled) = 0;
     virtual void setMainWindowSizeSetting(const QSize& size) = 0;
     virtual void setDisplayConnectionNotificationsSetting(bool enabled) = 0;
 };
