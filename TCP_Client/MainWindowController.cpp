@@ -50,7 +50,6 @@ void MainWindowController::requestConnectToServer()
     else
     {
         executeConnect();
-        return;
     }
 }
 
@@ -63,7 +62,6 @@ void MainWindowController::requestDisconnectFromServer()
     else
     {
         executeDisconnect();
-        return;
     }
 }
 
@@ -101,9 +99,12 @@ void MainWindowController::receivedStatusUpdate(QString msg)
 void MainWindowController::loadConfiguration(const QString& configFilePath)
 {
     configurationLoaded = false;
+    commsManager->stopStartTransmissionTimer(false);
 
     if(!verifier->verifyFilePath(configFilePath))
     {
+        const QString msg = QString("%1").arg("The configuration file '" + configFilePath + "' is invalid or does not exist.");
+        verifier->showConfigFileErrorPopup(msg);
         return;
     }
 
@@ -114,6 +115,7 @@ void MainWindowController::loadConfiguration(const QString& configFilePath)
         return;
     }
 
+    commsManager->stopStartTransmissionTimer(true);
     configurationLoaded = true;
 }
 

@@ -18,7 +18,7 @@ std::vector<unsigned> toUint32Vector(const QByteArray& byteArray)
 
 QByteArray toByteArray(const std::vector<unsigned>& uint32Vector)
 {
-    // Assumption: input vector is Little Endian
+    // The vector parameter is assumed to be little endian format
     return toByteArray(uint32Vector, QDataStream::LittleEndian);
 }
 

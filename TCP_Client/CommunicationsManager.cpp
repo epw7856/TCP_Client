@@ -2,7 +2,7 @@
 #include "InboundDataInterface.h"
 #include "OutboundDataInterface.h"
 #include <QMessageBox>
-#include "QTcpSocket"
+#include <QTcpSocket>
 #include "SocketProtocol.h"
 
 Q_DECLARE_METATYPE(QString);
@@ -53,16 +53,16 @@ void CommunicationsManager::setSocketPort(unsigned port)
 
 void CommunicationsManager::setTransmissionPeriodicity(unsigned interval)
 {
-    bool stopped = false;
+    bool forceStop = false;
     if(outboundDataTransmissionTimer.isActive())
     {
-        stopped = true;
+        forceStop = true;
         outboundDataTransmissionTimer.stop();
     }
 
     outboundDataTransmissionTimer.setInterval(interval);
 
-    if(stopped && (status == ConnectionStatus::Connected))
+    if(forceStop && (status == ConnectionStatus::Connected))
     {
         outboundDataTransmissionTimer.start();
     }
@@ -70,7 +70,17 @@ void CommunicationsManager::setTransmissionPeriodicity(unsigned interval)
 
 void CommunicationsManager::stopStartTransmissionTimer(bool timerEnable)
 {
-    (timerEnable) ? outboundDataTransmissionTimer.start() : outboundDataTransmissionTimer.stop();
+    if(timerEnable)
+    {
+        if(status == ConnectionStatus::Connected)
+        {
+            outboundDataTransmissionTimer.start();
+        }
+    }
+    else
+    {
+        outboundDataTransmissionTimer.stop();
+    }
 }
 
 void CommunicationsManager::connectToServer()

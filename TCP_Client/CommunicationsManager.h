@@ -18,7 +18,6 @@ public:
     explicit CommunicationsManager(InboundDataInterface& localInboundDataInterface,
                                    OutboundDataInterface& localOutboundDataInterface);
     ~CommunicationsManager();
-
     ConnectionStatus getConnectionStatus() const;
     void connectToServer();
     void disconnectFromServer();

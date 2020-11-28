@@ -5,16 +5,7 @@
 bool ConfigFileVerificationHandler::verifyFilePath(const QString& filePath)
 {
     QFileInfo file(filePath);
-    if(!file.exists() || (file.suffix() != "json"))
-    {
-        const QString msg = QString("%1").arg("The configuration file '" + filePath + "' is invalid or does not exist.");
-        showConfigFileErrorPopup(msg);
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+    return ((!file.exists()) || (file.suffix() != "json"));
 }
 
 void ConfigFileVerificationHandler::showConfigFileErrorPopup(const QString& message)

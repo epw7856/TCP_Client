@@ -5,6 +5,9 @@
 #include <QTcpSocket>
 #include "SocketProtocol.h"
 
+// Default connection timeout period of 3 seconds
+static const unsigned ConnectionTimeout = 3000;
+
 SocketProtocol::SocketProtocol() {}
 
 SocketProtocol::~SocketProtocol() = default;
@@ -24,7 +27,7 @@ void SocketProtocol::requestConnectToServer(unsigned port)
     if(socket->state() != QAbstractSocket::ConnectedState)
     {
         socket->connectToHost(QHostAddress::LocalHost, port);
-        if(!socket->waitForConnected(3000))
+        if(!socket->waitForConnected(ConnectionTimeout))
         {
             const QString msg = "Connection timeout: Unable to connect to server. Please verify that the socket port is set correctly "
                                 "and the server is listening on the same port.";
