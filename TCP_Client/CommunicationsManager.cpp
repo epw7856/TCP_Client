@@ -32,6 +32,9 @@ CommunicationsManager::CommunicationsManager(InboundDataInterface& localInboundD
     connect(socketComms.get(), &SocketProtocol::finishedProcessingInboundData, this, &CommunicationsManager::updateInboundDataItems);
     connect(socketComms.get(), &SocketProtocol::sendErrorMsg, this, &CommunicationsManager::showSocketErrorMsgPopup);
 
+    // Connection for the outbound data transmission timer
+    connect(&outboundDataTransmissionTimer, &QTimer::timeout, this, &CommunicationsManager::sendOutboundDataToServer);
+
     socketComms->moveToThread(&commsThread);
     commsThread.start();
 }
@@ -46,6 +49,28 @@ CommunicationsManager::~CommunicationsManager()
 void CommunicationsManager::setSocketPort(unsigned port)
 {
     socketPort = port;
+}
+
+void CommunicationsManager::setTransmissionPeriodicity(unsigned interval)
+{
+    bool stopped = false;
+    if(outboundDataTransmissionTimer.isActive())
+    {
+        stopped = true;
+        outboundDataTransmissionTimer.stop();
+    }
+
+    outboundDataTransmissionTimer.setInterval(interval);
+
+    if(stopped && (status == ConnectionStatus::Connected))
+    {
+        outboundDataTransmissionTimer.start();
+    }
+}
+
+void CommunicationsManager::stopStartTransmissionTimer(bool timerEnable)
+{
+    (timerEnable) ? outboundDataTransmissionTimer.start() : outboundDataTransmissionTimer.stop();
 }
 
 void CommunicationsManager::connectToServer()
@@ -71,8 +96,16 @@ void CommunicationsManager::disconnectFromServer()
 
 void CommunicationsManager::receivedConnectionStatusNotification(bool connectionStatus)
 {
-    (connectionStatus) ? status = ConnectionStatus::Connected :
-                         status = ConnectionStatus::Unconnected;
+    if(connectionStatus)
+    {
+        status = ConnectionStatus::Connected;
+        outboundDataTransmissionTimer.start();
+    }
+    else
+    {
+        status = ConnectionStatus::Unconnected;
+        outboundDataTransmissionTimer.stop();
+    }
 
     QString msg = QString();
     (status == ConnectionStatus::Connected) ? msg = "Connected to server on Port " + QString::number(socketPort) + "." :

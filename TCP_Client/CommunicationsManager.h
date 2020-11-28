@@ -4,6 +4,7 @@
 #include "ConnectionStatus.h"
 #include <memory>
 #include <QThread>
+#include <QTimer>
 
 class InboundDataInterface;
 class OutboundDataInterface;
@@ -19,16 +20,20 @@ public:
     ~CommunicationsManager();
 
     ConnectionStatus getConnectionStatus() const;
-    void setConnectionNoticationEnable(bool enabled);
-    void setSocketPort(unsigned port);
     void connectToServer();
-    void sendOutboundDataToServer();
     void disconnectFromServer();
 
 public slots:
+    void setSocketPort(unsigned port);
+    void setTransmissionPeriodicity(unsigned interval);
+    void setConnectionNotificationEnable(bool enabled);
+    void stopStartTransmissionTimer(bool timerEnable);
     void receivedConnectionStatusNotification(bool connectionStatus);
     void showSocketErrorMsgPopup(QString msg);
     void updateInboundDataItems(std::vector<unsigned> rawData);
+
+private slots:
+    void sendOutboundDataToServer();
 
 signals:
     void requestConnectToServer(unsigned port);
@@ -42,6 +47,7 @@ private:
     OutboundDataInterface& outboundDataInterface;
     bool showConnectionNotifications = false;
     unsigned socketPort = 0U;
+    QTimer outboundDataTransmissionTimer;
     ConnectionStatus status = ConnectionStatus::Unconnected;
     QThread commsThread;
     std::unique_ptr<SocketProtocol> socketComms;
@@ -52,7 +58,7 @@ inline ConnectionStatus CommunicationsManager::getConnectionStatus() const
     return status;
 }
 
-inline void CommunicationsManager::setConnectionNoticationEnable(bool enabled)
+inline void CommunicationsManager::setConnectionNotificationEnable(bool enabled)
 {
     showConnectionNotifications = enabled;
 }

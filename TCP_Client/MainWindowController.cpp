@@ -122,6 +122,7 @@ void MainWindowController::performInitialSetup()
     if(sds->getSocketPort() != 0U)
     {
         commsManager->setSocketPort(sds->getSocketPort());
+        commsManager->setTransmissionPeriodicity(sds->getTransmissionPeriodicity());
 
         if(configurationLoaded && settingsManager->getAutoConnectSetting())
         {
@@ -133,7 +134,7 @@ void MainWindowController::performInitialSetup()
         }
     }
 
-    commsManager->setConnectionNoticationEnable(true);
+    commsManager->setConnectionNotificationEnable(true);
     emit notifyStatusChange();
 }
 
