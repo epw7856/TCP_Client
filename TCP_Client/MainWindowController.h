@@ -47,7 +47,7 @@ private:
     std::unique_ptr<SettingsManager> settingsManager;
     bool configurationLoaded = false;
 
-    void loadConfiguration(const QString& configFilePath);
+    void loadConfiguration(const QString& configFilePath, bool initialLoad);
     void executeConnect();
     void executeDisconnect();
     void showUserActionErrorPopup(const QString& title, const QString& msg);

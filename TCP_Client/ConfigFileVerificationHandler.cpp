@@ -5,7 +5,7 @@
 bool ConfigFileVerificationHandler::verifyFilePath(const QString& filePath)
 {
     QFileInfo file(filePath);
-    return ((!file.exists()) || (file.suffix() != "json"));
+    return ((file.exists()) && (file.suffix() == "json"));
 }
 
 void ConfigFileVerificationHandler::showConfigFileErrorPopup(const QString& message)

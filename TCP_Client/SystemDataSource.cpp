@@ -312,6 +312,17 @@ void SystemDataSource::setOutboundDisplayValues(const std::vector<QString>& disp
     }
 }
 
+std::vector<DataItem *> SystemDataSource::getOutboundDataItems() const
+{
+    std::vector<DataItem*> dataItems = {};
+    for(const auto& item : outboundDataItems)
+    {
+        dataItems.push_back(item.get());
+    }
+
+    return dataItems;
+}
+
 std::vector<QString> SystemDataSource::getOutboundDataItemNames() const
 {
     std::vector<QString> displayName = {};

@@ -8,7 +8,8 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     mainWindowController(std::make_unique<MainWindowController>(configFilePathArg)),
-    inboundDataTableModel(mainWindowController->getInboundDataInterface())
+    inboundDataTableModel(mainWindowController->getInboundDataInterface()),
+    outboundDataTableModel(mainWindowController->getOutboundDataInterface())
 {
     ui->setupUi(this);
 
@@ -129,7 +130,6 @@ void MainWindow::configureInboundDataTableView()
     ui->tableViewStatusData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }");
 
     ui->tableViewStatusData->horizontalHeader()->setFixedHeight(25);
-    ui->tableViewStatusData->resizeColumnToContents(2);
     ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     ui->tableViewStatusData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
@@ -138,5 +138,22 @@ void MainWindow::configureInboundDataTableView()
 
 void MainWindow::configureOutboundDataTableView()
 {
+    // Add table model data
+    ui->tableViewControlData->setModel(&outboundDataTableModel);
+    ui->tableViewControlData->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableViewControlData->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableViewControlData->setFocusPolicy(Qt::NoFocus);
 
+    // Set bold font for the header
+    QFont font(ui->tableViewControlData->font());
+    font.setBold(true);
+    ui->tableViewControlData->horizontalHeader()->setFont(font);
+    ui->tableViewControlData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }");
+
+    ui->tableViewControlData->horizontalHeader()->setFixedHeight(25);
+    ui->tableViewControlData->resizeColumnToContents(2);
+    ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    ui->tableViewControlData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->tableViewControlData->verticalHeader()->hide();
 }

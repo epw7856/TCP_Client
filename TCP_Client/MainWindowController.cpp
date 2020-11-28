@@ -13,7 +13,7 @@ MainWindowController::MainWindowController(const QString& configFilePath)
 {
     if(!configFilePath.isEmpty())
     {
-        loadConfiguration(configFilePath);
+        loadConfiguration(configFilePath, true);
     }
 
     commsManager = std::make_unique<CommunicationsManager>(*sds, *sds);
@@ -96,10 +96,13 @@ void MainWindowController::receivedStatusUpdate(QString msg)
     emit notifyStatusChange();
 }
 
-void MainWindowController::loadConfiguration(const QString& configFilePath)
+void MainWindowController::loadConfiguration(const QString& configFilePath, bool initialLoad)
 {
     configurationLoaded = false;
-    commsManager->stopStartTransmissionTimer(false);
+    if(!initialLoad)
+    {
+        commsManager->stopStartTransmissionTimer(false);
+    }
 
     if(!verifier->verifyFilePath(configFilePath))
     {
@@ -115,7 +118,10 @@ void MainWindowController::loadConfiguration(const QString& configFilePath)
         return;
     }
 
-    commsManager->stopStartTransmissionTimer(true);
+    if(!initialLoad)
+    {
+        commsManager->stopStartTransmissionTimer(true);
+    }
     configurationLoaded = true;
 }
 

@@ -13,6 +13,7 @@ public:
     virtual QString getSystemConfigFilePath() const = 0;
     virtual unsigned getSocketPort() const = 0;
     virtual unsigned getTransmissionPeriodicity() const = 0;
+
     virtual void setSystemConfigFilePath(const QString& path) = 0;
     virtual void setSocketPort(unsigned port) = 0;
     virtual void setTransmissionPeriodicity(unsigned periodicity) = 0;

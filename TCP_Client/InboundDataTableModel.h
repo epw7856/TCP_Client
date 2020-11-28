@@ -9,6 +9,7 @@ class InboundDataInterface;
 class InboundDataTableModel : public QAbstractTableModel
 {
     Q_OBJECT
+
 public:
     InboundDataTableModel(InboundDataInterface& localInboundDataInterface);
 

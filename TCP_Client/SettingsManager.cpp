@@ -78,5 +78,6 @@ void SettingsManager::setDisplayConnectionNotificationsSetting(bool enabled)
 bool SettingsManager::configureSettingsDirectory()
 {
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    settingsPath = dir.path();
     return (dir.exists()) ? true : dir.mkpath(settingsPath);
 }

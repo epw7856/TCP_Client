@@ -3,6 +3,7 @@
 
 #include "InboundDataTableModel.h"
 #include <memory>
+#include "OutboundDataTableModel.h"
 #include <QMainWindow>
 
 class MainWindowController;
@@ -39,6 +40,7 @@ private:
     Ui::MainWindow *ui;
     std::unique_ptr<MainWindowController> mainWindowController;
     InboundDataTableModel inboundDataTableModel;
+    OutboundDataTableModel outboundDataTableModel;
     std::unique_ptr<QLabel> statusBarLabel;
 
     void configureInboundDataTableView();
