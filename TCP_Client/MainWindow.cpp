@@ -127,7 +127,8 @@ void MainWindow::configureInboundDataTableView()
     QFont font(ui->tableViewStatusData->font());
     font.setBold(true);
     ui->tableViewStatusData->horizontalHeader()->setFont(font);
-    ui->tableViewStatusData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }");
+    ui->tableViewStatusData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }\n"
+                                           "QTableView::item:selected {background-color: rgb(68, 93, 249);}");
 
     ui->tableViewStatusData->horizontalHeader()->setFixedHeight(25);
     ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -148,7 +149,8 @@ void MainWindow::configureOutboundDataTableView()
     QFont font(ui->tableViewControlData->font());
     font.setBold(true);
     ui->tableViewControlData->horizontalHeader()->setFont(font);
-    ui->tableViewControlData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }");
+    ui->tableViewControlData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }\n"
+                                            "QTableView::item:selected {background-color: rgb(68, 93, 249);}");
 
     ui->tableViewControlData->horizontalHeader()->setFixedHeight(25);
     ui->tableViewControlData->resizeColumnToContents(2);
