@@ -1,14 +1,14 @@
-#include "ConfigFileVerificationHandler.h"
+#include "FileOperationsHandler.h"
 #include <QFileInfo>
 #include <QMessageBox>
 
-bool ConfigFileVerificationHandler::verifyFilePath(const QString& filePath)
+bool FileOperationsHandler::verifyFilePath(const QString& filePath)
 {
     QFileInfo file(filePath);
     return ((file.exists()) && (file.suffix() == "json"));
 }
 
-void ConfigFileVerificationHandler::showConfigFileErrorPopup(const QString& message)
+void FileOperationsHandler::showConfigFileErrorPopup(const QString& message)
 {
     QMessageBox msgBox;
     msgBox.setWindowTitle("Configuration Error");

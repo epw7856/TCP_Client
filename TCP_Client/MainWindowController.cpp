@@ -1,5 +1,5 @@
 #include "CommunicationsManager.h"
-#include "ConfigFileVerificationHandler.h"
+#include "FileOperationsHandler.h"
 #include "MainWindowController.h"
 #include <QMessageBox>
 #include "SettingsManager.h"
@@ -8,7 +8,6 @@
 MainWindowController::MainWindowController(const QString& configFilePath)
 :
     sds(std::make_unique<SystemDataSource>()),
-    verifier(std::make_unique<ConfigFileVerificationHandler>()),
     settingsManager(std::make_unique<SettingsManager>())
 {
     if(!configFilePath.isEmpty())
@@ -104,17 +103,17 @@ void MainWindowController::loadConfiguration(const QString& configFilePath, bool
         commsManager->stopStartTransmissionTimer(false);
     }
 
-    if(!verifier->verifyFilePath(configFilePath))
+    if(!FileOperationsHandler::verifyFilePath(configFilePath))
     {
         const QString msg = QString("%1").arg("The configuration file '" + configFilePath + "' is invalid or does not exist.");
-        verifier->showConfigFileErrorPopup(msg);
+        FileOperationsHandler::showConfigFileErrorPopup(msg);
         return;
     }
 
     if(!sds->loadSystemConfiguration(configFilePath))
     {
         const QString msg = QString("%1").arg("Error encountered while attempting to open configuration file '" + configFilePath + "'.");
-        verifier->showConfigFileErrorPopup(msg);
+        FileOperationsHandler::showConfigFileErrorPopup(msg);
         return;
     }
 

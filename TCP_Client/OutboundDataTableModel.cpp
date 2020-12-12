@@ -7,6 +7,7 @@ OutboundDataTableModel::OutboundDataTableModel(OutboundDataInterface& localOutbo
     outboundDataInterface(localOutboundDataInterface)
 {
     outboundDataItems = outboundDataInterface.getOutboundDataItems();
+    desiredOutboundValues.resize(outboundDataItems.size());
 }
 
 int OutboundDataTableModel::rowCount(const QModelIndex&) const
@@ -42,7 +43,7 @@ QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
         // New Value column
         else if(index.column() == 2)
         {
-            return QString();
+            return desiredOutboundValues[rowUint];
         }
         // Units column
         else if(index.column() == 3)
@@ -61,6 +62,20 @@ QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
     }
 
     return {};
+}
+
+bool OutboundDataTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (role == Qt::EditRole)
+    {
+        if (!checkIndex(index))
+        {
+            return false;
+        }
+        setDesiredOutboundValues(index.row(), value.toString());
+        return true;
+    }
+    return false;
 }
 
 QVariant OutboundDataTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -100,4 +115,31 @@ Qt::ItemFlags OutboundDataTableModel::flags(const QModelIndex& index) const
     {
         return (QAbstractTableModel::flags(index) & ~Qt::ItemIsEditable);
     }
+}
+
+void OutboundDataTableModel::setDesiredOutboundValues(int index, QString value)
+{
+    if((index >= 0) &&
+       (index < static_cast<int>(desiredOutboundValues.size() - 1)))
+    {
+        beginResetModel();
+        desiredOutboundValues[index] = value;
+        endResetModel();
+    }
+}
+
+void OutboundDataTableModel::setDesiredOutboundValues(const std::vector<QString>& values)
+{
+    if(values.size() == desiredOutboundValues.size())
+    {
+        beginResetModel();
+        desiredOutboundValues = std::move(values);
+        endResetModel();
+    }
+}
+
+void OutboundDataTableModel::resetDesiredOutboundValues()
+{
+    desiredOutboundValues.clear();
+    desiredOutboundValues.resize(outboundDataItems.size());
 }

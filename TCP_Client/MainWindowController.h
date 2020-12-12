@@ -5,7 +5,6 @@
 #include <QObject>
 
 class CommunicationsManager;
-class ConfigFileVerificationHandler;
 class InboundDataInterface;
 class OutboundDataInterface;
 class SettingsManager;
@@ -42,7 +41,6 @@ signals:
 
 private:
     std::unique_ptr<SystemDataSource> sds;
-    std::unique_ptr<ConfigFileVerificationHandler> verifier;
     std::unique_ptr<CommunicationsManager> commsManager;
     std::unique_ptr<SettingsManager> settingsManager;
     bool configurationLoaded = false;
