@@ -7,9 +7,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    mainWindowController(std::make_unique<MainWindowController>(configFilePathArg)),
-    inboundDataTableModel(mainWindowController->getInboundDataInterface()),
-    outboundDataTableModel(mainWindowController->getOutboundDataInterface())
+    mainWindowController(std::make_unique<MainWindowController>(configFilePathArg))
 {
     ui->setupUi(this);
 
@@ -62,7 +60,7 @@ void MainWindow::showStatusBarMessage(QString msg)
 
 void MainWindow::refreshStatusDataDisplay()
 {
-    inboundDataTableModel.layoutChanged();
+    mainWindowController->getInboundDataTableModel().layoutChanged();
     ui->tableViewStatusData->update();
 }
 
@@ -117,7 +115,7 @@ void MainWindow::onButtonRestoreFromFileClicked()
 void MainWindow::configureInboundDataTableView()
 {
     // Add table model data
-    ui->tableViewStatusData->setModel(&inboundDataTableModel);
+    ui->tableViewStatusData->setModel(&(mainWindowController->getInboundDataTableModel()));
     ui->tableViewStatusData->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableViewStatusData->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableViewStatusData->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -140,7 +138,7 @@ void MainWindow::configureInboundDataTableView()
 void MainWindow::configureOutboundDataTableView()
 {
     // Add table model data
-    ui->tableViewControlData->setModel(&outboundDataTableModel);
+    ui->tableViewControlData->setModel(&(mainWindowController->getOutboundDataTableModel()));
     ui->tableViewControlData->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableViewControlData->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableViewControlData->setFocusPolicy(Qt::NoFocus);

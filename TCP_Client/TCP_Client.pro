@@ -26,6 +26,7 @@ SOURCES += \
     Main.cpp \
     MainWindowController.cpp \
     OutboundDataTableModel.cpp \
+    RangeCheckHandler.cpp \
     SettingsManager.cpp \
     SocketProtocol.cpp \
     SystemDataSource.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     MainWindowController.h \
     OutboundDataInterface.h \
     OutboundDataTableModel.h \
+    RangeCheckHandler.h \
     SemanticVersion.h \
     SettingsInterface.h \
     SettingsManager.h \

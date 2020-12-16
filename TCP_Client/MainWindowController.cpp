@@ -8,7 +8,9 @@
 MainWindowController::MainWindowController(const QString& configFilePath)
 :
     sds(std::make_unique<SystemDataSource>()),
-    settingsManager(std::make_unique<SettingsManager>())
+    settingsManager(std::make_unique<SettingsManager>()),
+    inboundDataTableModel(*sds),
+    outboundDataTableModel(*sds)
 {
     if(!configFilePath.isEmpty())
     {
@@ -23,16 +25,6 @@ MainWindowController::MainWindowController(const QString& configFilePath)
 }
 
 MainWindowController::~MainWindowController() = default;
-
-InboundDataInterface& MainWindowController::getInboundDataInterface() const
-{
-    return *sds;
-}
-
-OutboundDataInterface &MainWindowController::getOutboundDataInterface() const
-{
-    return *sds;
-}
 
 void MainWindowController::requestConnectToServer()
 {

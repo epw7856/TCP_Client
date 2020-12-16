@@ -1,7 +1,9 @@
 #ifndef MAINWINDOWCONTROLLER_H
 #define MAINWINDOWCONTROLLER_H
 
+#include "InboundDataTableModel.h"
 #include <memory>
+#include "OutboundDataTableModel.h"
 #include <QObject>
 
 class CommunicationsManager;
@@ -18,8 +20,8 @@ public:
     MainWindowController(const QString& configFilePath);
     ~MainWindowController();
 
-    InboundDataInterface& getInboundDataInterface() const;
-    OutboundDataInterface& getOutboundDataInterface() const;
+    InboundDataTableModel& getInboundDataTableModel();
+    OutboundDataTableModel& getOutboundDataTableModel();
 
     void performInitialSetup();
     void requestConnectToServer();
@@ -44,11 +46,23 @@ private:
     std::unique_ptr<CommunicationsManager> commsManager;
     std::unique_ptr<SettingsManager> settingsManager;
     bool configurationLoaded = false;
+    InboundDataTableModel inboundDataTableModel;
+    OutboundDataTableModel outboundDataTableModel;
 
     void loadConfiguration(const QString& configFilePath, bool initialLoad);
     void executeConnect();
     void executeDisconnect();
     void showUserActionErrorPopup(const QString& title, const QString& msg);
 };
+
+inline InboundDataTableModel& MainWindowController::getInboundDataTableModel()
+{
+    return inboundDataTableModel;
+}
+
+inline OutboundDataTableModel& MainWindowController::getOutboundDataTableModel()
+{
+    return outboundDataTableModel;
+}
 
 #endif // MAINWINDOWCONTROLLER_H

@@ -140,6 +140,8 @@ void OutboundDataTableModel::setDesiredOutboundValues(const std::vector<QString>
 
 void OutboundDataTableModel::resetDesiredOutboundValues()
 {
+    beginResetModel();
     desiredOutboundValues.clear();
     desiredOutboundValues.resize(outboundDataItems.size());
+    endResetModel();
 }
