@@ -123,15 +123,15 @@ QString SystemDataSource::convertRawToDisplayValue(const QString& type,
         return "ERROR";
     }
 
-    if(type == "Unsigned")
+    if(type == UnsignedIntegerType)
     {
         return QString::number(rawValue);
     }
-    else if(type == "Integer")
+    else if(type == IntegerType)
     {
         return QString::number(unsignedToInt(rawValue));
     }
-    else if(type == "Numeric")
+    else if(type == NumericType)
     {
         return formatFloatDisplayValue(unsignedToFloat(rawValue), format);
     }
@@ -152,7 +152,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
         return UINT_MAX;
     }
 
-    if(type == "Unsigned")
+    if(type == UnsignedIntegerType)
     {
         unsigned intermediate = displayValue.toUInt(&status);
         if(status)
@@ -160,7 +160,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
             return intermediate;
         }
     }
-    else if(type == "Integer")
+    else if(type == IntegerType)
     {
         int intermediate = displayValue.toInt(&status);
         if(status)
@@ -168,7 +168,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
             return intToUnsigned(intermediate);
         }
     }
-    else if(type == "Numeric")
+    else if(type == NumericType)
     {
         float intermediate = displayValue.toFloat(&status);
         if(status)
@@ -310,6 +310,11 @@ void SystemDataSource::setOutboundDisplayValues(const std::vector<QString>& disp
             setOutboundDisplayValue(i, displayValues[i]);
         }
     }
+}
+
+DataItem* SystemDataSource::getOutboundDataItem(int index) const
+{
+    return outboundDataItems[index].get();
 }
 
 std::vector<DataItem *> SystemDataSource::getOutboundDataItems() const

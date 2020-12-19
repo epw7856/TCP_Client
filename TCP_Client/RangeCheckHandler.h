@@ -11,18 +11,19 @@ class OutboundDataInterface;
 class RangeCheckHandler
 {
 public:
-    RangeCheckHandler(const OutboundDataInterface& localOutboundDataInterface) :
-        outboundData(localOutboundDataInterface) {}
+    RangeCheckHandler(const OutboundDataInterface& localOutboundDataInterface, const EnumInterface& localEnumInterface) :
+        outboundDataInterface(localOutboundDataInterface), enumInterface(localEnumInterface) {}
 
-    bool validateOutboundData(int index, const QString& value);
-    bool validateOutboundData(const std::vector<int, QString>& values);
+    bool validateOutboundData(int index, QString& value);
+    bool validateOutboundData(std::vector<std::pair<int, QString>>& values);
 
 private:
-    const OutboundDataInterface& outboundData;
+    const OutboundDataInterface& outboundDataInterface;
+    const EnumInterface& enumInterface;
 
-    bool verifyUnsignedIntegerValue(const QString& value, std::pair<unsigned, unsigned>& range);
-    bool verifyIntegerValue(const QString& value, std::pair<int, int>& range);
-    bool verifyNumericValue(const QString& value, std::pair<float, float>& range);
+    bool verifyUnsignedIntegerValue(QString& value, std::pair<unsigned, unsigned> range);
+    bool verifyIntegerValue(QString& value, std::pair<int, int> range);
+    bool verifyNumericValue(QString& value, std::pair<float, float> range);
     bool verifyEnumValue(const QString& enumName, const QString& value);
 };
 

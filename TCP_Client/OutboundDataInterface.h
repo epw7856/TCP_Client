@@ -15,6 +15,7 @@ public:
     // Data to server API
     virtual void setOutboundDisplayValue(unsigned index, const QString& displayValue) = 0;
     virtual void setOutboundDisplayValues(const std::vector<QString>& displayValues) = 0;
+    virtual DataItem* getOutboundDataItem(int index) const = 0;
     virtual std::vector<DataItem*> getOutboundDataItems() const = 0;
     virtual std::vector<QString> getOutboundDataItemNames() const = 0;
     virtual std::vector<QString> getOutboundDisplayValues() const = 0;

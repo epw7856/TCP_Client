@@ -3,6 +3,10 @@
 
 #include <QString>
 
+const QString UnsignedIntegerType = "Unsigned";
+const QString IntegerType = "Integer";
+const QString NumericType = "Numeric";
+
 class DataItem
 {
 public:
