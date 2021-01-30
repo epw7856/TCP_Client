@@ -22,6 +22,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     // Connections with the pushbuttons in the UI
     connect(ui->pushButtonSaveToFile, &QPushButton::clicked, this, &MainWindow::onButtonSaveToFileClicked);
     connect(ui->pushButtonRestoreFromFile, &QPushButton::clicked, this, &MainWindow::onButtonRestoreFromFileClicked);
+    connect(ui->pushButtonApply, &QPushButton::clicked, this, &MainWindow::onButtonApplyClicked);
 
     // Connections from MainWindowController to MainWindow
     connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
@@ -108,6 +109,11 @@ void MainWindow::onButtonSaveToFileClicked()
 }
 
 void MainWindow::onButtonRestoreFromFileClicked()
+{
+
+}
+
+void MainWindow::onButtonApplyClicked()
 {
 
 }

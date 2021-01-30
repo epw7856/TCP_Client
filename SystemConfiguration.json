@@ -58,6 +58,15 @@
 				"Max Value": "",
 				"Format": "",
 				"Units": "Unitless"
+			},
+			{
+				"Name": "TestOutputSignal3",
+				"Data Type": "Unsigned",
+				"Default Value": 1384,
+				"Min Value": 0,
+				"Max Value": 1399,
+				"Format": "",
+				"Units": "Radians"
 			}
 		]
 	}	

@@ -33,6 +33,7 @@ private slots:
     void onActionDisconnectFromServerTriggered();
     void onButtonSaveToFileClicked();
     void onButtonRestoreFromFileClicked();
+    void onButtonApplyClicked();
 
 private:
     Ui::MainWindow *ui;

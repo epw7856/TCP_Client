@@ -11,10 +11,8 @@ const QString DisplayConnectionNotificationsIdentifier = "Display Connection Not
 
 SettingsManager::SettingsManager()
 {
-    if(configureSettingsDirectory())
-    {
-        persistentSettings = std::make_unique<QSettings>(settingsPath + "/TCP_Client.ini", QSettings::IniFormat);
-    }
+    configureSettingsDirectory();
+    persistentSettings = std::make_unique<QSettings>(settingsPath + "/TCP_Client.ini", QSettings::IniFormat);
 }
 
 SettingsManager::~SettingsManager() = default;
@@ -34,7 +32,7 @@ QSize SettingsManager::getMainWindowSizeSetting() const
     return (persistentSettings != nullptr) ? persistentSettings->value(MainWindowSizeIdentifier).toSize() : QSize();
 }
 
-bool SettingsManager::getDisplayConnectionNotificationsSetting() const
+bool SettingsManager::getShowConnectionNotificationsSetting() const
 {
     return (persistentSettings != nullptr) ? persistentSettings->value(DisplayConnectionNotificationsIdentifier).toBool() : false;
 }
@@ -66,7 +64,7 @@ void SettingsManager::setMainWindowSizeSetting(const QSize& size)
     }
 }
 
-void SettingsManager::setDisplayConnectionNotificationsSetting(bool enabled)
+void SettingsManager::setShowConnectionNotificationsSetting(bool enabled)
 {
     if(persistentSettings != nullptr)
     {
@@ -75,9 +73,9 @@ void SettingsManager::setDisplayConnectionNotificationsSetting(bool enabled)
     }
 }
 
-bool SettingsManager::configureSettingsDirectory()
+void SettingsManager::configureSettingsDirectory()
 {
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
     settingsPath = dir.path();
-    return (dir.exists()) ? true : dir.mkpath(settingsPath);
+    if(!dir.exists()) dir.mkpath(settingsPath);
 }

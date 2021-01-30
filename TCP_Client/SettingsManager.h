@@ -17,18 +17,18 @@ public:
     QString getFileSelectionPathSetting() const override;
     bool getAutoConnectSetting() const override;
     QSize getMainWindowSizeSetting() const override;
-    bool getDisplayConnectionNotificationsSetting() const override;
+    bool getShowConnectionNotificationsSetting() const override;
 
     void setFileSelectionPathSetting(const QString& path) override;
     void setAutoConnectSetting(bool enabled) override;
     void setMainWindowSizeSetting(const QSize& size) override;
-    void setDisplayConnectionNotificationsSetting(bool enabled) override;
+    void setShowConnectionNotificationsSetting(bool enabled) override;
 
 private:
     std::unique_ptr<QSettings> persistentSettings;
     QString settingsPath= "";
 
-    bool configureSettingsDirectory();
+    void configureSettingsDirectory();
 };
 
 #endif // SETTINGSMANAGER_H
