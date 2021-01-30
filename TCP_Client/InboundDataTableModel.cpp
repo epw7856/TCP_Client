@@ -6,7 +6,7 @@ InboundDataTableModel::InboundDataTableModel(InboundDataInterface &localInboundD
 :
     inboundDataInterface(localInboundDataInterface)
 {
-    inboundDataItems = inboundDataInterface.getInboundDataItems();
+
 }
 
 int InboundDataTableModel::rowCount(const QModelIndex&) const
@@ -79,4 +79,12 @@ QVariant InboundDataTableModel::headerData(int section, Qt::Orientation orientat
         }
     }
     return {};
+}
+
+void InboundDataTableModel::setInboundDataItems()
+{
+    beginResetModel();
+    inboundDataItems.clear();
+    inboundDataItems = inboundDataInterface.getInboundDataItems();
+    endResetModel();
 }

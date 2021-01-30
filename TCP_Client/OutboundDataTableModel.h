@@ -19,7 +19,8 @@ public:
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
-    void setDesiredOutboundValues(int index, QString value);
+    void setOutboundDataItems();
+    void setDesiredOutboundValue(int index, QString value);
     void setDesiredOutboundValues(const std::vector<QString>& values);
     void resetDesiredOutboundValues();
 

@@ -113,12 +113,15 @@ void MainWindowController::loadConfiguration(const QString& configFilePath, bool
     {
         commsManager->stopStartTransmissionTimer(true);
     }
+
+    inboundDataTableModel.setInboundDataItems();
+    outboundDataTableModel.setOutboundDataItems();
     configurationLoaded = true;
 }
 
 void MainWindowController::performInitialSetup()
 {
-    if(sds->getSocketPort() != 0U)
+    if(sds->getSocketPort() > 0U)
     {
         commsManager->setSocketPort(sds->getSocketPort());
         commsManager->setTransmissionPeriodicity(sds->getTransmissionPeriodicity());

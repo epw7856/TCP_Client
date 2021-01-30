@@ -4,10 +4,10 @@
 #include "SettingsManager.h"
 
 // String identifiers for the persistent setting keys in the .ini file
-static const QString FileSelectionPathIdentifier = "File Selection Path";
-static const QString AutoConnectIdentifier = "Auto Connect";
-static const QString MainWindowSizeIdentifier = "Main Window Size";
-static const QString DisplayConnectionNotificationsIdentifier = "Display Connection Notifications";
+const QString FileSelectionPathIdentifier = "File Selection Path";
+const QString AutoConnectIdentifier = "Auto Connect";
+const QString MainWindowSizeIdentifier = "Main Window Size";
+const QString DisplayConnectionNotificationsIdentifier = "Display Connection Notifications";
 
 SettingsManager::SettingsManager()
 {

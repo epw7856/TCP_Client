@@ -187,7 +187,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
 
 unsigned SystemDataSource::jsonStringToUnsigned(QString jsonValue)
 {
-    if(jsonValue.toLower().contains("x"))
+    if(jsonValue.toLower().contains("x") || jsonValue.toLower().contains("X"))
     {
         bool status;
         return jsonValue.toUInt(&status, 16);
@@ -248,7 +248,7 @@ void SystemDataSource::setInboundRawValues(const std::vector<unsigned>& rawValue
     }
 }
 
-std::vector<DataItem *> SystemDataSource::getInboundDataItems() const
+std::vector<DataItem*> SystemDataSource::getInboundDataItems() const
 {
     std::vector<DataItem*> dataItems = {};
     for(const auto& item : inboundDataItems)

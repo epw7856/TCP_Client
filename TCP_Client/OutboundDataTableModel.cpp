@@ -6,8 +6,7 @@ OutboundDataTableModel::OutboundDataTableModel(OutboundDataInterface& localOutbo
 :
     outboundDataInterface(localOutboundDataInterface)
 {
-    outboundDataItems = outboundDataInterface.getOutboundDataItems();
-    desiredOutboundValues.resize(outboundDataItems.size());
+
 }
 
 int OutboundDataTableModel::rowCount(const QModelIndex&) const
@@ -66,15 +65,15 @@ QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
 
 bool OutboundDataTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (role == Qt::EditRole)
-    {
-        if (!checkIndex(index))
-        {
-            return false;
-        }
-        setDesiredOutboundValues(index.row(), value.toString());
-        return true;
-    }
+//    if (role == Qt::EditRole)
+//    {
+//        if (!checkIndex(index))
+//        {
+//            return false;
+//        }
+//        setDesiredOutboundValue(index.row(), value.toString());
+//        return true;
+//    }
     return false;
 }
 
@@ -117,7 +116,18 @@ Qt::ItemFlags OutboundDataTableModel::flags(const QModelIndex& index) const
     }
 }
 
-void OutboundDataTableModel::setDesiredOutboundValues(int index, QString value)
+void OutboundDataTableModel::setOutboundDataItems()
+{
+    beginResetModel();
+    outboundDataItems.clear();
+    outboundDataItems = outboundDataInterface.getOutboundDataItems();
+
+    desiredOutboundValues.clear();
+    desiredOutboundValues.resize(outboundDataItems.size());
+    endResetModel();
+}
+
+void OutboundDataTableModel::setDesiredOutboundValue(int index, QString value)
 {
     if((index >= 0) &&
        (index < static_cast<int>(desiredOutboundValues.size() - 1)))

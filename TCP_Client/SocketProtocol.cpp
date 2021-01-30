@@ -6,7 +6,7 @@
 #include "SocketProtocol.h"
 
 // Default connection timeout period of 3 seconds
-static const unsigned ConnectionTimeout = 3000;
+const unsigned ConnectionTimeout = 3000;
 
 SocketProtocol::SocketProtocol() {}
 
