@@ -27,6 +27,8 @@ public:
     void requestConnectToServer();
     void requestDisconnectFromServer();
 
+    void selectConfigurationFile(QWidget* parent);
+
     bool enableActionConnectToServer() const;
     bool enableActionDisconnectFromServer() const;
     bool enableButtonSaveToFile() const;

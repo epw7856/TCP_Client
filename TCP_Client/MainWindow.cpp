@@ -85,7 +85,7 @@ void MainWindow::onActionExitTriggered()
 
 void MainWindow::onActionLoadSystemConfigurationFileTriggered()
 {
-
+    mainWindowController->selectConfigurationFile(this);
 }
 
 void MainWindow::onActionViewApplicationConfigurationTriggered()

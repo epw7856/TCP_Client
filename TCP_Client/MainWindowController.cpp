@@ -56,6 +56,22 @@ void MainWindowController::requestDisconnectFromServer()
     }
 }
 
+void MainWindowController::selectConfigurationFile(QWidget* parent)
+{
+    bool status = true;
+    if((commsManager->getConnectionStatus() == ConnectionStatus::Connected) &&
+       (commsManager->getOutboundDataTransmissionStatus()))
+    {
+        status = FileOperationsHandler::showFileSelectionWarning();
+    }
+
+    if(status)
+    {
+        const QString configFile = FileOperationsHandler::showFileSelectionDialog(parent);
+        loadConfiguration(configFile, false);
+    }
+}
+
 bool MainWindowController::enableActionConnectToServer() const
 {
     return (commsManager->getConnectionStatus() == ConnectionStatus::Unconnected);
@@ -89,17 +105,20 @@ void MainWindowController::receivedStatusUpdate(QString msg)
 
 void MainWindowController::loadConfiguration(const QString& configFilePath, bool initialLoad)
 {
+    if(!FileOperationsHandler::verifyFilePath(configFilePath))
+    {
+        if(!configFilePath.isEmpty())
+        {
+            const QString msg = QString("%1").arg("The configuration file '" + configFilePath + "' is invalid or does not exist.");
+            FileOperationsHandler::showConfigFileErrorPopup(msg);
+        }
+        return;
+    }
+
     configurationLoaded = false;
     if(!initialLoad)
     {
         commsManager->stopStartTransmissionTimer(false);
-    }
-
-    if(!FileOperationsHandler::verifyFilePath(configFilePath))
-    {
-        const QString msg = QString("%1").arg("The configuration file '" + configFilePath + "' is invalid or does not exist.");
-        FileOperationsHandler::showConfigFileErrorPopup(msg);
-        return;
     }
 
     if(!sds->loadSystemConfiguration(configFilePath))

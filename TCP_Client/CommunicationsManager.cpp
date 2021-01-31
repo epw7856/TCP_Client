@@ -1,7 +1,6 @@
 #include "CommunicationsManager.h"
 #include "InboundDataInterface.h"
 #include "OutboundDataInterface.h"
-#include <QMessageBox>
 #include <QTcpSocket>
 #include "SocketProtocol.h"
 
@@ -44,6 +43,11 @@ CommunicationsManager::~CommunicationsManager()
     emit requestDisconnectFromServer();
     commsThread.quit();
     commsThread.wait(2000);
+}
+
+bool CommunicationsManager::getOutboundDataTransmissionStatus() const
+{
+    return outboundDataTransmissionTimer.isActive();
 }
 
 void CommunicationsManager::setSocketPort(unsigned port)
@@ -96,6 +100,18 @@ void CommunicationsManager::sendOutboundDataToServer()
     emit sendData(outboundDataInterface.getOutboundRawValues());
 }
 
+void CommunicationsManager::showMessageBox(const QString& title, const QString& msg, QMessageBox::Icon icon)
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(title);
+    msgBox.setText("<p align='center'>" + msg + "</p>");
+    msgBox.setFont(QFont("Segoe UI", 10));
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    msgBox.setIcon(icon);
+    msgBox.exec();
+}
+
 void CommunicationsManager::disconnectFromServer()
 {
     status = ConnectionStatus::InProgress;
@@ -123,14 +139,7 @@ void CommunicationsManager::receivedConnectionStatusNotification(bool connection
 
     if(showConnectionNotifications)
     {
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Connection Status");
-        msgBox.setText("<p align='center'>" + msg + "</p>");
-        msgBox.setFont(QFont("Segoe UI", 10));
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setDefaultButton(QMessageBox::Ok);
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.exec();
+        showMessageBox("Connection Status", msg, QMessageBox::Information);
     }
 
     emit sendStatusUpdate(msg);
@@ -139,16 +148,7 @@ void CommunicationsManager::receivedConnectionStatusNotification(bool connection
 void CommunicationsManager::showSocketErrorMsgPopup(QString msg)
 {
     status = ConnectionStatus::Unconnected;
-
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Connection Error");
-    msgBox.setText("<p align='center'>" + msg + "</p>");
-    msgBox.setFont(QFont("Segoe UI", 10));
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
-
+    showMessageBox("Connection Error", msg, QMessageBox::Critical);
     emit sendStatusUpdate("Connection timeout.");
 }
 

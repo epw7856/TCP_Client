@@ -3,6 +3,7 @@
 
 #include "ConnectionStatus.h"
 #include <memory>
+#include <QMessageBox>
 #include <QThread>
 #include <QTimer>
 
@@ -19,6 +20,7 @@ public:
                                    OutboundDataInterface& localOutboundDataInterface);
     ~CommunicationsManager();
     ConnectionStatus getConnectionStatus() const;
+    bool getOutboundDataTransmissionStatus() const;
     void connectToServer();
     void disconnectFromServer();
 
@@ -50,6 +52,10 @@ private:
     ConnectionStatus status = ConnectionStatus::Unconnected;
     QThread commsThread;
     std::unique_ptr<SocketProtocol> socketComms;
+
+    void showMessageBox(const QString& title,
+                        const QString& msg,
+                        QMessageBox::Icon icon);
 };
 
 inline ConnectionStatus CommunicationsManager::getConnectionStatus() const
