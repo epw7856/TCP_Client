@@ -72,6 +72,11 @@ void MainWindowController::selectConfigurationFile(QWidget* parent)
     }
 }
 
+bool MainWindowController::enableFileActionsMenu() const
+{
+    return configurationLoaded;
+}
+
 bool MainWindowController::enableActionConnectToServer() const
 {
     return (commsManager->getConnectionStatus() == ConnectionStatus::Unconnected);
@@ -82,12 +87,12 @@ bool MainWindowController::enableActionDisconnectFromServer() const
     return (commsManager->getConnectionStatus() == ConnectionStatus::Connected);
 }
 
-bool MainWindowController::enableButtonSaveToFile() const
+bool MainWindowController::enableClearButton() const
 {
     return configurationLoaded;
 }
 
-bool MainWindowController::enableButtonRestoreFromFile() const
+bool MainWindowController::enableResetButton() const
 {
     return configurationLoaded;
 }

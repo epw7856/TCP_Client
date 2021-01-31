@@ -25,14 +25,16 @@ public slots:
     void periodicUpdate();
 
 private slots:
-    void onActionAboutTriggered();
-    void onActionExitTriggered();
+    void onMenuAboutTriggered();
     void onActionLoadSystemConfigurationFileTriggered();
     void onActionViewApplicationConfigurationTriggered();
     void onActionConnectToServerTriggered();
     void onActionDisconnectFromServerTriggered();
-    void onButtonSaveToFileClicked();
-    void onButtonRestoreFromFileClicked();
+    void onActionSaveStatusDataToFileClicked();
+    void onActionSaveControlDataToFileClicked();
+    void onActionRestoreControlDataFromFileClicked();
+    void onButtonClearClicked();
+    void onButtonResetClicked();
     void onButtonApplyClicked();
 
 private:

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
-    <height>753</height>
+    <width>809</width>
+    <height>743</height>
    </rect>
   </property>
   <property name="font">
@@ -347,21 +347,15 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButtonSaveToFile">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             <widget class="QPushButton" name="pushButtonApply">
               <property name="minimumSize">
                <size>
-                <width>120</width>
-                <height>35</height>
+                <width>125</width>
+                <height>30</height>
                </size>
               </property>
               <property name="text">
-               <string>Save to File</string>
+               <string>Apply</string>
               </property>
              </widget>
             </item>
@@ -375,14 +369,14 @@
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>40</width>
+                <width>30</width>
                 <height>20</height>
                </size>
               </property>
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButtonRestoreFromFile">
+             <widget class="QPushButton" name="pushButtonClear">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -391,12 +385,12 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>120</width>
-                <height>35</height>
+                <width>125</width>
+                <height>30</height>
                </size>
               </property>
               <property name="text">
-               <string>Restore from File</string>
+               <string>Clear</string>
               </property>
              </widget>
             </item>
@@ -410,22 +404,28 @@
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>40</width>
+                <width>30</width>
                 <height>20</height>
                </size>
               </property>
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButtonApply">
+             <widget class="QPushButton" name="pushButtonReset">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
-                <width>120</width>
-                <height>35</height>
+                <width>125</width>
+                <height>30</height>
                </size>
               </property>
               <property name="text">
-               <string>Apply</string>
+               <string>Reset to Defaults</string>
               </property>
              </widget>
             </item>
@@ -478,11 +478,11 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>723</width>
+     <width>809</width>
      <height>23</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
+   <widget class="QMenu" name="menuAbout">
     <property name="font">
      <font>
       <family>Segoe UI</family>
@@ -490,10 +490,8 @@
      </font>
     </property>
     <property name="title">
-     <string>File</string>
+     <string>About</string>
     </property>
-    <addaction name="actionAbout"/>
-    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuConfiguration">
     <property name="font">
@@ -521,9 +519,19 @@
     <addaction name="actionConnectToServer"/>
     <addaction name="actionDisconnectFromServer"/>
    </widget>
-   <addaction name="menuFile"/>
+   <widget class="QMenu" name="menuFileActions">
+    <property name="title">
+     <string>File Actions</string>
+    </property>
+    <addaction name="actionSaveStatusDataToFile"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveControlDataToFile"/>
+    <addaction name="actionRestoreControlDataFromFile"/>
+   </widget>
+   <addaction name="menuAbout"/>
    <addaction name="menuConfiguration"/>
    <addaction name="menuConnection"/>
+   <addaction name="menuFileActions"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAbout">
@@ -584,6 +592,39 @@
   <action name="actionDisconnectFromServer">
    <property name="text">
     <string>Disconnect from Server</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionSaveStatusDataToFile">
+   <property name="text">
+    <string>Save Status Data to File</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionSaveControlDataToFile">
+   <property name="text">
+    <string>Save Control Data To File</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionRestoreControlDataFromFile">
+   <property name="text">
+    <string>Restore Control Data From File</string>
    </property>
    <property name="font">
     <font>

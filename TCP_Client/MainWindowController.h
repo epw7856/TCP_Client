@@ -29,10 +29,11 @@ public:
 
     void selectConfigurationFile(QWidget* parent);
 
+    bool enableFileActionsMenu() const;
     bool enableActionConnectToServer() const;
     bool enableActionDisconnectFromServer() const;
-    bool enableButtonSaveToFile() const;
-    bool enableButtonRestoreFromFile() const;
+    bool enableClearButton() const;
+    bool enableResetButton() const;
 
 public slots:
     void updateInboundDataDisplay();

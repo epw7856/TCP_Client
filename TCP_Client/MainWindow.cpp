@@ -12,16 +12,18 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     ui->setupUi(this);
 
     // Connections with the menu bar in the UI
-    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::onActionAboutTriggered);
-    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::onActionExitTriggered);
+    connect(ui->menuAbout, &QMenu::aboutToShow, this, &MainWindow::onMenuAboutTriggered);
     connect(ui->actionLoadSystemConfigurationFile, &QAction::triggered, this, &MainWindow::onActionLoadSystemConfigurationFileTriggered);
     connect(ui->actionViewApplicationConfiguration, &QAction::triggered, this, &MainWindow::onActionViewApplicationConfigurationTriggered);
     connect(ui->actionConnectToServer, &QAction::triggered, this, &MainWindow::onActionConnectToServerTriggered);
     connect(ui->actionDisconnectFromServer, &QAction::triggered, this, &MainWindow::onActionDisconnectFromServerTriggered);
+    connect(ui->actionSaveStatusDataToFile, &QAction::triggered, this, &MainWindow::onActionSaveStatusDataToFileClicked);
+    connect(ui->actionSaveControlDataToFile, &QAction::triggered, this, &MainWindow::onActionSaveControlDataToFileClicked);
+    connect(ui->actionRestoreControlDataFromFile, &QAction::triggered, this, &MainWindow::onActionRestoreControlDataFromFileClicked);
 
     // Connections with the pushbuttons in the UI
-    connect(ui->pushButtonSaveToFile, &QPushButton::clicked, this, &MainWindow::onButtonSaveToFileClicked);
-    connect(ui->pushButtonRestoreFromFile, &QPushButton::clicked, this, &MainWindow::onButtonRestoreFromFileClicked);
+    connect(ui->pushButtonClear, &QPushButton::clicked, this, &MainWindow::onButtonClearClicked);
+    connect(ui->pushButtonReset, &QPushButton::clicked, this, &MainWindow::onButtonResetClicked);
     connect(ui->pushButtonApply, &QPushButton::clicked, this, &MainWindow::onButtonApplyClicked);
 
     // Connections from MainWindowController to MainWindow
@@ -61,26 +63,22 @@ void MainWindow::showStatusBarMessage(QString msg)
 
 void MainWindow::refreshStatusDataDisplay()
 {
-    mainWindowController->getInboundDataTableModel().layoutChanged();
+    emit mainWindowController->getInboundDataTableModel().layoutChanged();
     ui->tableViewStatusData->update();
 }
 
 void MainWindow::periodicUpdate()
 {
+    ui->menuFileActions->setEnabled(mainWindowController->enableFileActionsMenu());
     ui->actionConnectToServer->setEnabled(mainWindowController->enableActionConnectToServer());
     ui->actionDisconnectFromServer->setEnabled(mainWindowController->enableActionDisconnectFromServer());
-    ui->pushButtonSaveToFile->setEnabled(mainWindowController->enableButtonSaveToFile());
-    ui->pushButtonRestoreFromFile->setEnabled(mainWindowController->enableButtonRestoreFromFile());
+    ui->pushButtonClear->setEnabled(mainWindowController->enableClearButton());
+    ui->pushButtonReset->setEnabled(mainWindowController->enableResetButton());
 }
 
-void MainWindow::onActionAboutTriggered()
+void MainWindow::onMenuAboutTriggered()
 {
 
-}
-
-void MainWindow::onActionExitTriggered()
-{
-    close();
 }
 
 void MainWindow::onActionLoadSystemConfigurationFileTriggered()
@@ -103,12 +101,27 @@ void MainWindow::onActionDisconnectFromServerTriggered()
     mainWindowController->requestDisconnectFromServer();
 }
 
-void MainWindow::onButtonSaveToFileClicked()
+void MainWindow::onActionSaveStatusDataToFileClicked()
 {
 
 }
 
-void MainWindow::onButtonRestoreFromFileClicked()
+void MainWindow::onActionSaveControlDataToFileClicked()
+{
+
+}
+
+void MainWindow::onActionRestoreControlDataFromFileClicked()
+{
+
+}
+
+void MainWindow::onButtonClearClicked()
+{
+
+}
+
+void MainWindow::onButtonResetClicked()
 {
 
 }
