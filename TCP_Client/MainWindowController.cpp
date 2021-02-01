@@ -102,6 +102,11 @@ void MainWindowController::applyDesiredOutboundValues()
     outboundDataTableModel.applyDesiredOutboundValues();
 }
 
+void MainWindowController::clearDesiredOutboundValues()
+{
+    outboundDataTableModel.resetDesiredOutboundValues();
+}
+
 void MainWindowController::updateInboundDataDisplay()
 {
     emit notifyInboundDataUpdated();

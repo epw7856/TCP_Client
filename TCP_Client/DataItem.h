@@ -86,7 +86,7 @@ inline QString DataItem::getDataItemFormat() const
 
 inline std::pair<unsigned, unsigned> DataItem::getDataItemRange() const
 {
-    return {range.minValue, range.minValue};
+    return {range.minValue, range.maxValue};
 }
 
 inline bool DataItem::isRangeCheckingEnabled() const

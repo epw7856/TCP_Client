@@ -46,7 +46,7 @@
 				"Data Type": "Numeric",
 				"Default Value": 1.23,
 				"Min Value": 0.00,
-				"Max Value": 1000.00,
+				"Max Value": 1000.1,
 				"Format": "%.2f",
 				"Units": "Radians"
 			},

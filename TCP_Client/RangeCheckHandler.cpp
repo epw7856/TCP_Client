@@ -128,7 +128,7 @@ bool RangeCheckHandler::verifyEnumValue(const QString& enumName, const QString& 
 void RangeCheckHandler::showInvalidValueErrorPopup(DataItem* item, const QString& value)
 {
     QString type = item->getDataItemType();
-    QString msg = "Invalid or out of range outbound value detected: \n";
+    QString msg = "Invalid or out-of-range outbound value detected: \n\n";
     msg += "Name: " + item->getDataItemName() + "\n";
     msg += "Type: " + type + "\n";
     msg += "Desired Value: " + value + "\n";
@@ -163,7 +163,7 @@ void RangeCheckHandler::showInvalidValueErrorPopup(DataItem* item, const QString
 
     QMessageBox msgBox;
     msgBox.setWindowTitle("Invalid Outbound Value");
-    msgBox.setText("msg");
+    msgBox.setText(msg);
     msgBox.setFont(QFont("Segoe UI", 10));
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.setDefaultButton(QMessageBox::Ok);

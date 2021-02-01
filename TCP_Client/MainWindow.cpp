@@ -118,7 +118,7 @@ void MainWindow::onActionRestoreControlDataFromFileClicked()
 
 void MainWindow::onButtonClearClicked()
 {
-
+    mainWindowController->clearDesiredOutboundValues();
 }
 
 void MainWindow::onButtonResetClicked()

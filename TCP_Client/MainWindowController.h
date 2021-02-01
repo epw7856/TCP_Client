@@ -36,6 +36,7 @@ public:
     bool enableResetButton() const;
 
     void applyDesiredOutboundValues();
+    void clearDesiredOutboundValues();
 
 public slots:
     void updateInboundDataDisplay();
