@@ -3,9 +3,9 @@
 
 #include <QString>
 
-const QString UnsignedIntegerType = "Unsigned";
-const QString IntegerType = "Integer";
-const QString NumericType = "Numeric";
+const QString TypeUnsignedInteger = "Unsigned";
+const QString TypeInteger = "Integer";
+const QString TypeNumeric = "Numeric";
 
 class DataItem
 {
@@ -32,8 +32,8 @@ public:
     std::pair<unsigned, unsigned> getDataItemRange() const;
     bool isRangeCheckingEnabled() const;
 
-    void setRawValue(unsigned updatedValue);
-    void setDisplayValue(const QString& updatedValue);
+    void setRawValue(unsigned value);
+    void setDisplayValue(const QString& value);
     void setValueRange(unsigned min, unsigned max);
 
 private:
@@ -94,14 +94,14 @@ inline bool DataItem::isRangeCheckingEnabled() const
     return rangeCheckEnable;
 }
 
-inline void DataItem::setRawValue(unsigned updatedValue)
+inline void DataItem::setRawValue(unsigned value)
 {
-    rawValue = updatedValue;
+    rawValue = value;
 }
 
-inline void DataItem::setDisplayValue(const QString& updatedValue)
+inline void DataItem::setDisplayValue(const QString& value)
 {
-    displayValue = updatedValue;
+    displayValue = value;
 }
 
 inline void DataItem::setValueRange(unsigned min, unsigned max)

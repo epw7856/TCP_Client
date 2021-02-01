@@ -14,8 +14,8 @@ public:
     RangeCheckHandler(const OutboundDataInterface& localOutboundDataInterface, const EnumInterface& localEnumInterface) :
         outboundDataInterface(localOutboundDataInterface), enumInterface(localEnumInterface) {}
 
-    bool validateOutboundData(int index, QString& value);
-    bool validateOutboundData(std::vector<std::pair<int, QString>>& values);
+    bool validateOutboundDataItem(int index, QString& value);
+    bool validateOutboundData(std::vector<QString>& values);
 
 private:
     const OutboundDataInterface& outboundDataInterface;

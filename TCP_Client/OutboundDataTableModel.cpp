@@ -2,9 +2,10 @@
 #include "OutboundDataInterface.h"
 #include "OutboundDataTableModel.h"
 
-OutboundDataTableModel::OutboundDataTableModel(OutboundDataInterface& localOutboundDataInterface)
+OutboundDataTableModel::OutboundDataTableModel(OutboundDataInterface& localOutboundDataInterface, EnumInterface& localEnumInterface)
 :
-    outboundDataInterface(localOutboundDataInterface)
+    outboundDataInterface(localOutboundDataInterface),
+    rangeChecker(localOutboundDataInterface, localEnumInterface)
 {
 
 }
@@ -65,15 +66,15 @@ QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
 
 bool OutboundDataTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-//    if (role == Qt::EditRole)
-//    {
-//        if (!checkIndex(index))
-//        {
-//            return false;
-//        }
-//        setDesiredOutboundValue(index.row(), value.toString());
-//        return true;
-//    }
+    if (role == Qt::EditRole)
+    {
+        if (!checkIndex(index))
+        {
+            return false;
+        }
+        setDesiredOutboundValue(index.row(), value.toString());
+        return true;
+    }
     return false;
 }
 
@@ -116,6 +117,11 @@ Qt::ItemFlags OutboundDataTableModel::flags(const QModelIndex& index) const
     }
 }
 
+const std::vector<QString>& OutboundDataTableModel::getDesiredOutboundValues() const
+{
+    return desiredOutboundValues;
+}
+
 void OutboundDataTableModel::setOutboundDataItems()
 {
     beginResetModel();
@@ -146,6 +152,13 @@ void OutboundDataTableModel::setDesiredOutboundValues(const std::vector<QString>
         desiredOutboundValues = std::move(values);
         endResetModel();
     }
+}
+
+void OutboundDataTableModel::applyDesiredOutboundValues()
+{
+    // Range check all desired values that are not empty (Range checker will display error and return false; if false returned, return from this fxn)
+    // Set the display values of the values that are not empty
+    // Call resetDesiredOutboundValues
 }
 
 void OutboundDataTableModel::resetDesiredOutboundValues()

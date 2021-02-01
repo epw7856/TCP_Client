@@ -5,21 +5,21 @@
 #include <QValidator>
 #include "RangeCheckHandler.h"
 
-bool RangeCheckHandler::validateOutboundData(int index, QString& value)
+bool RangeCheckHandler::validateOutboundDataItem(int index, QString& value)
 {
     DataItem* item = outboundDataInterface.getOutboundDataItem(index);
     std::pair<unsigned, unsigned> range = item->getDataItemRange();
     QString type = item->getDataItemType();
 
-    if(type == UnsignedIntegerType)
+    if(type == TypeUnsignedInteger)
     {
         return verifyUnsignedIntegerValue(value, range);
     }
-    else if(type == IntegerType)
+    else if(type == TypeInteger)
     {
         return verifyUnsignedIntegerValue(value, {unsignedToInt(range.first), unsignedToInt(range.second)});
     }
-    else if(type == NumericType)
+    else if(type == TypeNumeric)
     {
         return verifyNumericValue(value, {unsignedToFloat(range.first), unsignedToFloat(range.second)});
     }
@@ -31,13 +31,16 @@ bool RangeCheckHandler::validateOutboundData(int index, QString& value)
     return false;
 }
 
-bool RangeCheckHandler::validateOutboundData(std::vector<std::pair<int, QString>>& values)
+bool RangeCheckHandler::validateOutboundData(std::vector<QString>& values)
 {
-    for(auto& i : values)
+    for(quint32 i = 0; i < values.size(); i++)
     {
-        if(!validateOutboundData(i.first, i.second))
+        if(!values[i].isEmpty())
         {
-            return false;
+            if(!validateOutboundDataItem(i, values[i]))
+            {
+                return false;
+            }
         }
     }
     return true;

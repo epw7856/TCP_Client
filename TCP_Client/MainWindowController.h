@@ -35,6 +35,8 @@ public:
     bool enableClearButton() const;
     bool enableResetButton() const;
 
+    void applyDesiredOutboundValues();
+
 public slots:
     void updateInboundDataDisplay();
     void receivedStatusUpdate(QString msg);

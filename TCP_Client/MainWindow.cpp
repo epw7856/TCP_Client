@@ -128,7 +128,7 @@ void MainWindow::onButtonResetClicked()
 
 void MainWindow::onButtonApplyClicked()
 {
-
+    mainWindowController->applyDesiredOutboundValues();
 }
 
 void MainWindow::configureInboundDataTableView()

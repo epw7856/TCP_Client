@@ -123,15 +123,15 @@ QString SystemDataSource::convertRawToDisplayValue(const QString& type,
         return "ERROR";
     }
 
-    if(type == UnsignedIntegerType)
+    if(type == TypeUnsignedInteger)
     {
         return QString::number(rawValue);
     }
-    else if(type == IntegerType)
+    else if(type == TypeInteger)
     {
         return QString::number(unsignedToInt(rawValue));
     }
-    else if(type == NumericType)
+    else if(type == TypeNumeric)
     {
         return formatFloatDisplayValue(unsignedToFloat(rawValue), format);
     }
@@ -152,7 +152,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
         return UINT_MAX;
     }
 
-    if(type == UnsignedIntegerType)
+    if(type == TypeUnsignedInteger)
     {
         unsigned intermediate = displayValue.toUInt(&status);
         if(status)
@@ -160,7 +160,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
             return intermediate;
         }
     }
-    else if(type == IntegerType)
+    else if(type == TypeInteger)
     {
         int intermediate = displayValue.toInt(&status);
         if(status)
@@ -168,7 +168,7 @@ unsigned SystemDataSource::convertDisplayToRawValue(const QString& type,
             return intToUnsigned(intermediate);
         }
     }
-    else if(type == NumericType)
+    else if(type == TypeNumeric)
     {
         float intermediate = displayValue.toFloat(&status);
         if(status)

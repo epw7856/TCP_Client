@@ -10,7 +10,7 @@ MainWindowController::MainWindowController(const QString& configFilePath)
     sds(std::make_unique<SystemDataSource>()),
     settingsManager(std::make_unique<SettingsManager>()),
     inboundDataTableModel(*sds),
-    outboundDataTableModel(*sds)
+    outboundDataTableModel(*sds, *sds)
 {
     if(!configFilePath.isEmpty())
     {
@@ -95,6 +95,11 @@ bool MainWindowController::enableClearButton() const
 bool MainWindowController::enableResetButton() const
 {
     return configurationLoaded;
+}
+
+void MainWindowController::applyDesiredOutboundValues()
+{
+    outboundDataTableModel.applyDesiredOutboundValues();
 }
 
 void MainWindowController::updateInboundDataDisplay()
