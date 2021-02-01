@@ -2,6 +2,7 @@
 #include "DataUtilities.h"
 #include "EnumInterface.h"
 #include "OutboundDataInterface.h"
+#include <QMessageBox>
 #include <QValidator>
 #include "RangeCheckHandler.h"
 
@@ -11,24 +12,30 @@ bool RangeCheckHandler::validateOutboundDataItem(int index, QString& value)
     std::pair<unsigned, unsigned> range = item->getDataItemRange();
     QString type = item->getDataItemType();
 
+    bool status = false;
     if(type == TypeUnsignedInteger)
     {
-        return verifyUnsignedIntegerValue(value, range);
+        status = verifyUnsignedIntegerValue(value, range);
     }
     else if(type == TypeInteger)
     {
-        return verifyUnsignedIntegerValue(value, {unsignedToInt(range.first), unsignedToInt(range.second)});
+        status = verifyUnsignedIntegerValue(value, {unsignedToInt(range.first), unsignedToInt(range.second)});
     }
     else if(type == TypeNumeric)
     {
-        return verifyNumericValue(value, {unsignedToFloat(range.first), unsignedToFloat(range.second)});
+        status = verifyNumericValue(value, {unsignedToFloat(range.first), unsignedToFloat(range.second)});
     }
     else
     {
-        return verifyEnumValue(type, value);
+        status = verifyEnumValue(type, value);
     }
 
-    return false;
+    if(!status)
+    {
+        showInvalidValueErrorPopup(item, value);
+    }
+
+    return status;
 }
 
 bool RangeCheckHandler::validateOutboundData(std::vector<QString>& values)
@@ -116,4 +123,50 @@ bool RangeCheckHandler::verifyEnumValue(const QString& enumName, const QString& 
     std::vector<QString> enumStrings = enumInterface.getEnumStrings(enumName);
     auto itr = std::find_if(enumStrings.begin(), enumStrings.end(), [&](const QString& elem){ return elem == value; });
     return (itr != enumStrings.end());
+}
+
+void RangeCheckHandler::showInvalidValueErrorPopup(DataItem* item, const QString& value)
+{
+    QString type = item->getDataItemType();
+    QString msg = "Invalid or out of range outbound value detected: \n";
+    msg += "Name: " + item->getDataItemName() + "\n";
+    msg += "Type: " + type + "\n";
+    msg += "Desired Value: " + value + "\n";
+
+    if(type == TypeUnsignedInteger)
+    {
+        msg += "Range: " + QString::number(item->getDataItemRange().first) +
+               " to " + QString::number(item->getDataItemRange().second) + "\n";
+    }
+    else if(type == TypeInteger)
+    {
+        msg += "Range: " + QString::number(unsignedToInt(item->getDataItemRange().first)) +
+               " to " + QString::number(unsignedToInt(item->getDataItemRange().second)) + "\n";
+    }
+    else if(type == TypeNumeric)
+    {
+        msg += "Range: " + QString::number(unsignedToFloat(item->getDataItemRange().first)) +
+               " to " + QString::number(unsignedToFloat(item->getDataItemRange().second)) + "\n";
+    }
+    else
+    {
+        std::vector<QString> enumStrings = enumInterface.getEnumStrings(type);
+        QString enumList = "";
+        for(unsigned i = 0; i < enumStrings.size(); i++)
+        {
+            (i != enumStrings.size() - 1) ? enumList += enumStrings[i] + ", " :
+                                            enumList += enumStrings[i];
+        }
+
+        msg += "Enum Values: " + enumList + "\n";
+    }
+
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Invalid Outbound Value");
+    msgBox.setText("msg");
+    msgBox.setFont(QFont("Segoe UI", 10));
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
 }

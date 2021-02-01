@@ -307,7 +307,8 @@ void SystemDataSource::setOutboundDisplayValues(const std::vector<QString>& disp
     {
         for(unsigned i = 0; i < displayValues.size(); ++i)
         {
-            setOutboundDisplayValue(i, displayValues[i]);
+            const QString value = displayValues[i];
+            if(!value.isEmpty()) setOutboundDisplayValue(i, value);
         }
     }
 }

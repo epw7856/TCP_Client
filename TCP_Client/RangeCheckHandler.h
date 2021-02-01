@@ -25,6 +25,7 @@ private:
     bool verifyIntegerValue(QString& value, std::pair<int, int> range);
     bool verifyNumericValue(QString& value, std::pair<float, float> range);
     bool verifyEnumValue(const QString& enumName, const QString& value);
+    void showInvalidValueErrorPopup(DataItem* item, const QString& value);
 };
 
 #endif // RANGECHECKHANDLER_H

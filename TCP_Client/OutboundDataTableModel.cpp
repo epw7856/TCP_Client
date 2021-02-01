@@ -156,9 +156,13 @@ void OutboundDataTableModel::setDesiredOutboundValues(const std::vector<QString>
 
 void OutboundDataTableModel::applyDesiredOutboundValues()
 {
-    // Range check all desired values that are not empty (Range checker will display error and return false; if false returned, return from this fxn)
-    // Set the display values of the values that are not empty
-    // Call resetDesiredOutboundValues
+    if(!rangeChecker.validateOutboundData(desiredOutboundValues))
+    {
+        return;
+    }
+
+    outboundDataInterface.setOutboundDisplayValues(desiredOutboundValues);
+    resetDesiredOutboundValues();
 }
 
 void OutboundDataTableModel::resetDesiredOutboundValues()
