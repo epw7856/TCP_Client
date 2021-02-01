@@ -78,7 +78,7 @@ void MainWindow::periodicUpdate()
 
 void MainWindow::onMenuAboutTriggered()
 {
-
+    mainWindowController->showAboutDialog(this);
 }
 
 void MainWindow::onActionLoadSystemConfigurationFileTriggered()

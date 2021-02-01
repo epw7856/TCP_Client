@@ -1,3 +1,4 @@
+#include "AboutDialog.h"
 #include "CommunicationsManager.h"
 #include "FileOperationsHandler.h"
 #include "MainWindowController.h"
@@ -110,6 +111,18 @@ void MainWindowController::clearDesiredOutboundValues()
 void MainWindowController::resetDesiredOutboundValuesToDefaults()
 {
     outboundDataTableModel.resetDesiredOutboundValuesToDefaults();
+}
+
+void MainWindowController::showAboutDialog(QWidget* parent)
+{
+    if(aboutDialog == nullptr)
+    {
+        aboutDialog = std::make_unique<AboutDialog>(parent);
+    }
+
+    aboutDialog->show();
+    aboutDialog->raise();
+    aboutDialog->activateWindow();
 }
 
 void MainWindowController::updateInboundDataDisplay()

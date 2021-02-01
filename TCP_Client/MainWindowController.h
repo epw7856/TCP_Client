@@ -6,6 +6,7 @@
 #include "OutboundDataTableModel.h"
 #include <QObject>
 
+class AboutDialog;
 class CommunicationsManager;
 class InboundDataInterface;
 class OutboundDataInterface;
@@ -39,6 +40,8 @@ public:
     void clearDesiredOutboundValues();
     void resetDesiredOutboundValuesToDefaults();
 
+    void showAboutDialog(QWidget* parent);
+
 public slots:
     void updateInboundDataDisplay();
     void receivedStatusUpdate(QString msg);
@@ -52,6 +55,7 @@ private:
     std::unique_ptr<SystemDataSource> sds;
     std::unique_ptr<CommunicationsManager> commsManager;
     std::unique_ptr<SettingsManager> settingsManager;
+    std::unique_ptr<AboutDialog> aboutDialog;
     bool configurationLoaded = false;
     InboundDataTableModel inboundDataTableModel;
     OutboundDataTableModel outboundDataTableModel;
