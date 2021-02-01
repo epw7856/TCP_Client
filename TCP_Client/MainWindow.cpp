@@ -149,6 +149,7 @@ void MainWindow::configureInboundDataTableView()
 
     ui->tableViewStatusData->horizontalHeader()->setFixedHeight(25);
     ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableViewStatusData->horizontalHeader()->setSectionsClickable(false);
 
     ui->tableViewStatusData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableViewStatusData->verticalHeader()->hide();
@@ -172,6 +173,7 @@ void MainWindow::configureOutboundDataTableView()
     ui->tableViewControlData->horizontalHeader()->setFixedHeight(25);
     ui->tableViewControlData->resizeColumnToContents(2);
     ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableViewControlData->horizontalHeader()->setSectionsClickable(false);
 
     ui->tableViewControlData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableViewControlData->verticalHeader()->hide();
