@@ -172,3 +172,12 @@ void OutboundDataTableModel::resetDesiredOutboundValues()
     desiredOutboundValues.resize(outboundDataItems.size());
     endResetModel();
 }
+
+void OutboundDataTableModel::resetDesiredOutboundValuesToDefaults()
+{
+    resetDesiredOutboundValues();
+
+    beginResetModel();
+    desiredOutboundValues = outboundDataInterface.getOutboundDefaultDisplayValues();
+    endResetModel();
+}

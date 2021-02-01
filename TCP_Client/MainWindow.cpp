@@ -123,7 +123,7 @@ void MainWindow::onButtonClearClicked()
 
 void MainWindow::onButtonResetClicked()
 {
-
+    mainWindowController->resetDesiredOutboundValuesToDefaults();
 }
 
 void MainWindow::onButtonApplyClicked()

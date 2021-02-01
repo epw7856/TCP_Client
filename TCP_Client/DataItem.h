@@ -27,6 +27,7 @@ public:
     QString getDataItemName() const;
     unsigned getRawValue() const;
     QString getDisplayValue() const;
+    QString getDefaultDisplayValue() const;
     QString getDataItemUnits() const;
     QString getDataItemFormat() const;
     std::pair<unsigned, unsigned> getDataItemRange() const;
@@ -34,6 +35,7 @@ public:
 
     void setRawValue(unsigned value);
     void setDisplayValue(const QString& value);
+    void setDefaultDisplayValue(const QString& value);
     void setValueRange(unsigned min, unsigned max);
 
 private:
@@ -48,6 +50,7 @@ private:
     QString name = "";
     unsigned rawValue = 0U;
     QString displayValue = "???";
+    QString defaultDisplayValue = "";
     QString units = "";
     QString format = "";
     DataItemRange range;
@@ -72,6 +75,11 @@ inline unsigned DataItem::getRawValue() const
 inline QString DataItem::getDisplayValue() const
 {
     return displayValue;
+}
+
+inline QString DataItem::getDefaultDisplayValue() const
+{
+    return defaultDisplayValue;
 }
 
 inline QString DataItem::getDataItemUnits() const
@@ -102,6 +110,11 @@ inline void DataItem::setRawValue(unsigned value)
 inline void DataItem::setDisplayValue(const QString& value)
 {
     displayValue = value;
+}
+
+inline void DataItem::setDefaultDisplayValue(const QString& value)
+{
+    defaultDisplayValue = value;
 }
 
 inline void DataItem::setValueRange(unsigned min, unsigned max)

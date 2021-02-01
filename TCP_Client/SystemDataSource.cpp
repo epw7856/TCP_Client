@@ -94,9 +94,13 @@ void SystemDataSource::parseOutboundData()
                                                                         QString(item.toObject().value("Units").toString()),
                                                                         QString(item.toObject().value("Format").toString()));
 
-        outboundDataItems.push_back(dataItem);
+
+
 
         const QString defaultValString = item.toObject().value("Default Value").toVariant().toString();
+        dataItem->setDefaultDisplayValue(defaultValString);
+
+        outboundDataItems.push_back(dataItem);
 
         if(!defaultValString.isEmpty())
         {
@@ -349,6 +353,17 @@ std::vector<QString> SystemDataSource::getOutboundDisplayValues() const
     }
 
     return displayValues;
+}
+
+std::vector<QString> SystemDataSource::getOutboundDefaultDisplayValues() const
+{
+    std::vector<QString> defaultValues = {};
+    for(const auto& item : outboundDataItems)
+    {
+        defaultValues.push_back(item->getDefaultDisplayValue());
+    }
+
+    return defaultValues;
 }
 
 std::vector<unsigned> SystemDataSource::getOutboundRawValues() const

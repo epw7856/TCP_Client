@@ -52,6 +52,7 @@ public:
     std::vector<DataItem*> getOutboundDataItems() const override;
     std::vector<QString> getOutboundDataItemNames() const override;
     std::vector<QString> getOutboundDisplayValues() const override;
+    std::vector<QString> getOutboundDefaultDisplayValues() const override;
     std::vector<unsigned> getOutboundRawValues() const override;
 
 private:

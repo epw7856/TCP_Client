@@ -37,6 +37,7 @@ public:
 
     void applyDesiredOutboundValues();
     void clearDesiredOutboundValues();
+    void resetDesiredOutboundValuesToDefaults();
 
 public slots:
     void updateInboundDataDisplay();

@@ -27,6 +27,7 @@ public:
     void setDesiredOutboundValues(const std::vector<QString>& values);
     void applyDesiredOutboundValues();
     void resetDesiredOutboundValues();
+    void resetDesiredOutboundValuesToDefaults();
 
 private:
     OutboundDataInterface& outboundDataInterface;
