@@ -23,12 +23,12 @@ public:
     bool getOutboundDataTransmissionStatus() const;
     void connectToServer();
     void disconnectFromServer();
-
-public slots:
     void setSocketPort(unsigned port);
     void setTransmissionPeriodicity(unsigned interval);
     void setConnectionNotificationEnable(bool enabled);
     void stopStartTransmissionTimer(bool timerEnable);
+
+public slots:
     void receivedConnectionStatusNotification(bool connectionStatus);
     void showSocketErrorMsgPopup(QString msg);
     void updateInboundDataItems(std::vector<unsigned> rawData);

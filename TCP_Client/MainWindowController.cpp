@@ -169,6 +169,7 @@ void MainWindowController::loadConfiguration(const QString& configFilePath, bool
     inboundDataTableModel.setInboundDataItems();
     outboundDataTableModel.setOutboundDataItems();
     configurationLoaded = true;
+    sds->setSystemConfigFilePath(configFilePath);
 }
 
 void MainWindowController::performInitialSetup()
