@@ -25,7 +25,7 @@ public slots:
     void periodicUpdate();
 
 private slots:
-    void onMenuAboutTriggered();
+    void actionViewApplicationInformation();
     void onActionLoadSystemConfigurationFileTriggered();
     void onActionViewApplicationConfigurationTriggered();
     void onActionConnectToServerTriggered();

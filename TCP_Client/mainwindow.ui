@@ -492,6 +492,7 @@
     <property name="title">
      <string>About</string>
     </property>
+    <addaction name="actionViewApplicationInformation"/>
    </widget>
    <widget class="QMenu" name="menuConfiguration">
     <property name="font">
@@ -631,6 +632,11 @@
      <family>Segoe UI</family>
      <pointsize>10</pointsize>
     </font>
+   </property>
+  </action>
+  <action name="actionViewApplicationInformation">
+   <property name="text">
+    <string>View Application Information</string>
    </property>
   </action>
  </widget>

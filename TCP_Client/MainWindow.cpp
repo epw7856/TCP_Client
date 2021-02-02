@@ -12,7 +12,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     ui->setupUi(this);
 
     // Connections with the menu bar in the UI
-    connect(ui->menuAbout, &QMenu::aboutToShow, this, &MainWindow::onMenuAboutTriggered);
+    connect(ui->actionViewApplicationInformation, &QAction::triggered, this, &MainWindow::actionViewApplicationInformation);
     connect(ui->actionLoadSystemConfigurationFile, &QAction::triggered, this, &MainWindow::onActionLoadSystemConfigurationFileTriggered);
     connect(ui->actionViewApplicationConfiguration, &QAction::triggered, this, &MainWindow::onActionViewApplicationConfigurationTriggered);
     connect(ui->actionConnectToServer, &QAction::triggered, this, &MainWindow::onActionConnectToServerTriggered);
@@ -76,7 +76,7 @@ void MainWindow::periodicUpdate()
     ui->pushButtonReset->setEnabled(mainWindowController->enableResetButton());
 }
 
-void MainWindow::onMenuAboutTriggered()
+void MainWindow::actionViewApplicationInformation()
 {
     mainWindowController->showAboutDialog(this);
 }
