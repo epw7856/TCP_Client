@@ -24,7 +24,7 @@ QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
 {
     int numRows = rowCount(index);
 
-    if((role == Qt::DisplayRole) &&
+    if(((role == Qt::DisplayRole) || (role == Qt::EditRole)) &&
        (index.row() < numRows) &&
        (index.column() < numColumns))
     {

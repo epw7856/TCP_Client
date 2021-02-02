@@ -136,7 +136,7 @@ void MainWindow::configureInboundDataTableView()
     // Add table model data
     ui->tableViewStatusData->setModel(&(mainWindowController->getInboundDataTableModel()));
     ui->tableViewStatusData->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableViewStatusData->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableViewStatusData->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->tableViewStatusData->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableViewStatusData->setFocusPolicy(Qt::NoFocus);
 
@@ -160,7 +160,7 @@ void MainWindow::configureOutboundDataTableView()
     // Add table model data
     ui->tableViewControlData->setModel(&(mainWindowController->getOutboundDataTableModel()));
     ui->tableViewControlData->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableViewControlData->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableViewControlData->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->tableViewControlData->setFocusPolicy(Qt::NoFocus);
 
     // Set bold font for the header
