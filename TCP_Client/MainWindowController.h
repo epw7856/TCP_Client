@@ -39,6 +39,7 @@ public:
     void applyDesiredOutboundValues();
     void clearDesiredOutboundValues();
     void resetDesiredOutboundValuesToDefaults();
+    void resetSelectedDesiredOutboundValuesToDefaults(const QModelIndexList& selection);
 
     void showAboutDialog(QWidget* parent);
 

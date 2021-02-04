@@ -26,8 +26,9 @@ public:
     void setDesiredOutboundValue(int index, QString value);
     void setDesiredOutboundValues(const std::vector<QString>& values);
     void applyDesiredOutboundValues();
-    void resetDesiredOutboundValues();
     void resetDesiredOutboundValuesToDefaults();
+    void clearDesiredOutboundValues();
+    void clearDesiredOutboundValues(const std::vector<unsigned>& indices);
 
 private:
     OutboundDataInterface& outboundDataInterface;

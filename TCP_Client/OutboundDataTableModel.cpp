@@ -136,7 +136,7 @@ void OutboundDataTableModel::setOutboundDataItems()
 void OutboundDataTableModel::setDesiredOutboundValue(int index, QString value)
 {
     if((index >= 0) &&
-       (index < static_cast<int>(desiredOutboundValues.size() - 1)))
+       (index <= static_cast<int>(desiredOutboundValues.size() - 1)))
     {
         beginResetModel();
         desiredOutboundValues[index] = value;
@@ -162,10 +162,10 @@ void OutboundDataTableModel::applyDesiredOutboundValues()
     }
 
     outboundDataInterface.setOutboundDisplayValues(desiredOutboundValues);
-    resetDesiredOutboundValues();
+    clearDesiredOutboundValues();
 }
 
-void OutboundDataTableModel::resetDesiredOutboundValues()
+void OutboundDataTableModel::clearDesiredOutboundValues()
 {
     beginResetModel();
     desiredOutboundValues.clear();
@@ -175,9 +175,16 @@ void OutboundDataTableModel::resetDesiredOutboundValues()
 
 void OutboundDataTableModel::resetDesiredOutboundValuesToDefaults()
 {
-    resetDesiredOutboundValues();
+    clearDesiredOutboundValues();
 
     beginResetModel();
     desiredOutboundValues = outboundDataInterface.getOutboundDefaultDisplayValues();
+    endResetModel();
+}
+
+void OutboundDataTableModel::clearDesiredOutboundValues(const std::vector<unsigned>& indices)
+{
+    beginResetModel();
+    std::for_each(indices.begin(), indices.end(), [&](const unsigned index){ desiredOutboundValues[index] = QString(); });
     endResetModel();
 }

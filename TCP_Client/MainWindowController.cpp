@@ -105,12 +105,23 @@ void MainWindowController::applyDesiredOutboundValues()
 
 void MainWindowController::clearDesiredOutboundValues()
 {
-    outboundDataTableModel.resetDesiredOutboundValues();
+    outboundDataTableModel.clearDesiredOutboundValues();
 }
 
 void MainWindowController::resetDesiredOutboundValuesToDefaults()
 {
     outboundDataTableModel.resetDesiredOutboundValuesToDefaults();
+}
+
+void MainWindowController::resetSelectedDesiredOutboundValuesToDefaults(const QModelIndexList& selection)
+{
+    std::vector<unsigned> indices;
+    for(const auto& i : selection)
+    {
+        indices.push_back(i.row());
+    }
+
+    outboundDataTableModel.clearDesiredOutboundValues(indices);
 }
 
 void MainWindowController::showAboutDialog(QWidget* parent)

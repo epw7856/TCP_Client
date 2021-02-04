@@ -143,7 +143,7 @@ void MainWindow::onButtonApplyClicked()
 
 void MainWindow::onActionClearSelectionTriggered()
 {
-
+    mainWindowController->resetSelectedDesiredOutboundValuesToDefaults(ui->tableViewControlData->selectionModel()->selectedRows());
 }
 
 void MainWindow::onActionClearAllTriggered()
