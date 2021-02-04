@@ -411,13 +411,7 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButtonClear">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             <widget class="QToolButton" name="toolButtonClear">
               <property name="minimumSize">
                <size>
                 <width>125</width>

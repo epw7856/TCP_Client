@@ -33,12 +33,16 @@ private slots:
     void onActionSaveStatusDataToFileClicked();
     void onActionSaveControlDataToFileClicked();
     void onActionRestoreControlDataFromFileClicked();
-    void onButtonClearClicked();
     void onButtonResetClicked();
     void onButtonApplyClicked();
+    void onActionClearSelectionTriggered();
+    void onActionClearAllTriggered();
 
 private:
     Ui::MainWindow *ui;
+    QMenu* clearMenu;
+    QAction* clearSelectionAction;
+    QAction* clearAllAction;
     std::unique_ptr<MainWindowController> mainWindowController;
     std::unique_ptr<QLabel> statusBarLabel;
 

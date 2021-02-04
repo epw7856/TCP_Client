@@ -11,6 +11,20 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 {
     ui->setupUi(this);
 
+    // Setup the Clear toolbutton
+    clearSelectionAction = new QAction("Clear Selected Data Items", this);
+    clearSelectionAction->setFont(QFont("Segoe UI", 10));
+
+    clearAllAction = new QAction("Clear All Data Items", this);
+    clearAllAction->setFont(QFont("Segoe UI", 10));
+
+    clearMenu = new QMenu(this);
+    clearMenu->addAction(clearSelectionAction);
+    clearMenu->addAction(clearAllAction);
+
+    ui->toolButtonClear->setMenu(clearMenu);
+    ui->toolButtonClear->setPopupMode(QToolButton::InstantPopup);
+
     // Connections with the menu bar in the UI
     connect(ui->actionViewApplicationInformation, &QAction::triggered, this, &MainWindow::actionViewApplicationInformation);
     connect(ui->actionLoadSystemConfigurationFile, &QAction::triggered, this, &MainWindow::onActionLoadSystemConfigurationFileTriggered);
@@ -22,9 +36,10 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(ui->actionRestoreControlDataFromFile, &QAction::triggered, this, &MainWindow::onActionRestoreControlDataFromFileClicked);
 
     // Connections with the pushbuttons in the UI
-    connect(ui->pushButtonClear, &QPushButton::clicked, this, &MainWindow::onButtonClearClicked);
     connect(ui->pushButtonReset, &QPushButton::clicked, this, &MainWindow::onButtonResetClicked);
     connect(ui->pushButtonApply, &QPushButton::clicked, this, &MainWindow::onButtonApplyClicked);
+    connect(clearSelectionAction, &QAction::triggered, this, &MainWindow::onActionClearSelectionTriggered);
+    connect(clearAllAction, &QAction::triggered, this, &MainWindow::onActionClearAllTriggered);
 
     // Connections from MainWindowController to MainWindow
     connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
@@ -72,7 +87,7 @@ void MainWindow::periodicUpdate()
     ui->menuFileActions->setEnabled(mainWindowController->enableFileActionsMenu());
     ui->actionConnectToServer->setEnabled(mainWindowController->enableActionConnectToServer());
     ui->actionDisconnectFromServer->setEnabled(mainWindowController->enableActionDisconnectFromServer());
-    ui->pushButtonClear->setEnabled(mainWindowController->enableClearButton());
+    ui->toolButtonClear->setEnabled(mainWindowController->enableClearButton());
     ui->pushButtonReset->setEnabled(mainWindowController->enableResetButton());
 }
 
@@ -116,11 +131,6 @@ void MainWindow::onActionRestoreControlDataFromFileClicked()
 
 }
 
-void MainWindow::onButtonClearClicked()
-{
-    mainWindowController->clearDesiredOutboundValues();
-}
-
 void MainWindow::onButtonResetClicked()
 {
     mainWindowController->resetDesiredOutboundValuesToDefaults();
@@ -129,6 +139,16 @@ void MainWindow::onButtonResetClicked()
 void MainWindow::onButtonApplyClicked()
 {
     mainWindowController->applyDesiredOutboundValues();
+}
+
+void MainWindow::onActionClearSelectionTriggered()
+{
+
+}
+
+void MainWindow::onActionClearAllTriggered()
+{
+    mainWindowController->clearDesiredOutboundValues();
 }
 
 void MainWindow::configureInboundDataTableView()
