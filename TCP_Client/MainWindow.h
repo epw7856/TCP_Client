@@ -44,8 +44,8 @@ private:
     QMenu* clearMenu;
     QAction* clearSelectionAction;
     QAction* clearAllAction;
+    QLabel* statusBarLabel;
     std::unique_ptr<MainWindowController> mainWindowController;
-    std::unique_ptr<QLabel> statusBarLabel;
 
     void configureInboundDataTableView();
     void configureOutboundDataTableView();

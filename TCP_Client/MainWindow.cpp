@@ -26,9 +26,12 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     ui->toolButtonClear->setMenu(clearMenu);
     ui->toolButtonClear->setPopupMode(QToolButton::InstantPopup);
 
-    // Configure the status and control data tables to stretch to fill the full table view width
-    ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    // Setup the tables
+    configureInboundDataTableView();
+    configureOutboundDataTableView();
+
+    // Setup the bottom status bar
+    setupStatusBar();
 
     // Connections with the menu bar in the UI
     connect(ui->actionViewApplicationInformation, &QAction::triggered, this, &MainWindow::actionViewApplicationInformation);
@@ -50,11 +53,6 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
     connect(mainWindowController.get(), &MainWindowController::notifyInboundDataUpdated, this, &MainWindow::refreshStatusDataDisplay);
     connect(mainWindowController.get(), &MainWindowController::notifyStatusChange, this, &MainWindow::periodicUpdate);
-
-    // Setup UI components
-    configureInboundDataTableView();
-    configureOutboundDataTableView();
-    setupStatusBar();
 
     // Perform initial setup and refresh the UI
     mainWindowController->performInitialSetup();
@@ -80,10 +78,10 @@ void MainWindow::showEvent(QShowEvent *event)
 
 void MainWindow::setupStatusBar()
 {
-    statusBarLabel = std::make_unique<QLabel>();
+    statusBarLabel = new QLabel();
     statusBarLabel->setFont(QFont("Segoe UI", 10));
     ui->statusBar->setStyleSheet("QStatusBar{border-top: 1px outset grey;}");
-    ui->statusBar->addPermanentWidget(statusBarLabel.get());
+    ui->statusBar->addPermanentWidget(statusBarLabel);
     ui->statusBar->setSizeGripEnabled(false);
 }
 
@@ -170,48 +168,52 @@ void MainWindow::onActionClearAllTriggered()
 
 void MainWindow::configureInboundDataTableView()
 {
-    // Add table model data
+    // Add table model data and configure selection behavior
     ui->tableViewStatusData->setModel(&(mainWindowController->getInboundDataTableModel()));
     ui->tableViewStatusData->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableViewStatusData->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->tableViewStatusData->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableViewStatusData->setFocusPolicy(Qt::NoFocus);
 
-    // Set bold font for the header
+    // Set font styles
     QFont font(ui->tableViewStatusData->font());
     font.setBold(true);
     ui->tableViewStatusData->horizontalHeader()->setFont(font);
     ui->tableViewStatusData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }\n"
                                            "QTableView::item:selected {background-color: #3399FF; color: white;}");
 
+    // Configure the horizontal header settings
     ui->tableViewStatusData->horizontalHeader()->setFixedHeight(25);
     ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableViewStatusData->horizontalHeader()->setSectionsClickable(false);
 
+    // Configure the vertical header settings
     ui->tableViewStatusData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableViewStatusData->verticalHeader()->hide();
 }
 
 void MainWindow::configureOutboundDataTableView()
 {
-    // Add table model data
+    // Add table model data and configure selection behavior
     ui->tableViewControlData->setModel(&(mainWindowController->getOutboundDataTableModel()));
     ui->tableViewControlData->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableViewControlData->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->tableViewControlData->setFocusPolicy(Qt::NoFocus);
 
-    // Set bold font for the header
+    // Set font styles
     QFont font(ui->tableViewControlData->font());
     font.setBold(true);
     ui->tableViewControlData->horizontalHeader()->setFont(font);
     ui->tableViewControlData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }\n"
                                             "QTableView::item:selected {background-color: #3399FF; color: white;}");
 
+    // Configure the horizontal header settings
     ui->tableViewControlData->horizontalHeader()->setFixedHeight(25);
     ui->tableViewControlData->resizeColumnToContents(2);
     ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableViewControlData->horizontalHeader()->setSectionsClickable(false);
 
+    // Configure the vertical header settings
     ui->tableViewControlData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->tableViewControlData->verticalHeader()->hide();
 }
