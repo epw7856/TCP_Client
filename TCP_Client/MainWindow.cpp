@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "MainWindowController.h"
 #include <QLabel>
+#include <QShowEvent>
 #include "ui_MainWindow.h"
 
 MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
@@ -24,6 +25,10 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 
     ui->toolButtonClear->setMenu(clearMenu);
     ui->toolButtonClear->setPopupMode(QToolButton::InstantPopup);
+
+    // Configure the status and control data tables to stretch to fill the full table view width
+    ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     // Connections with the menu bar in the UI
     connect(ui->actionViewApplicationInformation, &QAction::triggered, this, &MainWindow::actionViewApplicationInformation);
@@ -59,6 +64,18 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    // Configure each column within the status and control data tables to be resizable
+    ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    ui->tableViewStatusData->horizontalHeader()->setStretchLastSection(true);
+
+    ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    ui->tableViewControlData->horizontalHeader()->setStretchLastSection(true);
+
+    event->accept();
 }
 
 void MainWindow::setupStatusBar()
