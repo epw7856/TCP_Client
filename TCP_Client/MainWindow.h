@@ -37,6 +37,7 @@ private slots:
     void onButtonApplyClicked();
     void onActionClearSelectionTriggered();
     void onActionClearAllTriggered();
+    void showEvent(QShowEvent* event) override;
 
 private:
     Ui::MainWindow *ui;

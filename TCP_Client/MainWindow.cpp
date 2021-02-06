@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "MainWindowController.h"
 #include <QLabel>
+#include <QShowEvent>
 #include "ui_MainWindow.h"
 
 MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
@@ -11,7 +12,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Setup the Clear toolbutton
+    // Setup the Clear toolbutton and the associated dropdown menu actions
     clearSelectionAction = new QAction("Clear Selected Data Items", this);
     clearSelectionAction->setFont(QFont("Segoe UI", 10));
 
@@ -59,6 +60,18 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    // Configure each column within the status and control data tables to be resizable
+    ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    ui->tableViewStatusData->horizontalHeader()->setStretchLastSection(true);
+
+    ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    ui->tableViewControlData->horizontalHeader()->setStretchLastSection(true);
+
+    event->accept();
 }
 
 void MainWindow::setupStatusBar()

@@ -23,6 +23,8 @@ SOURCES += \
     CommunicationsManager.cpp \
     CommunicationsUtilities.cpp \
     DataUtilities.cpp \
+    EnumSelectionController.cpp \
+    EnumSelectionDialog.cpp \
     EnumType.cpp \
     FileOperationsHandler.cpp \
     InboundDataTableModel.cpp \
@@ -45,6 +47,8 @@ HEADERS += \
     DataItem.h \
     DataUtilities.h \
     EnumInterface.h \
+    EnumSelectionController.h \
+    EnumSelectionDialog.h \
     EnumType.h \
     FileOperationsHandler.h \
     InboundDataInterface.h \
@@ -62,6 +66,7 @@ HEADERS += \
 
 FORMS += \
     AboutDialog.ui \
+    EnumSelectionDialog.ui \
     MainWindow.ui
 
 # Default rules for deployment.

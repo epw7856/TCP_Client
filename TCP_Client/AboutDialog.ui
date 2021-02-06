@@ -290,7 +290,7 @@
       <widget class="QPushButton" name="pushButtonClose">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>125</width>
          <height>30</height>
         </size>
        </property>
