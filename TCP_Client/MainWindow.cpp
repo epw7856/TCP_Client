@@ -26,6 +26,10 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     ui->toolButtonClear->setMenu(clearMenu);
     ui->toolButtonClear->setPopupMode(QToolButton::InstantPopup);
 
+    // Configure the status and control data tables to stretch to fill the full table view width
+    ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     // Connections with the menu bar in the UI
     connect(ui->actionViewApplicationInformation, &QAction::triggered, this, &MainWindow::actionViewApplicationInformation);
     connect(ui->actionLoadSystemConfigurationFile, &QAction::triggered, this, &MainWindow::onActionLoadSystemConfigurationFileTriggered);
