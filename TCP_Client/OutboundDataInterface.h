@@ -21,5 +21,6 @@ public:
     virtual std::vector<QString> getOutboundDisplayValues() const = 0;
     virtual std::vector<QString> getOutboundDefaultDisplayValues() const = 0;
     virtual std::vector<unsigned> getOutboundRawValues() const = 0;
+    virtual std::vector<std::pair<unsigned, unsigned>> getOutboundDataTableRanges() const = 0;
 };
 #endif // OUTBOUNDDATAINTERFACE_H

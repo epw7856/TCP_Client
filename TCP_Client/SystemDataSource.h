@@ -54,6 +54,7 @@ public:
     std::vector<QString> getOutboundDisplayValues() const override;
     std::vector<QString> getOutboundDefaultDisplayValues() const override;
     std::vector<unsigned> getOutboundRawValues() const override;
+    std::vector<std::pair<unsigned, unsigned>> getOutboundDataTableRanges() const override;
 
 private:
     QFile systemConfigFile;
@@ -63,13 +64,17 @@ private:
     std::unordered_map<std::string, std::shared_ptr<EnumType>> enumRegistry = {};
     std::vector<std::shared_ptr<DataItem>> inboundDataItems = {};
     std::vector<std::shared_ptr<DataItem>> outboundDataItems = {};
+    std::vector<std::pair<unsigned, unsigned>> inboundDataTableRanges = {};
+    std::vector<std::pair<unsigned, unsigned>> outboundDataTableRanges = {};
 
     // Private helper functions for JSON file loading and parsing
     void clearSystemData();
     void parseApplicationSettings();
     void parseEnumerations();
     void parseInboundData();
+    void parseInboundDataTableRanges();
     void parseOutboundData();
+    void parseOutboundDataTableRanges();
 
     // Private helper functions for data conversions
     QString convertRawToDisplayValue(const QString& type,
@@ -80,6 +85,9 @@ private:
                                       const QString& displayValue) const;
 
     unsigned jsonStringToUnsigned(QString jsonValue);
+
+    std::pair<unsigned, unsigned> validateRange(const QJsonValue& rangeItem, int maxIndex);
+
 };
 
 inline QString SystemDataSource::getSystemConfigFilePath() const

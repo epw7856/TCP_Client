@@ -118,7 +118,7 @@ void MainWindowController::resetSelectedDesiredOutboundValuesToDefaults(const QM
     std::vector<unsigned> indices;
     for(const auto& i : selection)
     {
-        indices.push_back(i.row());
+        indices.push_back(outboundDataTableModel.index(i.row(), 0).data().toInt());
     }
 
     outboundDataTableModel.clearDesiredOutboundValues(indices);

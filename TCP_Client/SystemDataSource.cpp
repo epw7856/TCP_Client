@@ -22,11 +22,17 @@ bool SystemDataSource::loadSystemConfiguration(const QString& configFilePath)
     QJsonDocument doc = QJsonDocument::fromJson(rawData);
     obj = doc.object().value("Local Control Application").toObject();
 
+    // Clear system configuration prior to loading new data
     clearSystemData();
+
     parseApplicationSettings();
     parseEnumerations();
     parseInboundData();
     parseOutboundData();
+
+    // Data table ranges must be parsed after the inbound and outbound data items
+    parseInboundDataTableRanges();
+    parseOutboundDataTableRanges();
 
     return true;
 }
@@ -36,6 +42,8 @@ void SystemDataSource::clearSystemData()
     enumRegistry.clear();
     inboundDataItems.clear();
     outboundDataItems.clear();
+    inboundDataTableRanges.clear();
+    outboundDataTableRanges.clear();
 }
 
 void SystemDataSource::parseApplicationSettings()
@@ -73,8 +81,8 @@ void SystemDataSource::parseEnumerations()
 
 void SystemDataSource::parseInboundData()
 {
-    const QJsonValue jsonDataFromServer = obj.value("Data From Server");
-    for (const QJsonValue& item : jsonDataFromServer.toArray())
+    const QJsonValue dataItems = obj.value("Data From Server").toObject().value("Data Items");
+    for (const QJsonValue& item : dataItems.toArray())
     {
         std::shared_ptr<DataItem> dataItem = std::make_shared<DataItem>(QString(item.toObject().value("Data Type").toString()),
                                                                         QString(item.toObject().value("Name").toString()),
@@ -84,10 +92,20 @@ void SystemDataSource::parseInboundData()
     }
 }
 
+void SystemDataSource::parseInboundDataTableRanges()
+{
+    const QJsonValue ranges = obj.value("Data From Server").toObject().value("Status Data Table Displayed Ranges");
+    for (const QJsonValue& item : ranges.toArray())
+    {
+        std::pair<unsigned, unsigned> range = validateRange(item, static_cast<int>(inboundDataItems.size()));
+        outboundDataTableRanges.push_back(range);
+    }
+}
+
 void SystemDataSource::parseOutboundData()
 {
-    const QJsonValue jsonDataToServer = obj.value("Data To Server");
-    for (const QJsonValue& item : jsonDataToServer.toArray())
+    const QJsonValue dataItems = obj.value("Data To Server").toObject().value("Data Items");
+    for (const QJsonValue& item : dataItems.toArray())
     {
         std::shared_ptr<DataItem> dataItem = std::make_shared<DataItem>(QString(item.toObject().value("Data Type").toString()),
                                                                         QString(item.toObject().value("Name").toString()),
@@ -115,6 +133,16 @@ void SystemDataSource::parseOutboundData()
             (outboundDataItems[outboundDataItems.size() - 1])->setValueRange(convertDisplayToRawValue(dataItem->getDataItemType(), minValString),
                                                                              convertDisplayToRawValue(dataItem->getDataItemType(), maxValString));
         }
+    }
+}
+
+void SystemDataSource::parseOutboundDataTableRanges()
+{
+    const QJsonValue ranges = obj.value("Data To Server").toObject().value("Control Data Table Displayed Ranges");
+    for (const QJsonValue& item : ranges.toArray())
+    {
+        std::pair<unsigned, unsigned> range = validateRange(item, static_cast<int>(outboundDataItems.size()));
+        outboundDataTableRanges.push_back(range);
     }
 }
 
@@ -200,6 +228,25 @@ unsigned SystemDataSource::jsonStringToUnsigned(QString jsonValue)
     {
         return jsonValue.toUInt();
     }
+}
+
+std::pair<unsigned, unsigned> SystemDataSource::validateRange(const QJsonValue& rangeItem, int maxIndex)
+{
+    int startIndex = rangeItem.toObject().value("Starting Index").toInt();
+
+    int endIndex;
+    (rangeItem.toObject().contains("Ending Index")) ? endIndex = rangeItem.toObject().value("Ending Index").toInt() :
+                                                      endIndex = maxIndex;
+
+    int trueStartIndex, trueEndIndex;
+
+    // Validate the Starting Index:
+    ((startIndex >= 0) && (startIndex < maxIndex)) ? trueStartIndex = startIndex : trueStartIndex = 0;
+
+    // Validate the Ending Index:
+    ((endIndex > trueStartIndex) && (endIndex <= maxIndex)) ? trueEndIndex = endIndex : trueEndIndex = maxIndex;
+
+    return {trueStartIndex, trueEndIndex};
 }
 
 std::vector<QString> SystemDataSource::getEnumStrings(const QString& enumName) const
@@ -375,4 +422,9 @@ std::vector<unsigned> SystemDataSource::getOutboundRawValues() const
     }
 
     return rawValues;
+}
+
+std::vector<std::pair<unsigned, unsigned>> SystemDataSource::getOutboundDataTableRanges() const
+{
+    return outboundDataTableRanges;
 }

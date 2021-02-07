@@ -2,8 +2,8 @@
 	"Local Control Application": 
 	{
 		"Application Settings": {
-				"Socket Port": 100,
-				"Transmission Periodicity (ms)": 500
+			"Socket Port": 100,
+			"Transmission Periodicity (ms)": 500
 		},
 		"Enumerations": [
 			{
@@ -20,54 +20,76 @@
 				]
 			}
 		],
-		"Data From Server": [
-			{
-				"Name": "TestInputSignal1",
-				"Data Type": "Unsigned",
-				"Format": "%.2f",
-				"Units": "kW"
-			},
-			{
-				"Name": "TestInputSignal2",
-				"Data Type": "Unsigned",
-				"Format": "",
-				"Units": "Unitless"
-			},
-			{
-				"Name": "TestInputSignal3",
-				"Data Type": "Unsigned",
-				"Format": "",
-				"Units": "Radians"
-			}
-		],
-		"Data To Server": [
-			{
-				"Name": "TestOutputSignal1",
-				"Data Type": "Numeric",
-				"Default Value": 1.23,
-				"Min Value": 0.00,
-				"Max Value": 1000.1,
-				"Format": "%.2f",
-				"Units": "Radians"
-			},
-			{
-				"Name": "TestOutputSignal2",
-				"Data Type": "Boolean",
-				"Default Value": "True",
-				"Min Value": "",
-				"Max Value": "",
-				"Format": "",
-				"Units": "Unitless"
-			},
-			{
-				"Name": "TestOutputSignal3",
-				"Data Type": "Unsigned",
-				"Default Value": 1384,
-				"Min Value": 0,
-				"Max Value": 1399,
-				"Format": "",
-				"Units": "Radians"
-			}
-		]
+		"Data From Server": {
+			"Status Data Table Displayed Ranges": [
+				{
+					"Starting Index": 1,
+					"Ending Index": 3
+				}
+			],
+			"Data Items": [
+				{
+					"Index": 0,
+					"Name": "TestInputSignal1",
+					"Data Type": "Unsigned",
+					"Format": "%.2f",
+					"Units": "kW"
+				},
+				{
+					"Index": 1,
+					"Name": "TestInputSignal2",
+					"Data Type": "Unsigned",
+					"Format": "",
+					"Units": "Unitless"
+				},
+				{
+					"Index": 2,
+					"Name": "TestInputSignal3",
+					"Data Type": "Unsigned",
+					"Format": "",
+					"Units": "Radians"
+				}
+			]
+		},
+		"Data To Server": {
+			"Control Data Table Displayed Ranges": [
+				{
+					"Starting Index": 1,
+					"Ending Index": 3
+				}
+			],
+			"Data Items": [
+				{
+					"Index": 0,
+					"Name": "TestOutputSignal1",
+					"Data Type": "Numeric",
+					"Default Value": 1.23,
+					"Min Value": 0.00,
+					"Max Value": 1000.1,
+					"Format": "%.2f",
+					"Units": "Radians"
+				},
+				{
+					"Index": 1,
+					"Name": "TestOutputSignal2",
+					"Data Type": "Boolean",
+					"Default Value": "True",
+					"Min Value": "",
+					"Max Value": "",
+					"Format": "",
+					"Units": "Unitless"
+				},
+				{
+					"Index": 2,
+					"Name": "TestOutputSignal3",
+					"Data Type": "Unsigned",
+					"Default Value": 1384,
+					"Min Value": 0,
+					"Max Value": 1399,
+					"Format": "",
+					"Units": "Radians"
+				}
+			]
+		}
 	}	
 }
