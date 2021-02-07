@@ -94,11 +94,20 @@ void SystemDataSource::parseInboundData()
 
 void SystemDataSource::parseInboundDataTableRanges()
 {
-    const QJsonValue ranges = obj.value("Data From Server").toObject().value("Status Data Table Displayed Ranges");
-    for (const QJsonValue& item : ranges.toArray())
+    const QJsonObject dataFromServerObj = obj.value("Data From Server").toObject();
+
+    if(dataFromServerObj.contains("Status Data Table Displayed Ranges"))
     {
-        std::pair<unsigned, unsigned> range = validateRange(item, static_cast<int>(inboundDataItems.size()));
-        outboundDataTableRanges.push_back(range);
+        const QJsonValue ranges = dataFromServerObj.value("Status Data Table Displayed Ranges");
+        for (const QJsonValue& item : ranges.toArray())
+        {
+            std::pair<unsigned, unsigned> range = validateRange(item, static_cast<int>(inboundDataItems.size()));
+            inboundDataTableRanges.push_back(range);
+        }
+    }
+    else
+    {
+        inboundDataTableRanges.push_back({0, inboundDataItems.size()});
     }
 }
 
@@ -111,9 +120,6 @@ void SystemDataSource::parseOutboundData()
                                                                         QString(item.toObject().value("Name").toString()),
                                                                         QString(item.toObject().value("Units").toString()),
                                                                         QString(item.toObject().value("Format").toString()));
-
-
-
 
         const QString defaultValString = item.toObject().value("Default Value").toVariant().toString();
         dataItem->setDefaultDisplayValue(defaultValString);
@@ -138,12 +144,22 @@ void SystemDataSource::parseOutboundData()
 
 void SystemDataSource::parseOutboundDataTableRanges()
 {
-    const QJsonValue ranges = obj.value("Data To Server").toObject().value("Control Data Table Displayed Ranges");
-    for (const QJsonValue& item : ranges.toArray())
+    const QJsonObject dataToServerObj = obj.value("Data To Server").toObject();
+
+    if(dataToServerObj.contains("Control Data Table Displayed Ranges"))
     {
-        std::pair<unsigned, unsigned> range = validateRange(item, static_cast<int>(outboundDataItems.size()));
-        outboundDataTableRanges.push_back(range);
+        const QJsonValue ranges = dataToServerObj.value("Control Data Table Displayed Ranges");
+        for (const QJsonValue& item : ranges.toArray())
+        {
+            std::pair<unsigned, unsigned> range = validateRange(item, static_cast<int>(outboundDataItems.size()));
+            outboundDataTableRanges.push_back(range);
+        }
     }
+    else
+    {
+        outboundDataTableRanges.push_back({0, outboundDataItems.size()});
+    }
+
 }
 
 QString SystemDataSource::convertRawToDisplayValue(const QString& type,
