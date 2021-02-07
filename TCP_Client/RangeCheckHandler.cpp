@@ -38,13 +38,18 @@ bool RangeCheckHandler::validateOutboundDataItem(int index, QString& value)
     return status;
 }
 
-bool RangeCheckHandler::validateOutboundData(std::vector<QString>& values)
+bool RangeCheckHandler::validateOutboundData(const std::vector<unsigned>& indices, std::vector<QString>& values)
 {
-    for(quint32 i = 0; i < values.size(); i++)
+    if(indices.size() != values.size())
+    {
+        return false;
+    }
+
+    for(quint32 i = 0; i < indices.size(); i++)
     {
         if(!values[i].isEmpty())
         {
-            if(!validateOutboundDataItem(i, values[i]))
+            if(!validateOutboundDataItem(indices[i], values[i]))
             {
                 return false;
             }

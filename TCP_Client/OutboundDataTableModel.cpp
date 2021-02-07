@@ -12,7 +12,7 @@ OutboundDataTableModel::OutboundDataTableModel(OutboundDataInterface& localOutbo
 
 int OutboundDataTableModel::rowCount(const QModelIndex&) const
 {
-    return static_cast<int>(outboundDataItems.size());
+    return static_cast<int>(outboundDataItemMap.size());
 }
 
 int OutboundDataTableModel::columnCount(const QModelIndex&) const
@@ -22,28 +22,28 @@ int OutboundDataTableModel::columnCount(const QModelIndex&) const
 
 QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
 {
-    int numRows = rowCount(index);
-
     if(((role == Qt::DisplayRole) || (role == Qt::EditRole)) &&
-       (index.row() < numRows) &&
+       (index.row() < rowCount(index)) &&
        (index.column() < numColumns))
     {
         auto rowUint = static_cast<quint32>(index.row());
+        auto itr = outboundDataItemMap.begin();
+        std::advance(itr, rowUint);
 
         // Index column
         if(index.column() == 0)
         {
-            return rowUint;
+            return itr->first;
         }
         // Parameter column
         else if(index.column() == 1)
         {
-            return outboundDataItems[rowUint]->getDataItemName();
+            return itr->second->getDataItemName();
         }
         // Current Value column
         else if(index.column() == 2)
         {
-            return outboundDataItems[rowUint]->getDisplayValue();
+            return itr->second->getDisplayValue();
         }
         // New Value column
         else if(index.column() == 3)
@@ -53,13 +53,13 @@ QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
         // Units column
         else if(index.column() == 4)
         {
-            return outboundDataItems[rowUint]->getDataItemUnits();
+            return itr->second->getDataItemUnits();
         }
     }
 
     if(role == Qt::TextAlignmentRole)
     {
-        if((index.row() < numRows) &&
+        if((index.row() < rowCount(index)) &&
            (index.column() < numColumns))
         {
             return (index.column() == 1) ? Qt::AlignVCenter : Qt::AlignCenter;
@@ -134,11 +134,17 @@ const std::vector<QString>& OutboundDataTableModel::getDesiredOutboundValues() c
 void OutboundDataTableModel::setOutboundDataItems()
 {
     beginResetModel();
-    outboundDataItems.clear();
-    outboundDataItems = outboundDataInterface.getOutboundDataItems();
+    outboundDataItemMap.clear();
+    for(const auto& i : outboundDataInterface.getOutboundDataTableRanges())
+    {
+        for(unsigned j = i.first; j < i.second; j++)
+        {
+            outboundDataItemMap[j] = outboundDataInterface.getOutboundDataItem(j);
+        }
+    }
 
     desiredOutboundValues.clear();
-    desiredOutboundValues.resize(outboundDataItems.size());
+    desiredOutboundValues.resize(outboundDataItemMap.size());
     endResetModel();
 }
 
@@ -155,7 +161,7 @@ void OutboundDataTableModel::setDesiredOutboundValue(int index, QString value)
 
 void OutboundDataTableModel::setDesiredOutboundValues(const std::vector<QString>& values)
 {
-    if(values.size() == desiredOutboundValues.size())
+    if(values.size() == outboundDataItemMap.size())
     {
         beginResetModel();
         desiredOutboundValues = std::move(values);
@@ -165,12 +171,24 @@ void OutboundDataTableModel::setDesiredOutboundValues(const std::vector<QString>
 
 void OutboundDataTableModel::applyDesiredOutboundValues()
 {
-    if(!rangeChecker.validateOutboundData(desiredOutboundValues))
+    std::vector<unsigned> desiredOutboundValueIndices;
+    for(const auto& i : outboundDataItemMap)
+    {
+        desiredOutboundValueIndices.push_back(i.first);
+    }
+
+    if(!rangeChecker.validateOutboundData(desiredOutboundValueIndices, desiredOutboundValues))
     {
         return;
     }
 
-    outboundDataInterface.setOutboundDisplayValues(desiredOutboundValues);
+    for(unsigned i = 0; i < outboundDataItemMap.size(); i++)
+    {
+        auto itr = outboundDataItemMap.begin();
+        std::advance(itr, i);
+        outboundDataInterface.setOutboundDisplayValue(itr->first, desiredOutboundValues[i]);
+    }
+
     clearDesiredOutboundValues();
 }
 
@@ -178,7 +196,7 @@ void OutboundDataTableModel::clearDesiredOutboundValues()
 {
     beginResetModel();
     desiredOutboundValues.clear();
-    desiredOutboundValues.resize(outboundDataItems.size());
+    desiredOutboundValues.resize(outboundDataItemMap.size());
     endResetModel();
 }
 
@@ -187,7 +205,12 @@ void OutboundDataTableModel::resetDesiredOutboundValuesToDefaults()
     clearDesiredOutboundValues();
 
     beginResetModel();
-    desiredOutboundValues = outboundDataInterface.getOutboundDefaultDisplayValues();
+    for(unsigned i = 0; i < outboundDataItemMap.size(); i++)
+    {
+        auto itr = outboundDataItemMap.begin();
+        std::advance(itr, i);
+        desiredOutboundValues[i] = outboundDataInterface.getOutboundDefaultDisplayValue(itr->first);
+    }
     endResetModel();
 }
 

@@ -23,8 +23,8 @@
 		"Data From Server": {
 			"Status Data Table Displayed Ranges": [
 				{
-					"Starting Index": 1,
-					"Ending Index": 3
+					"Starting Index (Inclusive)": 0,
+					"Ending Index (Exclusive)": 3
 				}
 			],
 			"Data Items": [
@@ -54,8 +54,8 @@
 		"Data To Server": {
 			"Control Data Table Displayed Ranges": [
 				{
-					"Starting Index": 1,
-					"Ending Index": 3
+					"Starting Index (Inclusive)": 0,
+					"Ending Index (Exclusive)": 3
 				}
 			],
 			"Data Items": [

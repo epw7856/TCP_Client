@@ -41,10 +41,12 @@ public:
 
     // Implementation of Inbound Data Interface
     void setInboundRawValues(const std::vector<unsigned>& rawValues) override;
+    DataItem* getInboundDataItem(int index) const override;
     std::vector<DataItem*> getInboundDataItems() const override;
     std::vector<QString> getInboundDataItemNames() const override;
     std::vector<QString> getInboundDisplayValues() const override;
     std::vector<unsigned> getInboundRawValues() const override;
+    std::vector<std::pair<unsigned, unsigned>> getInboundDataTableRanges() const override;
 
     // Implementation of Outbound Data Interface
     void setOutboundDisplayValue(unsigned index, const QString& displayValue) override;
@@ -53,7 +55,7 @@ public:
     std::vector<DataItem*> getOutboundDataItems() const override;
     std::vector<QString> getOutboundDataItemNames() const override;
     std::vector<QString> getOutboundDisplayValues() const override;
-    std::vector<QString> getOutboundDefaultDisplayValues() const override;
+    QString getOutboundDefaultDisplayValue(int index) const override;
     std::vector<unsigned> getOutboundRawValues() const override;
     std::vector<std::pair<unsigned, unsigned>> getOutboundDataTableRanges() const override;
 

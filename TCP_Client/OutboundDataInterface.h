@@ -19,7 +19,7 @@ public:
     virtual std::vector<DataItem*> getOutboundDataItems() const = 0;
     virtual std::vector<QString> getOutboundDataItemNames() const = 0;
     virtual std::vector<QString> getOutboundDisplayValues() const = 0;
-    virtual std::vector<QString> getOutboundDefaultDisplayValues() const = 0;
+    virtual QString getOutboundDefaultDisplayValue(int index) const = 0;
     virtual std::vector<unsigned> getOutboundRawValues() const = 0;
     virtual std::vector<std::pair<unsigned, unsigned>> getOutboundDataTableRanges() const = 0;
 };

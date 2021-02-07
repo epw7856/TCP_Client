@@ -15,7 +15,7 @@ public:
         outboundDataInterface(localOutboundDataInterface), enumInterface(localEnumInterface) {}
 
     bool validateOutboundDataItem(int index, QString& value);
-    bool validateOutboundData(std::vector<QString>& values);
+    bool validateOutboundData(const std::vector<unsigned>& indices, std::vector<QString>& values);
 
 private:
     const OutboundDataInterface& outboundDataInterface;

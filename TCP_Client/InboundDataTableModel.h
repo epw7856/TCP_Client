@@ -17,11 +17,12 @@ public:
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+
     void setInboundDataItems();
 
 private:
     InboundDataInterface& inboundDataInterface;
-    std::vector<DataItem*> inboundDataItems = {};
+    std::map<unsigned, DataItem*> inboundDataItemMap = {};
     int numColumns = 4;
 };
 

@@ -21,6 +21,7 @@ public:
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
+
     const std::vector<QString>& getDesiredOutboundValues() const;
     void setOutboundDataItems();
     void setDesiredOutboundValue(int index, QString value);
@@ -33,9 +34,8 @@ public:
 private:
     OutboundDataInterface& outboundDataInterface;
     RangeCheckHandler rangeChecker;
-    std::vector<DataItem*> outboundDataItems = {};
+    std::map<unsigned, DataItem*> outboundDataItemMap = {};
     std::vector<QString> desiredOutboundValues = {};
-    std::vector<QString> newValues = {};
     int numColumns = 5;
 };
 

@@ -11,7 +11,7 @@ InboundDataTableModel::InboundDataTableModel(InboundDataInterface &localInboundD
 
 int InboundDataTableModel::rowCount(const QModelIndex&) const
 {
-    return static_cast<int>(inboundDataItems.size());
+    return static_cast<int>(inboundDataItemMap.size());
 }
 
 int InboundDataTableModel::columnCount(const QModelIndex&) const
@@ -28,26 +28,28 @@ QVariant InboundDataTableModel::data(const QModelIndex& index, int role) const
        (index.column() < numColumns))
     {
         auto rowUint = static_cast<quint32>(index.row());
+        auto itr = inboundDataItemMap.begin();
+        std::advance(itr, rowUint);
 
         // Data item index column
         if(index.column() == 0)
         {
-            return rowUint;
+            return itr->first;
         }
         // Parameter column
         else if(index.column() == 1)
         {
-            return inboundDataItems[rowUint]->getDataItemName();
+            return itr->second->getDataItemName();
         }
         // Value column
         else if(index.column() == 2)
         {
-            return inboundDataItems[rowUint]->getDisplayValue();
+            return itr->second->getDisplayValue();
         }
         // Units column
         else if(index.column() == 3)
         {
-            return inboundDataItems[rowUint]->getDataItemUnits();
+            return itr->second->getDataItemUnits();
         }
     }
 
@@ -93,7 +95,15 @@ QVariant InboundDataTableModel::headerData(int section, Qt::Orientation orientat
 void InboundDataTableModel::setInboundDataItems()
 {
     beginResetModel();
-    inboundDataItems.clear();
-    inboundDataItems = inboundDataInterface.getInboundDataItems();
+
+    inboundDataItemMap.clear();
+    for(const auto& i : inboundDataInterface.getInboundDataTableRanges())
+    {
+        for(unsigned j = i.first; j < i.second; j++)
+        {
+            inboundDataItemMap[j] = inboundDataInterface.getInboundDataItem(j);
+        }
+    }
+
     endResetModel();
 }

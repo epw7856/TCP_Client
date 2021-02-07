@@ -88,7 +88,7 @@ void SystemDataSource::parseEnumerations()
 void SystemDataSource::parseInboundData()
 {
     const QJsonValue dataItems = obj.value("Data From Server").toObject().value("Data Items");
-    for (const QJsonValue& item : dataItems.toArray())
+    for(const QJsonValue& item : dataItems.toArray())
     {
         std::shared_ptr<DataItem> dataItem = std::make_shared<DataItem>(QString(item.toObject().value("Data Type").toString()),
                                                                         QString(item.toObject().value("Name").toString()),
@@ -120,22 +120,22 @@ void SystemDataSource::parseInboundDataTableRanges()
 void SystemDataSource::parseOutboundData()
 {
     const QJsonValue dataItems = obj.value("Data To Server").toObject().value("Data Items");
-    for (const QJsonValue& item : dataItems.toArray())
+    for(const QJsonValue& item : dataItems.toArray())
     {
         std::shared_ptr<DataItem> dataItem = std::make_shared<DataItem>(QString(item.toObject().value("Data Type").toString()),
                                                                         QString(item.toObject().value("Name").toString()),
                                                                         QString(item.toObject().value("Units").toString()),
                                                                         QString(item.toObject().value("Format").toString()));
 
-        const QString defaultValString = item.toObject().value("Default Value").toVariant().toString();
-        dataItem->setDefaultDisplayValue(defaultValString);
-
-        outboundDataItems.push_back(dataItem);
-
-        if(!defaultValString.isEmpty())
+        QString defaultValString = item.toObject().value("Default Value").toString();
+        if(defaultValString.isEmpty())
         {
-            setOutboundDisplayValue(outboundDataItems.size() - 1, defaultValString);
+            defaultValString = convertRawToDisplayValue(dataItem->getDataItemType(), 0);
         }
+
+        dataItem->setDefaultDisplayValue(defaultValString);
+        outboundDataItems.push_back(dataItem);
+        setOutboundDisplayValue(outboundDataItems.size() - 1, defaultValString);
 
         const QString minValString = item.toObject().value("Min Value").toVariant().toString();
         const QString maxValString = item.toObject().value("Max Value").toVariant().toString();
@@ -254,11 +254,11 @@ unsigned SystemDataSource::jsonStringToUnsigned(QString jsonValue)
 
 std::pair<unsigned, unsigned> SystemDataSource::validateRange(const QJsonValue& rangeItem, int maxIndex)
 {
-    int startIndex = rangeItem.toObject().value("Starting Index").toInt();
+    int startIndex = rangeItem.toObject().value("Starting Index (Inclusive)").toInt();
 
     int endIndex;
-    (rangeItem.toObject().contains("Ending Index")) ? endIndex = rangeItem.toObject().value("Ending Index").toInt() :
-                                                      endIndex = maxIndex;
+    (rangeItem.toObject().contains("Ending Index (Exclusive)")) ? endIndex = rangeItem.toObject().value("Ending Index (Exclusive)").toInt() :
+                                                                  endIndex = maxIndex;
 
     int trueStartIndex, trueEndIndex;
 
@@ -321,6 +321,11 @@ void SystemDataSource::setInboundRawValues(const std::vector<unsigned>& rawValue
     }
 }
 
+DataItem *SystemDataSource::getInboundDataItem(int index) const
+{
+    return inboundDataItems[index].get();
+}
+
 std::vector<DataItem*> SystemDataSource::getInboundDataItems() const
 {
     std::vector<DataItem*> dataItems = {};
@@ -365,13 +370,21 @@ std::vector<unsigned> SystemDataSource::getInboundRawValues() const
     return rawValues;
 }
 
+std::vector<std::pair<unsigned, unsigned>> SystemDataSource::getInboundDataTableRanges() const
+{
+    return inboundDataTableRanges;
+}
+
 void SystemDataSource::setOutboundDisplayValue(unsigned index, const QString& displayValue)
 {
-    unsigned rawValue = convertDisplayToRawValue(outboundDataItems[index]->getDataItemType(), displayValue);
-    outboundDataItems[index]->setRawValue(rawValue);
-    outboundDataItems[index]->setDisplayValue(convertRawToDisplayValue(outboundDataItems[index]->getDataItemType(),
-                                                                       rawValue,
-                                                                       outboundDataItems[index]->getDataItemFormat()));
+    if(!displayValue.isEmpty())
+    {
+        unsigned rawValue = convertDisplayToRawValue(outboundDataItems[index]->getDataItemType(), displayValue);
+        outboundDataItems[index]->setRawValue(rawValue);
+        outboundDataItems[index]->setDisplayValue(convertRawToDisplayValue(outboundDataItems[index]->getDataItemType(),
+                                                                           rawValue,
+                                                                           outboundDataItems[index]->getDataItemFormat()));
+    }
 }
 
 void SystemDataSource::setOutboundDisplayValues(const std::vector<QString>& displayValues)
@@ -380,8 +393,7 @@ void SystemDataSource::setOutboundDisplayValues(const std::vector<QString>& disp
     {
         for(unsigned i = 0; i < displayValues.size(); ++i)
         {
-            const QString value = displayValues[i];
-            if(!value.isEmpty()) setOutboundDisplayValue(i, value);
+            setOutboundDisplayValue(i, displayValues[i]);
         }
     }
 }
@@ -424,15 +436,9 @@ std::vector<QString> SystemDataSource::getOutboundDisplayValues() const
     return displayValues;
 }
 
-std::vector<QString> SystemDataSource::getOutboundDefaultDisplayValues() const
+QString SystemDataSource::getOutboundDefaultDisplayValue(int index) const
 {
-    std::vector<QString> defaultValues = {};
-    for(const auto& item : outboundDataItems)
-    {
-        defaultValues.push_back(item->getDefaultDisplayValue());
-    }
-
-    return defaultValues;
+    return outboundDataItems[index]->getDefaultDisplayValue();
 }
 
 std::vector<unsigned> SystemDataSource::getOutboundRawValues() const
