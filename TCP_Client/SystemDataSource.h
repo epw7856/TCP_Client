@@ -26,6 +26,7 @@ public:
     bool loadSystemConfiguration(const QString& configFilePath);
 
     // Implementation of Application Interface
+    QString getSemanticVersion() const override;
     QString getSystemConfigFilePath() const override;
     unsigned getSocketPort() const override;
     unsigned getTransmissionPeriodicity() const override;

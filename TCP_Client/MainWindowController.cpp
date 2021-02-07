@@ -128,7 +128,7 @@ void MainWindowController::showAboutDialog(QWidget* parent)
 {
     if(aboutDialog == nullptr)
     {
-        aboutDialog = std::make_unique<AboutDialog>(parent);
+        aboutDialog = std::make_unique<AboutDialog>(*sds, parent);
     }
 
     aboutDialog->show();

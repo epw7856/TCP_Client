@@ -4,6 +4,7 @@
 #include <memory>
 #include <QDialog>
 
+class ApplicationInterface;
 class QGraphicsScene;
 
 namespace Ui {
@@ -15,7 +16,7 @@ class AboutDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AboutDialog(QWidget *parent = nullptr);
+    explicit AboutDialog(const ApplicationInterface& localAppInterface, QWidget *parent = nullptr);
     ~AboutDialog();
 
 private slots:
@@ -23,6 +24,7 @@ private slots:
 
 private:
     Ui::AboutDialog *ui;
+    const ApplicationInterface& appInterface;
     std::unique_ptr<QGraphicsScene> scene;
 };
 

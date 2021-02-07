@@ -1,10 +1,11 @@
 #include "AboutDialog.h"
-#include "SemanticVersion.h"
+#include "ApplicationInterface.h"
 #include "ui_AboutDialog.h"
 
-AboutDialog::AboutDialog(QWidget *parent) :
+AboutDialog::AboutDialog(const ApplicationInterface& localAppInterface, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AboutDialog),
+    appInterface(localAppInterface),
     scene(std::make_unique<QGraphicsScene>())
 {
     ui->setupUi(this);
@@ -21,7 +22,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     connect(ui->pushButtonClose, &QPushButton::clicked, this, &AboutDialog::onActionClose);
 
     ui->labelName->setText("Local Control Application");
-    ui->labelVersion->setText(SemanticVersion);
+    ui->labelVersion->setText(appInterface.getSemanticVersion());
     ui->labelDepartment->setText("Shipboard Electrical Systems");
     ui->labelOrganization->setText("Naval Nuclear Laboratory");
 }

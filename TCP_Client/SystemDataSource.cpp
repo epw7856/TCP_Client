@@ -3,6 +3,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonValue>
+#include "SemanticVersion.h"
 #include "SystemDataSource.h"
 
 bool SystemDataSource::loadSystemConfiguration(const QString& configFilePath)
@@ -35,6 +36,11 @@ bool SystemDataSource::loadSystemConfiguration(const QString& configFilePath)
     parseOutboundDataTableRanges();
 
     return true;
+}
+
+QString SystemDataSource::getSemanticVersion() const
+{
+    return SemanticVersion;
 }
 
 void SystemDataSource::clearSystemData()
