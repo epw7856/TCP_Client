@@ -22,7 +22,7 @@ public:
 private:
     InboundDataInterface& inboundDataInterface;
     std::vector<DataItem*> inboundDataItems = {};
-    int numColumns = 3;
+    int numColumns = 4;
 };
 
 #endif // INBOUNDDATATABLEMODEL_H

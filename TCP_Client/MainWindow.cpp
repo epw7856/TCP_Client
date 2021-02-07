@@ -170,6 +170,7 @@ void MainWindow::configureInboundDataTableView()
 {
     // Add table model data and configure selection behavior
     ui->tableViewStatusData->setModel(&(mainWindowController->getInboundDataTableModel()));
+    ui->tableViewStatusData->setColumnHidden(0, true);
     ui->tableViewStatusData->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableViewStatusData->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->tableViewStatusData->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -196,6 +197,7 @@ void MainWindow::configureOutboundDataTableView()
 {
     // Add table model data and configure selection behavior
     ui->tableViewControlData->setModel(&(mainWindowController->getOutboundDataTableModel()));
+    ui->tableViewControlData->setColumnHidden(0, true);
     ui->tableViewControlData->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableViewControlData->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->tableViewControlData->setFocusPolicy(Qt::NoFocus);

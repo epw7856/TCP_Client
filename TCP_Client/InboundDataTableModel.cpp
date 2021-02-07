@@ -29,18 +29,23 @@ QVariant InboundDataTableModel::data(const QModelIndex& index, int role) const
     {
         auto rowUint = static_cast<quint32>(index.row());
 
-        // Parameter column
+        // Data item index column
         if(index.column() == 0)
+        {
+            return rowUint;
+        }
+        // Parameter column
+        else if(index.column() == 1)
         {
             return inboundDataItems[rowUint]->getDataItemName();
         }
         // Value column
-        else if(index.column() == 1)
+        else if(index.column() == 2)
         {
             return inboundDataItems[rowUint]->getDisplayValue();
         }
         // Units column
-        else if(index.column() == 2)
+        else if(index.column() == 3)
         {
             return inboundDataItems[rowUint]->getDataItemUnits();
         }
@@ -51,7 +56,7 @@ QVariant InboundDataTableModel::data(const QModelIndex& index, int role) const
         if((index.row() < numRows) &&
            (index.column() < numColumns))
         {
-            return (index.column() == 0) ? Qt::AlignVCenter : Qt::AlignCenter;
+            return (index.column() == 1) ? Qt::AlignVCenter : Qt::AlignCenter;
         }
     }
 
@@ -66,13 +71,17 @@ QVariant InboundDataTableModel::headerData(int section, Qt::Orientation orientat
         {
             if(section == 0)
             {
-                return QString("Parameter");
+                return QString("Index");
             }
             else if(section == 1)
             {
-                return QString("Value");
+                return QString("Parameter");
             }
             else if(section == 2)
+            {
+                return QString("Value");
+            }
+            else if(section == 3)
             {
                 return QString("Units");
             }

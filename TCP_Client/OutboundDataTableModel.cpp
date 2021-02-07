@@ -30,23 +30,28 @@ QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
     {
         auto rowUint = static_cast<quint32>(index.row());
 
-        // Parameter column
+        // Index column
         if(index.column() == 0)
+        {
+            return rowUint;
+        }
+        // Parameter column
+        else if(index.column() == 1)
         {
             return outboundDataItems[rowUint]->getDataItemName();
         }
         // Current Value column
-        else if(index.column() == 1)
+        else if(index.column() == 2)
         {
             return outboundDataItems[rowUint]->getDisplayValue();
         }
         // New Value column
-        else if(index.column() == 2)
+        else if(index.column() == 3)
         {
             return desiredOutboundValues[rowUint];
         }
         // Units column
-        else if(index.column() == 3)
+        else if(index.column() == 4)
         {
             return outboundDataItems[rowUint]->getDataItemUnits();
         }
@@ -57,7 +62,7 @@ QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
         if((index.row() < numRows) &&
            (index.column() < numColumns))
         {
-            return (index.column() == 0) ? Qt::AlignVCenter : Qt::AlignCenter;
+            return (index.column() == 1) ? Qt::AlignVCenter : Qt::AlignCenter;
         }
     }
 
@@ -86,17 +91,21 @@ QVariant OutboundDataTableModel::headerData(int section, Qt::Orientation orienta
         {
             if(section == 0)
             {
-                return QString("Parameter");
+                return QString("Index");
             }
-            else if(section == 1)
+            if(section == 1)
             {
-                return QString("Current Value");
+                return QString("Parameter");
             }
             else if(section == 2)
             {
-                return QString("New Value");
+                return QString("Current Value");
             }
             else if(section == 3)
+            {
+                return QString("New Value");
+            }
+            else if(section == 4)
             {
                 return QString("Units");
             }
@@ -107,7 +116,7 @@ QVariant OutboundDataTableModel::headerData(int section, Qt::Orientation orienta
 
 Qt::ItemFlags OutboundDataTableModel::flags(const QModelIndex& index) const
 {
-    if(index.column() == 2)
+    if(index.column() == 3)
     {
         return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
     }

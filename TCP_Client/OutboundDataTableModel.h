@@ -36,7 +36,7 @@ private:
     std::vector<DataItem*> outboundDataItems = {};
     std::vector<QString> desiredOutboundValues = {};
     std::vector<QString> newValues = {};
-    int numColumns = 4;
+    int numColumns = 5;
 };
 
 #endif // OUTBOUNDDATATABLEMODEL_H
