@@ -127,7 +127,7 @@ void SystemDataSource::parseOutboundData()
                                                                         QString(item.toObject().value("Units").toString()),
                                                                         QString(item.toObject().value("Format").toString()));
 
-        QString defaultValString = item.toObject().value("Default Value").toString();
+        QString defaultValString = item.toObject().value("Default Value").toVariant().toString();
         if(defaultValString.isEmpty())
         {
             defaultValString = convertRawToDisplayValue(dataItem->getDataItemType(), 0);

@@ -3,7 +3,6 @@
 
 #include <QByteArray>
 #include <QDataStream>
-#include <vector>
 
 std::vector<unsigned> toUint32Vector(const QByteArray& byteArray);
 QByteArray toByteArray(const std::vector<unsigned>& uint32Vector);
