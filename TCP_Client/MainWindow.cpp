@@ -168,54 +168,41 @@ void MainWindow::onActionClearAllTriggered()
 
 void MainWindow::configureInboundDataTableView()
 {
-    // Add table model data and configure selection behavior
+    // Add table model data and configure settings
     ui->tableViewStatusData->setModel(&(mainWindowController->getInboundDataTableModel()));
-    ui->tableViewStatusData->setColumnHidden(0, true);
-    ui->tableViewStatusData->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableViewStatusData->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->tableViewStatusData->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableViewStatusData->setFocusPolicy(Qt::NoFocus);
-
-    // Set font styles
-    QFont font(ui->tableViewStatusData->font());
-    font.setBold(true);
-    ui->tableViewStatusData->horizontalHeader()->setFont(font);
-    ui->tableViewStatusData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }\n"
-                                           "QTableView::item:selected {background-color: #3399FF; color: white;}");
-
-    // Configure the horizontal header settings
-    ui->tableViewStatusData->horizontalHeader()->setFixedHeight(25);
-    ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableViewStatusData->horizontalHeader()->setSectionsClickable(false);
-
-    // Configure the vertical header settings
-    ui->tableViewStatusData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->tableViewStatusData->verticalHeader()->hide();
+    configureCommonTableSettings(ui->tableViewStatusData);
 }
 
 void MainWindow::configureOutboundDataTableView()
 {
-    // Add table model data and configure selection behavior
+    // Add table model data and configure seettings
     ui->tableViewControlData->setModel(&(mainWindowController->getOutboundDataTableModel()));
-    ui->tableViewControlData->setColumnHidden(0, true);
-    ui->tableViewControlData->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableViewControlData->setSelectionMode(QAbstractItemView::MultiSelection);
-    ui->tableViewControlData->setFocusPolicy(Qt::NoFocus);
+    configureCommonTableSettings(ui->tableViewControlData);
+}
+
+void MainWindow::configureCommonTableSettings(QTableView* table)
+{
+    // Hide the index column and set selection/focus behavior
+    table->setColumnHidden(0, true);
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionMode(QAbstractItemView::MultiSelection);
+    table->setFocusPolicy(Qt::NoFocus);
 
     // Set font styles
-    QFont font(ui->tableViewControlData->font());
+    QFont font(table->font());
     font.setBold(true);
-    ui->tableViewControlData->horizontalHeader()->setFont(font);
-    ui->tableViewControlData->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }\n"
-                                            "QTableView::item:selected {background-color: #3399FF; color: white;}");
+    table->horizontalHeader()->setFont(font);
+    table->setStyleSheet("QHeaderView::section { background-color: rgb(240, 240, 240) }\n"
+                         "QTableView::item:selected {background-color: #3399FF; color: white;}");
 
     // Configure the horizontal header settings
-    ui->tableViewControlData->horizontalHeader()->setFixedHeight(25);
-    ui->tableViewControlData->resizeColumnToContents(2);
-    ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableViewControlData->horizontalHeader()->setSectionsClickable(false);
+    table->horizontalHeader()->setFixedHeight(25);
+    table->resizeColumnToContents(2);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionsClickable(false);
 
     // Configure the vertical header settings
-    ui->tableViewControlData->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->tableViewControlData->verticalHeader()->hide();
+    table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    table->verticalHeader()->hide();
 }

@@ -6,6 +6,7 @@
 
 class MainWindowController;
 class QLabel;
+class QTableView;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -49,6 +50,7 @@ private:
 
     void configureInboundDataTableView();
     void configureOutboundDataTableView();
+    void configureCommonTableSettings(QTableView* table);
     void setupStatusBar();
 };
 #endif // MAINWINDOW_H
