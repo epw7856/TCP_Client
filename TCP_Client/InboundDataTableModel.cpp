@@ -9,16 +9,6 @@ InboundDataTableModel::InboundDataTableModel(InboundDataInterface &localInboundD
 
 }
 
-int InboundDataTableModel::rowCount(const QModelIndex&) const
-{
-    return static_cast<int>(inboundDataItemMap.size());
-}
-
-int InboundDataTableModel::columnCount(const QModelIndex&) const
-{
-    return numColumns;
-}
-
 QVariant InboundDataTableModel::data(const QModelIndex& index, int role) const
 {
     int numRows = rowCount(index);

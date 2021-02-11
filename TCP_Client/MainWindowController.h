@@ -36,6 +36,7 @@ public:
     bool enableClearButton() const;
     bool enableResetButton() const;
 
+    void outboundTableDoubleClicked(const QModelIndex& index);
     void applyDesiredOutboundValues();
     void clearDesiredOutboundValues();
     void resetDesiredOutboundValuesToDefaults();

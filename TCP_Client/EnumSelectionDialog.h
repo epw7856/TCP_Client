@@ -30,6 +30,7 @@ private slots:
     void enumDoubleClicked(const QModelIndex& index);
     void onButtonAcceptClicked();
     void onButtonCancelClicked();
+    void showEvent(QShowEvent* event) override;
 
 private:
     Ui::EnumSelectionDialog *ui;

@@ -26,4 +26,15 @@ private:
     int numColumns = 4;
 };
 
+
+inline int InboundDataTableModel::rowCount(const QModelIndex&) const
+{
+    return static_cast<int>(inboundDataItemMap.size());
+}
+
+inline int InboundDataTableModel::columnCount(const QModelIndex&) const
+{
+    return numColumns;
+}
+
 #endif // INBOUNDDATATABLEMODEL_H

@@ -21,7 +21,10 @@ public:
         type(itemType),
         name(itemName),
         units(itemUnits),
-        format(itemFormat) {}
+        format(itemFormat),
+        enumType((type != TypeUnsignedInteger) &&
+                 (type != TypeInteger) &&
+                 (type != TypeNumeric)) {}
 
     QString getDataItemType() const;
     QString getDataItemName() const;
@@ -32,6 +35,7 @@ public:
     QString getDataItemFormat() const;
     std::pair<unsigned, unsigned> getDataItemRange() const;
     bool isRangeCheckingEnabled() const;
+    bool isEnumType() const;
 
     void setRawValue(unsigned value);
     void setDisplayValue(const QString& value);
@@ -55,6 +59,7 @@ private:
     QString format = "";
     DataItemRange range;
     bool rangeCheckEnable = false;
+    bool enumType = false;
 };
 
 inline QString DataItem::getDataItemType() const
@@ -100,6 +105,11 @@ inline std::pair<unsigned, unsigned> DataItem::getDataItemRange() const
 inline bool DataItem::isRangeCheckingEnabled() const
 {
     return rangeCheckEnable;
+}
+
+inline bool DataItem::isEnumType() const
+{
+    return enumType;
 }
 
 inline void DataItem::setRawValue(unsigned value)

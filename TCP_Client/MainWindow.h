@@ -38,6 +38,7 @@ private slots:
     void onButtonApplyClicked();
     void onActionClearSelectionTriggered();
     void onActionClearAllTriggered();
+    void controlDataTableDoubleClicked(const QModelIndex& index);
     void showEvent(QShowEvent* event) override;
 
 private:

@@ -1,5 +1,7 @@
 #include "AboutDialog.h"
 #include "CommunicationsManager.h"
+#include "DataItem.h"
+#include "EnumSelectionDialog.h"
 #include "FileOperationsHandler.h"
 #include "MainWindowController.h"
 #include <QMessageBox>
@@ -96,6 +98,27 @@ bool MainWindowController::enableClearButton() const
 bool MainWindowController::enableResetButton() const
 {
     return configurationLoaded;
+}
+
+void MainWindowController::outboundTableDoubleClicked(const QModelIndex& index)
+{
+    if(index.column() == outboundDataTableModel.getNewValueColumn())
+    {
+        DataItem* item = sds->getOutboundDataItem(outboundDataTableModel.index(index.row(), 0).data().toInt());
+        if(item->isEnumType())
+        {
+            EnumSelectionDialog enumDialog;
+            enumDialog.setEnumName(item->getDataItemType());
+            enumDialog.setEnumStrings(sds->getEnumStrings(item->getDataItemType()));
+            enumDialog.setCurrentValue(item->getDisplayValue());
+            enumDialog.exec();
+
+            if(enumDialog.isAccepted())
+            {
+                outboundDataTableModel.setData(index, enumDialog.getNewValue(), Qt::EditRole);
+            }
+        }
+    }
 }
 
 void MainWindowController::applyDesiredOutboundValues()

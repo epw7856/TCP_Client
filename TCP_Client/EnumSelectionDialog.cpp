@@ -1,6 +1,7 @@
 #include "EnumSelectionController.h"
 #include "EnumSelectionDialog.h"
 #include "EnumSelectionTableModel.h"
+#include <QShowEvent>
 #include "ui_EnumSelectionDialog.h"
 
 EnumSelectionDialog::EnumSelectionDialog(QWidget *parent) :
@@ -79,4 +80,10 @@ void EnumSelectionDialog::onButtonAcceptClicked()
 void EnumSelectionDialog::onButtonCancelClicked()
 {
     close();
+}
+
+void EnumSelectionDialog::showEvent(QShowEvent* event)
+{
+    ui->labelNewValue->clear();
+    event->accept();
 }

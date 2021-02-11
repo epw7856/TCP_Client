@@ -54,6 +54,9 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(mainWindowController.get(), &MainWindowController::notifyInboundDataUpdated, this, &MainWindow::refreshStatusDataDisplay);
     connect(mainWindowController.get(), &MainWindowController::notifyStatusChange, this, &MainWindow::periodicUpdate);
 
+    // Connections from user interaction with the Control Data table
+    connect(ui->tableViewControlData, &QTableView::doubleClicked, this, &MainWindow::controlDataTableDoubleClicked);
+
     // Perform initial setup and refresh the UI
     mainWindowController->performInitialSetup();
     periodicUpdate();
@@ -164,6 +167,11 @@ void MainWindow::onActionClearSelectionTriggered()
 void MainWindow::onActionClearAllTriggered()
 {
     mainWindowController->clearDesiredOutboundValues();
+}
+
+void MainWindow::controlDataTableDoubleClicked(const QModelIndex& index)
+{
+    mainWindowController->outboundTableDoubleClicked(index);
 }
 
 void MainWindow::configureInboundDataTableView()

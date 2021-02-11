@@ -22,6 +22,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
+    int getNewValueColumn() const;
     const std::vector<QString>& getDesiredOutboundValues() const;
     void setOutboundDataItems();
     void setDesiredOutboundValue(int index, QString value);
@@ -37,6 +38,22 @@ private:
     std::map<unsigned, DataItem*> outboundDataItemMap = {};
     std::vector<QString> desiredOutboundValues = {};
     int numColumns = 5;
+    int newValueColumn = 3;
 };
+
+inline int OutboundDataTableModel::rowCount(const QModelIndex&) const
+{
+    return static_cast<int>(outboundDataItemMap.size());
+}
+
+inline int OutboundDataTableModel::columnCount(const QModelIndex&) const
+{
+    return numColumns;
+}
+
+inline int OutboundDataTableModel::getNewValueColumn() const
+{
+    return newValueColumn;
+}
 
 #endif // OUTBOUNDDATATABLEMODEL_H

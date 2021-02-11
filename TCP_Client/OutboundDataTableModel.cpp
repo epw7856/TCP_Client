@@ -10,16 +10,6 @@ OutboundDataTableModel::OutboundDataTableModel(OutboundDataInterface& localOutbo
 
 }
 
-int OutboundDataTableModel::rowCount(const QModelIndex&) const
-{
-    return static_cast<int>(outboundDataItemMap.size());
-}
-
-int OutboundDataTableModel::columnCount(const QModelIndex&) const
-{
-    return numColumns;
-}
-
 QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
 {
     if(((role == Qt::DisplayRole) || (role == Qt::EditRole)) &&
