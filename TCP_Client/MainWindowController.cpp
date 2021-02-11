@@ -219,10 +219,11 @@ void MainWindowController::performInitialSetup()
         }
         else
         {
-            emit sendStatusBarMessage("Ready");
+            emit sendStatusBarMessage("Not Connected");
         }
     }
 
+    //commsManager->setConnectionNotificationEnable(settingsManager->getShowConnectionNotificationsSetting());
     commsManager->setConnectionNotificationEnable(true);
     emit notifyStatusChange();
 }

@@ -23,8 +23,20 @@
 		"Data From Server": {
 			"Status Data Table Displayed Ranges": [
 				{
-					"Starting Index (Inclusive)": 0,
+					"Starting Index (Inclusive)": 1,
 					"Ending Index (Exclusive)": 3
+				}
+			],
+			"Reserved Data Item Definitions": [
+				{
+					"Index": 1,
+					"Identifier": "Special Inbound Data Item 1"
+				
+				},
+				{
+					"Index": 2,
+					"Identifier": "Special Inbound Data Item 2"
+				
 				}
 			],
 			"Data Items": [
@@ -55,7 +67,19 @@
 			"Control Data Table Displayed Ranges": [
 				{
 					"Starting Index (Inclusive)": 0,
-					"Ending Index (Exclusive)": 3
+					"Ending Index (Exclusive)": 6
+				}
+			],
+			"Reserved Data Item Definitions": [
+				{
+					"Index": 0,
+					"Identifier": "Special Outbound Data Item 1"
+				
+				},
+				{
+					"Index": 2,
+					"Identifier": "Special Outbound Data Item 2"
+				
 				}
 			],
 			"Data Items": [
@@ -82,6 +106,36 @@
 				{
 					"Index": 2,
 					"Name": "TestOutputSignal3",
+					"Data Type": "Unsigned",
+					"Default Value": 1384,
+					"Min Value": 0,
+					"Max Value": 1399,
+					"Format": "",
+					"Units": "Radians"
+				},
+				{
+					"Index": 3,
+					"Name": "TestOutputSignal4",
+					"Data Type": "Numeric",
+					"Default Value": 1.23,
+					"Min Value": 0.00,
+					"Max Value": 1000.1,
+					"Format": "%.2f",
+					"Units": "Radians"
+				},
+				{
+					"Index": 4,
+					"Name": "TestOutputSignal5",
+					"Data Type": "Boolean",
+					"Default Value": "True",
+					"Min Value": "",
+					"Max Value": "",
+					"Format": "",
+					"Units": "Unitless"
+				},
+				{
+					"Index": 5,
+					"Name": "TestOutputSignal6",
 					"Data Type": "Unsigned",
 					"Default Value": 1384,
 					"Min Value": 0,
