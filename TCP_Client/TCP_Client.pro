@@ -25,6 +25,7 @@ SOURCES += \
     DataUtilities.cpp \
     EnumSelectionController.cpp \
     EnumSelectionDialog.cpp \
+    EnumSelectionTableModel.cpp \
     EnumType.cpp \
     FileOperationsHandler.cpp \
     InboundDataTableModel.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     EnumInterface.h \
     EnumSelectionController.h \
     EnumSelectionDialog.h \
+    EnumSelectionTableModel.h \
     EnumType.h \
     FileOperationsHandler.h \
     InboundDataInterface.h \

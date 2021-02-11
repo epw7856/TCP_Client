@@ -5,6 +5,7 @@
 #include <QDialog>
 
 class EnumSelectionController;
+class EnumSelectionTableModel;
 
 namespace Ui {
 class EnumSelectionDialog;
@@ -18,13 +19,22 @@ public:
     explicit EnumSelectionDialog(QWidget *parent = nullptr);
     ~EnumSelectionDialog();
 
+    void setEnumName(const QString& value);
+    void setEnumStrings(const std::vector<QString>& enumStrings);
+    void setCurrentValue(const QString& value);
+    bool isAccepted() const;
+    QString getNewValue() const;
+
 private slots:
+    void enumClicked(const QModelIndex& index);
+    void enumDoubleClicked(const QModelIndex& index);
     void onButtonAcceptClicked();
     void onButtonCancelClicked();
 
 private:
     Ui::EnumSelectionDialog *ui;
     std::unique_ptr<EnumSelectionController> controller;
+    std::unique_ptr<EnumSelectionTableModel> tableModel;
 };
 
 #endif // ENUMSELECTIONDIALOG_H
