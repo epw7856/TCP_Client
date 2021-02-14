@@ -28,7 +28,7 @@ public slots:
 private slots:
     void actionViewApplicationInformation();
     void onActionLoadSystemConfigurationFileTriggered();
-    void onActionViewApplicationConfigurationTriggered();
+    void onActionViewApplicationSettingsTriggered();
     void onActionConnectToServerTriggered();
     void onActionDisconnectFromServerTriggered();
     void onActionSaveStatusDataToFileClicked();

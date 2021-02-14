@@ -7,6 +7,7 @@
 #include <QObject>
 
 class AboutDialog;
+class ApplicationSettingsDialog;
 class CommunicationsManager;
 class InboundDataInterface;
 class OutboundDataInterface;
@@ -43,6 +44,7 @@ public:
     void resetSelectedDesiredOutboundValuesToDefaults(const QModelIndexList& selection);
 
     void showAboutDialog(QWidget* parent);
+    void showApplicationSettingsDialog(QWidget* parent);
 
 public slots:
     void updateInboundDataDisplay();
@@ -58,6 +60,7 @@ private:
     std::unique_ptr<CommunicationsManager> commsManager;
     std::unique_ptr<SettingsManager> settingsManager;
     std::unique_ptr<AboutDialog> aboutDialog;
+    std::unique_ptr<ApplicationSettingsDialog> appSettingsDialog;
     bool configurationLoaded = false;
     InboundDataTableModel inboundDataTableModel;
     OutboundDataTableModel outboundDataTableModel;

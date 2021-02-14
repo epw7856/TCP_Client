@@ -20,6 +20,8 @@ RC_ICONS = App.ico
 
 SOURCES += \
     AboutDialog.cpp \
+    ApplicationSettingsController.cpp \
+    ApplicationSettingsDialog.cpp \
     CommunicationsManager.cpp \
     CommunicationsUtilities.cpp \
     DataUtilities.cpp \
@@ -42,6 +44,8 @@ HEADERS += \
     AboutDialog.h \
     ApplicationInterface.h \
     ApplicationSettings.h \
+    ApplicationSettingsController.h \
+    ApplicationSettingsDialog.h \
     CommunicationsManager.h \
     CommunicationsUtilities.h \
     ConnectionStatus.h \
@@ -68,6 +72,7 @@ HEADERS += \
 
 FORMS += \
     AboutDialog.ui \
+    ApplicationSettingsDialog.ui \
     EnumSelectionDialog.ui \
     MainWindow.ui
 

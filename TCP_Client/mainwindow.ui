@@ -511,7 +511,7 @@
      <string>Configuration</string>
     </property>
     <addaction name="actionLoadSystemConfigurationFile"/>
-    <addaction name="actionViewApplicationConfiguration"/>
+    <addaction name="actionViewApplicationSettings"/>
    </widget>
    <widget class="QMenu" name="menuConnection">
     <property name="font">
@@ -574,9 +574,9 @@
     </font>
    </property>
   </action>
-  <action name="actionViewApplicationConfiguration">
+  <action name="actionViewApplicationSettings">
    <property name="text">
-    <string>View Application Configuration</string>
+    <string>View Application Settings</string>
    </property>
    <property name="font">
     <font>

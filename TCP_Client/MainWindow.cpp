@@ -36,7 +36,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     // Connections with the menu bar in the UI
     connect(ui->actionViewApplicationInformation, &QAction::triggered, this, &MainWindow::actionViewApplicationInformation);
     connect(ui->actionLoadSystemConfigurationFile, &QAction::triggered, this, &MainWindow::onActionLoadSystemConfigurationFileTriggered);
-    connect(ui->actionViewApplicationConfiguration, &QAction::triggered, this, &MainWindow::onActionViewApplicationConfigurationTriggered);
+    connect(ui->actionViewApplicationSettings, &QAction::triggered, this, &MainWindow::onActionViewApplicationSettingsTriggered);
     connect(ui->actionConnectToServer, &QAction::triggered, this, &MainWindow::onActionConnectToServerTriggered);
     connect(ui->actionDisconnectFromServer, &QAction::triggered, this, &MainWindow::onActionDisconnectFromServerTriggered);
     connect(ui->actionSaveStatusDataToFile, &QAction::triggered, this, &MainWindow::onActionSaveStatusDataToFileClicked);
@@ -119,9 +119,9 @@ void MainWindow::onActionLoadSystemConfigurationFileTriggered()
     mainWindowController->selectConfigurationFile(this);
 }
 
-void MainWindow::onActionViewApplicationConfigurationTriggered()
+void MainWindow::onActionViewApplicationSettingsTriggered()
 {
-
+    mainWindowController->showApplicationSettingsDialog(this);
 }
 
 void MainWindow::onActionConnectToServerTriggered()

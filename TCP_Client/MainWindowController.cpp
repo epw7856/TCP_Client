@@ -1,4 +1,5 @@
 #include "AboutDialog.h"
+#include "ApplicationSettingsDialog.h"
 #include "CommunicationsManager.h"
 #include "DataItem.h"
 #include "EnumSelectionDialog.h"
@@ -157,6 +158,18 @@ void MainWindowController::showAboutDialog(QWidget* parent)
     aboutDialog->show();
     aboutDialog->raise();
     aboutDialog->activateWindow();
+}
+
+void MainWindowController::showApplicationSettingsDialog(QWidget* parent)
+{
+    if(appSettingsDialog == nullptr)
+    {
+        appSettingsDialog = std::make_unique<ApplicationSettingsDialog>(*sds, *settingsManager, parent);
+    }
+
+    appSettingsDialog->show();
+    appSettingsDialog->raise();
+    appSettingsDialog->activateWindow();
 }
 
 void MainWindowController::updateInboundDataDisplay()
