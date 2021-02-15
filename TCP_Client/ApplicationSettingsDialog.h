@@ -29,6 +29,9 @@ public slots:
 private slots:
     void showEvent(QShowEvent* event) override;
 
+signals:
+    void requestSettingsRefresh(bool reconnect);
+
 private:
     Ui::ApplicationSettingsDialog *ui;
     std::unique_ptr<ApplicationSettingsController> controller;

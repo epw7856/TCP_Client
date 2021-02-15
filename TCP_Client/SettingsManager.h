@@ -14,14 +14,14 @@ public:
     SettingsManager();
     ~SettingsManager() override;
 
-    QString getFileSelectionPathSetting() const override;
     bool getAutoConnectSetting() const override;
     QSize getMainWindowSizeSetting() const override;
+    bool getMainWindowMaximizedSetting() const override;
     bool getShowConnectionNotificationsSetting() const override;
 
-    void setFileSelectionPathSetting(const QString& path) override;
     void setAutoConnectSetting(bool enabled) override;
     void setMainWindowSizeSetting(const QSize& size) override;
+    void setMainWindowMaximizedSetting(bool maximized) override;
     void setShowConnectionNotificationsSetting(bool enabled) override;
 
 private:

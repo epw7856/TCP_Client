@@ -40,6 +40,7 @@ private slots:
     void onActionClearAllTriggered();
     void controlDataTableDoubleClicked(const QModelIndex& index);
     void showEvent(QShowEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
     Ui::MainWindow *ui;

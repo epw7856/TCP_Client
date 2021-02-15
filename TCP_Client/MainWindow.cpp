@@ -69,6 +69,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::showEvent(QShowEvent *event)
 {
+    QSize sizeSettings = mainWindowController->getMainWindowSizeSetting();
+    bool isMaximized = mainWindowController->getMainWindowMaximizedSetting();
+    if(isMaximized)
+    {
+        showMaximized();
+    }
+    else if(sizeSettings != QSize())
+    {
+        resize(sizeSettings);
+    }
+
     // Configure each column within the status and control data tables to be resizable
     ui->tableViewStatusData->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     ui->tableViewStatusData->horizontalHeader()->setStretchLastSection(true);
@@ -76,6 +87,13 @@ void MainWindow::showEvent(QShowEvent *event)
     ui->tableViewControlData->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     ui->tableViewControlData->horizontalHeader()->setStretchLastSection(true);
 
+    event->accept();
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    mainWindowController->saveMainWindowSizeSetting({width(), height()});
+    mainWindowController->saveMainWindowMaximizedSetting(isMaximized());
     event->accept();
 }
 

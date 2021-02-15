@@ -16,6 +16,7 @@ ApplicationSettingsDialog::ApplicationSettingsDialog
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    ui->pushButtonOk->setFocus();
 
     connect(ui->pushButtonOk, &QPushButton::clicked, this, &ApplicationSettingsDialog::onPushButtonOkClicked);
     connect(ui->pushButtonCancel, &QPushButton::clicked, this, &ApplicationSettingsDialog::onPushButtonCancelClicked);
@@ -28,7 +29,18 @@ ApplicationSettingsDialog::~ApplicationSettingsDialog()
 
 void ApplicationSettingsDialog::onPushButtonOkClicked()
 {
+   bool requireReconnect = false;
+   if(controller->verifyUserInput(ui->lineEditSocketPort->text(),
+                                  ui->lineEditTransmissionPeriodicity->text()))
+   {
+       requireReconnect = controller->setSocketPort(ui->lineEditSocketPort->text());
+       controller->setTransmissionPeriodicity(ui->lineEditTransmissionPeriodicity->text());
+       controller->setShowConnectionNotificationsEnabled(ui->checkBoxConnectionNotifications->isChecked());
+       controller->setAutoConnectEnabled(ui->checkBoxAutoConnect->isChecked());
 
+       emit requestSettingsRefresh(requireReconnect);
+       close();
+   }
 }
 
 void ApplicationSettingsDialog::onPushButtonCancelClicked()

@@ -19,7 +19,7 @@ AboutDialog::AboutDialog(const ApplicationInterface& localAppInterface, QWidget 
     ui->graphicsViewLogo->setMinimumHeight(map.height());
     ui->graphicsViewLogo->show();
 
-    ui->labelName->setText("Local Control Application");
+    ui->labelName->setText("Test Local Control Application");
     ui->labelVersion->setText(appInterface.getSemanticVersion());
     ui->labelDepartment->setText("Shipboard Electrical Systems");
     ui->labelOrganization->setText("Naval Nuclear Laboratory");

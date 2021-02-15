@@ -4,9 +4,9 @@
 #include "SettingsManager.h"
 
 // String identifiers for the persistent setting keys in the .ini file
-const QString FileSelectionPathIdentifier = "File Selection Path";
 const QString AutoConnectIdentifier = "Auto Connect";
 const QString MainWindowSizeIdentifier = "Main Window Size";
+const QString MainWindowMaximized = "Main Window Maximized";
 const QString DisplayConnectionNotificationsIdentifier = "Display Connection Notifications";
 
 SettingsManager::SettingsManager()
@@ -16,11 +16,6 @@ SettingsManager::SettingsManager()
 }
 
 SettingsManager::~SettingsManager() = default;
-
-QString SettingsManager::getFileSelectionPathSetting() const
-{
-    return (persistentSettings != nullptr) ? persistentSettings->value(FileSelectionPathIdentifier).toString() : QString();
-}
 
 bool SettingsManager::getAutoConnectSetting() const
 {
@@ -32,18 +27,14 @@ QSize SettingsManager::getMainWindowSizeSetting() const
     return (persistentSettings != nullptr) ? persistentSettings->value(MainWindowSizeIdentifier).toSize() : QSize();
 }
 
+bool SettingsManager::getMainWindowMaximizedSetting() const
+{
+    return (persistentSettings != nullptr) ? persistentSettings->value(MainWindowMaximized).toBool() : false;
+}
+
 bool SettingsManager::getShowConnectionNotificationsSetting() const
 {
     return (persistentSettings != nullptr) ? persistentSettings->value(DisplayConnectionNotificationsIdentifier).toBool() : false;
-}
-
-void SettingsManager::setFileSelectionPathSetting(const QString& path)
-{
-    if(persistentSettings != nullptr)
-    {
-        persistentSettings->setValue(FileSelectionPathIdentifier, path);
-        persistentSettings->sync();
-    }
 }
 
 void SettingsManager::setAutoConnectSetting(bool enabled)
@@ -60,6 +51,15 @@ void SettingsManager::setMainWindowSizeSetting(const QSize& size)
     if(persistentSettings != nullptr)
     {
         persistentSettings->setValue(MainWindowSizeIdentifier, size);
+        persistentSettings->sync();
+    }
+}
+
+void SettingsManager::setMainWindowMaximizedSetting(bool maximized)
+{
+    if(persistentSettings != nullptr)
+    {
+        persistentSettings->setValue(MainWindowMaximized, maximized);
         persistentSettings->sync();
     }
 }

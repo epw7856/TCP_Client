@@ -46,9 +46,15 @@ public:
     void showAboutDialog(QWidget* parent);
     void showApplicationSettingsDialog(QWidget* parent);
 
+    QSize getMainWindowSizeSetting() const;
+    void saveMainWindowSizeSetting(QSize size);
+    bool getMainWindowMaximizedSetting() const;
+    void saveMainWindowMaximizedSetting(bool maximized);
+
 public slots:
     void updateInboundDataDisplay();
     void receivedStatusUpdate(QString msg);
+    void refreshSettings(bool reconnect);
 
 signals:
     void notifyInboundDataUpdated();

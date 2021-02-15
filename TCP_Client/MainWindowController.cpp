@@ -165,11 +165,32 @@ void MainWindowController::showApplicationSettingsDialog(QWidget* parent)
     if(appSettingsDialog == nullptr)
     {
         appSettingsDialog = std::make_unique<ApplicationSettingsDialog>(*sds, *settingsManager, parent);
+        connect(appSettingsDialog.get(), &ApplicationSettingsDialog::requestSettingsRefresh, this, &MainWindowController::refreshSettings);
     }
 
     appSettingsDialog->show();
     appSettingsDialog->raise();
     appSettingsDialog->activateWindow();
+}
+
+QSize MainWindowController::getMainWindowSizeSetting() const
+{
+    return settingsManager->getMainWindowSizeSetting();
+}
+
+void MainWindowController::saveMainWindowSizeSetting(QSize size)
+{
+    settingsManager->setMainWindowSizeSetting(size);
+}
+
+bool MainWindowController::getMainWindowMaximizedSetting() const
+{
+    return settingsManager->getMainWindowMaximizedSetting();
+}
+
+void MainWindowController::saveMainWindowMaximizedSetting(bool maximized)
+{
+    settingsManager->setMainWindowMaximizedSetting(maximized);
 }
 
 void MainWindowController::updateInboundDataDisplay()
@@ -181,6 +202,22 @@ void MainWindowController::receivedStatusUpdate(QString msg)
 {
     emit sendStatusBarMessage(msg);
     emit notifyStatusChange();
+}
+
+void MainWindowController::refreshSettings(bool reconnect)
+{
+    commsManager->setConnectionNotificationEnable(settingsManager->getShowConnectionNotificationsSetting());
+    commsManager->setSocketPort(sds->getSocketPort());
+    commsManager->setTransmissionPeriodicity(sds->getTransmissionPeriodicity());
+
+    if(reconnect)
+    {
+       if(commsManager->getConnectionStatus() == ConnectionStatus::Connected)
+       {
+           executeDisconnect();
+       }
+       executeConnect();
+    }
 }
 
 void MainWindowController::loadConfiguration(const QString& configFilePath, bool initialLoad)
@@ -236,8 +273,7 @@ void MainWindowController::performInitialSetup()
         }
     }
 
-    //commsManager->setConnectionNotificationEnable(settingsManager->getShowConnectionNotificationsSetting());
-    commsManager->setConnectionNotificationEnable(true);
+    commsManager->setConnectionNotificationEnable(settingsManager->getShowConnectionNotificationsSetting());
     emit notifyStatusChange();
 }
 
