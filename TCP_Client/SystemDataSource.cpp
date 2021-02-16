@@ -165,7 +165,6 @@ void SystemDataSource::parseOutboundDataTableRanges()
     {
         outboundDataTableRanges.push_back({0, outboundDataItems.size()});
     }
-
 }
 
 QString SystemDataSource::convertRawToDisplayValue(const QString& type,
@@ -323,7 +322,7 @@ void SystemDataSource::setInboundRawValues(const std::vector<unsigned>& rawValue
 
 DataItem *SystemDataSource::getInboundDataItem(int index) const
 {
-    return inboundDataItems[index].get();
+    return ((index < static_cast<int>(inboundDataItems.size())) ? inboundDataItems[index].get() : nullptr);
 }
 
 std::vector<DataItem*> SystemDataSource::getInboundDataItems() const
@@ -375,6 +374,12 @@ std::vector<std::pair<unsigned, unsigned>> SystemDataSource::getInboundDataTable
     return inboundDataTableRanges;
 }
 
+DataItem* SystemDataSource::getReservedInboundDataItem(const QString& key)
+{
+    auto itr = std::find_if(inboundDataItems.begin(), inboundDataItems.end(), [&](const std::shared_ptr<DataItem>& item){ return key == item->getDataItemName(); });
+    return ((itr != inboundDataItems.end()) ? itr->get() : nullptr);
+}
+
 void SystemDataSource::setOutboundDisplayValue(unsigned index, const QString& displayValue)
 {
     if(!displayValue.isEmpty())
@@ -400,7 +405,7 @@ void SystemDataSource::setOutboundDisplayValues(const std::vector<QString>& disp
 
 DataItem* SystemDataSource::getOutboundDataItem(int index) const
 {
-    return outboundDataItems[index].get();
+    return ((index < static_cast<int>(outboundDataItems.size())) ? outboundDataItems[index].get() : nullptr);
 }
 
 std::vector<DataItem *> SystemDataSource::getOutboundDataItems() const
@@ -455,4 +460,10 @@ std::vector<unsigned> SystemDataSource::getOutboundRawValues() const
 std::vector<std::pair<unsigned, unsigned>> SystemDataSource::getOutboundDataTableRanges() const
 {
     return outboundDataTableRanges;
+}
+
+DataItem *SystemDataSource::getReservedOutboundDataItem(const QString& key)
+{
+    auto itr = std::find_if(outboundDataItems.begin(), outboundDataItems.end(), [&](const std::shared_ptr<DataItem>& item){ return key == item->getDataItemName(); });
+    return ((itr != outboundDataItems.end()) ? itr->get() : nullptr);
 }

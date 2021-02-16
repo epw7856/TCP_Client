@@ -27,6 +27,11 @@ EnumSelectionDialog::~EnumSelectionDialog()
     delete ui;
 }
 
+void EnumSelectionDialog::setDataItemName(const QString& value)
+{
+    ui->labelDataItemName->setText(value);
+}
+
 void EnumSelectionDialog::setEnumName(const QString& value)
 {
     ui->labelEnumName->setText(value);

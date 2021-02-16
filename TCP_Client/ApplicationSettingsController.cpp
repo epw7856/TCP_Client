@@ -19,7 +19,7 @@ ApplicationSettingsController::ApplicationSettingsController
 QString ApplicationSettingsController::getCurrentConfig() const
 {
     QFileInfo file(appInterface.getSystemConfigFilePath());
-    return "\"" + file.fileName() + "\"";
+    return (file.fileName().isEmpty()) ? "No configuration file loaded" : file.fileName();
 }
 
 unsigned ApplicationSettingsController::getSocketPort() const

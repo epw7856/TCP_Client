@@ -12,16 +12,32 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 {
     ui->setupUi(this);
 
+    QFont font("Segoe UI", 10);
+
+    // Setup the File Actions toolbutton and the associated dropdown menu actions
+    saveControlDataToFileAction = new QAction("Save Control Data To File", this);
+    saveControlDataToFileAction->setFont(font);
+
+    restoreControlDataFromFileAction = new QAction("Restore Control Data From File", this);
+    restoreControlDataFromFileAction->setFont(font);
+
+    fileActionMenu = new QMenu(this);
+    fileActionMenu->addAction(saveControlDataToFileAction);
+    fileActionMenu->addAction(restoreControlDataFromFileAction);
+
+    ui->toolButtonFileActions->setMenu(fileActionMenu);
+    ui->toolButtonFileActions->setPopupMode(QToolButton::InstantPopup);
+
     // Setup the Clear toolbutton and the associated dropdown menu actions
     clearSelectionAction = new QAction("Clear Selected Data Items", this);
-    clearSelectionAction->setFont(QFont("Segoe UI", 10));
+    clearSelectionAction->setFont(font);
 
     clearAllAction = new QAction("Clear All Data Items", this);
-    clearAllAction->setFont(QFont("Segoe UI", 10));
+    clearAllAction->setFont(font);
 
     clearMenu = new QMenu(this);
-    clearMenu->addAction(clearSelectionAction);
     clearMenu->addAction(clearAllAction);
+    clearMenu->addAction(clearSelectionAction);
 
     ui->toolButtonClear->setMenu(clearMenu);
     ui->toolButtonClear->setPopupMode(QToolButton::InstantPopup);
@@ -39,13 +55,13 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(ui->actionViewApplicationSettings, &QAction::triggered, this, &MainWindow::onActionViewApplicationSettingsTriggered);
     connect(ui->actionConnectToServer, &QAction::triggered, this, &MainWindow::onActionConnectToServerTriggered);
     connect(ui->actionDisconnectFromServer, &QAction::triggered, this, &MainWindow::onActionDisconnectFromServerTriggered);
-    connect(ui->actionSaveStatusDataToFile, &QAction::triggered, this, &MainWindow::onActionSaveStatusDataToFileClicked);
-    connect(ui->actionSaveControlDataToFile, &QAction::triggered, this, &MainWindow::onActionSaveControlDataToFileClicked);
-    connect(ui->actionRestoreControlDataFromFile, &QAction::triggered, this, &MainWindow::onActionRestoreControlDataFromFileClicked);
+    connect(ui->actionLaunchDragon, &QAction::triggered, this, &MainWindow::onActionLaunchDragon);
 
     // Connections with the pushbuttons in the UI
     connect(ui->pushButtonReset, &QPushButton::clicked, this, &MainWindow::onButtonResetClicked);
     connect(ui->pushButtonApply, &QPushButton::clicked, this, &MainWindow::onButtonApplyClicked);
+    connect(saveControlDataToFileAction, &QAction::triggered, this, &MainWindow::onActionSaveControlDataToFileClicked);
+    connect(restoreControlDataFromFileAction, &QAction::triggered, this, &MainWindow::onActionRestoreControlDataFromFileClicked);
     connect(clearSelectionAction, &QAction::triggered, this, &MainWindow::onActionClearSelectionTriggered);
     connect(clearAllAction, &QAction::triggered, this, &MainWindow::onActionClearAllTriggered);
 
@@ -69,6 +85,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::showEvent(QShowEvent *event)
 {
+    // Restore size settings
     QSize sizeSettings = mainWindowController->getMainWindowSizeSetting();
     bool isMaximized = mainWindowController->getMainWindowMaximizedSetting();
     if(isMaximized)
@@ -120,7 +137,7 @@ void MainWindow::refreshStatusDataDisplay()
 
 void MainWindow::periodicUpdate()
 {
-    ui->menuFileActions->setEnabled(mainWindowController->enableFileActionsMenu());
+    ui->toolButtonFileActions->setEnabled(mainWindowController->enableFileActionsButton());
     ui->actionConnectToServer->setEnabled(mainWindowController->enableActionConnectToServer());
     ui->actionDisconnectFromServer->setEnabled(mainWindowController->enableActionDisconnectFromServer());
     ui->toolButtonClear->setEnabled(mainWindowController->enableClearButton());
@@ -152,17 +169,17 @@ void MainWindow::onActionDisconnectFromServerTriggered()
     mainWindowController->requestDisconnectFromServer();
 }
 
-void MainWindow::onActionSaveStatusDataToFileClicked()
-{
-
-}
-
 void MainWindow::onActionSaveControlDataToFileClicked()
 {
 
 }
 
 void MainWindow::onActionRestoreControlDataFromFileClicked()
+{
+
+}
+
+void MainWindow::onActionLaunchDragon()
 {
 
 }
@@ -202,7 +219,7 @@ void MainWindow::configureInboundDataTableView()
 
 void MainWindow::configureOutboundDataTableView()
 {
-    // Add table model data and configure seettings
+    // Add table model data and configure settings
     ui->tableViewControlData->setModel(&(mainWindowController->getOutboundDataTableModel()));
     configureCommonTableSettings(ui->tableViewControlData);
 }

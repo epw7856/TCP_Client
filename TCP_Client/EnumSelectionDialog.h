@@ -19,6 +19,7 @@ public:
     explicit EnumSelectionDialog(QWidget *parent = nullptr);
     ~EnumSelectionDialog();
 
+    void setDataItemName(const QString& value);
     void setEnumName(const QString& value);
     void setEnumStrings(const std::vector<QString>& enumStrings);
     void setCurrentValue(const QString& value);

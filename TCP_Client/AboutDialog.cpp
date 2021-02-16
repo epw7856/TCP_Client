@@ -2,7 +2,7 @@
 #include "ApplicationInterface.h"
 #include "ui_AboutDialog.h"
 
-AboutDialog::AboutDialog(const ApplicationInterface& localAppInterface, QWidget *parent) :
+AboutDialog::AboutDialog(const ApplicationInterface& localAppInterface, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AboutDialog),
     appInterface(localAppInterface),

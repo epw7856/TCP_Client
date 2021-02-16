@@ -64,6 +64,8 @@ HEADERS += \
     OutboundDataInterface.h \
     OutboundDataTableModel.h \
     RangeCheckHandler.h \
+    ReservedInboundDataItems.h \
+    ReservedOutboundDataItems.h \
     SemanticVersion.h \
     SettingsInterface.h \
     SettingsManager.h \

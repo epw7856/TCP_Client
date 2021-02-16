@@ -18,25 +18,30 @@
 						"Value": 1
 					}
 				]
+			},
+			{
+				"Set Name": "Mode",
+				"Enum Names": [
+					{
+						"Name": "Mode 1",
+						"Value": 0
+					},
+					{
+						"Name": "Mode 2",
+						"Value": 1
+					},
+					{
+						"Name": "Mode 3",
+						"Value": 2
+					}
+				]
 			}
 		],
 		"Data From Server": {
 			"Status Data Table Displayed Ranges": [
 				{
 					"Starting Index (Inclusive)": 1,
-					"Ending Index (Exclusive)": 3
-				}
-			],
-			"Reserved Data Item Definitions": [
-				{
-					"Index": 1,
-					"Identifier": "Special Inbound Data Item 1"
-				
-				},
-				{
-					"Index": 2,
-					"Identifier": "Special Inbound Data Item 2"
-				
+					"Ending Index (Exclusive)": 4
 				}
 			],
 			"Data Items": [
@@ -60,6 +65,13 @@
 					"Data Type": "Unsigned",
 					"Format": "",
 					"Units": "Radians"
+				},
+				{
+					"Index": 3,
+					"Name": "CurrentOpMode",
+					"Data Type": "Mode",
+					"Format": "",
+					"Units": "Unitless"
 				}
 			]
 		},
@@ -67,19 +79,7 @@
 			"Control Data Table Displayed Ranges": [
 				{
 					"Starting Index (Inclusive)": 0,
-					"Ending Index (Exclusive)": 6
-				}
-			],
-			"Reserved Data Item Definitions": [
-				{
-					"Index": 0,
-					"Identifier": "Special Outbound Data Item 1"
-				
-				},
-				{
-					"Index": 2,
-					"Identifier": "Special Outbound Data Item 2"
-				
+					"Ending Index (Exclusive)": 7
 				}
 			],
 			"Data Items": [
@@ -140,6 +140,16 @@
 					"Default Value": 1384,
 					"Min Value": 0,
 					"Max Value": 1399,
+					"Format": "",
+					"Units": "Radians"
+				},
+				{
+					"Index": 6,
+					"Name": "CurrentOpModeCommand",
+					"Data Type": "Mode",
+					"Default Value": "Mode 3",
+					"Min Value": "",
+					"Max Value": "",
 					"Format": "",
 					"Units": "Radians"
 				}

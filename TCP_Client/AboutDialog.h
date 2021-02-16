@@ -16,14 +16,14 @@ class AboutDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AboutDialog(const ApplicationInterface& localAppInterface, QWidget *parent = nullptr);
+    explicit AboutDialog(const ApplicationInterface& localAppInterface, QWidget* parent = nullptr);
     ~AboutDialog();
 
 private slots:
     void onActionClose();
 
 private:
-    Ui::AboutDialog *ui;
+    Ui::AboutDialog* ui;
     const ApplicationInterface& appInterface;
     std::unique_ptr<QGraphicsScene> scene;
 };

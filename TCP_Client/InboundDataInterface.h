@@ -20,6 +20,7 @@ public:
     virtual std::vector<QString> getInboundDisplayValues() const = 0;
     virtual std::vector<unsigned> getInboundRawValues() const = 0;
     virtual std::vector<std::pair<unsigned, unsigned>> getInboundDataTableRanges() const = 0;
+    virtual DataItem* getReservedInboundDataItem(const QString& key) = 0;
 };
 
 #endif // INBOUNDDATAINTERFACE_H

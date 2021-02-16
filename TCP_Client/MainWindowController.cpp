@@ -76,7 +76,7 @@ void MainWindowController::selectConfigurationFile(QWidget* parent)
     }
 }
 
-bool MainWindowController::enableFileActionsMenu() const
+bool MainWindowController::enableFileActionsButton() const
 {
     return configurationLoaded;
 }
@@ -109,6 +109,7 @@ void MainWindowController::outboundTableDoubleClicked(const QModelIndex& index)
         if(item->isEnumType())
         {
             EnumSelectionDialog enumDialog;
+            enumDialog.setDataItemName(item->getDataItemName());
             enumDialog.setEnumName(item->getDataItemType());
             enumDialog.setEnumStrings(sds->getEnumStrings(item->getDataItemType()));
             enumDialog.setCurrentValue(item->getDisplayValue());
@@ -165,6 +166,8 @@ void MainWindowController::showApplicationSettingsDialog(QWidget* parent)
     if(appSettingsDialog == nullptr)
     {
         appSettingsDialog = std::make_unique<ApplicationSettingsDialog>(*sds, *settingsManager, parent);
+
+        // Connection from the Application Settings Dialog to the MainWindowController
         connect(appSettingsDialog.get(), &ApplicationSettingsDialog::requestSettingsRefresh, this, &MainWindowController::refreshSettings);
     }
 

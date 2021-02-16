@@ -47,6 +47,7 @@ public:
     std::vector<QString> getInboundDisplayValues() const override;
     std::vector<unsigned> getInboundRawValues() const override;
     std::vector<std::pair<unsigned, unsigned>> getInboundDataTableRanges() const override;
+    DataItem* getReservedInboundDataItem(const QString& key) override;
 
     // Implementation of Outbound Data Interface
     void setOutboundDisplayValue(unsigned index, const QString& displayValue) override;
@@ -58,6 +59,7 @@ public:
     QString getOutboundDefaultDisplayValue(int index) const override;
     std::vector<unsigned> getOutboundRawValues() const override;
     std::vector<std::pair<unsigned, unsigned>> getOutboundDataTableRanges() const override;
+    DataItem* getReservedOutboundDataItem(const QString& key) override;
 
 private:
     QFile systemConfigFile;

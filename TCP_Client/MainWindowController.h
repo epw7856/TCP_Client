@@ -31,7 +31,7 @@ public:
 
     void selectConfigurationFile(QWidget* parent);
 
-    bool enableFileActionsMenu() const;
+    bool enableFileActionsButton() const;
     bool enableActionConnectToServer() const;
     bool enableActionDisconnectFromServer() const;
     bool enableClearButton() const;

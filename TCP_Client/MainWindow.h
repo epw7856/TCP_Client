@@ -31,9 +31,9 @@ private slots:
     void onActionViewApplicationSettingsTriggered();
     void onActionConnectToServerTriggered();
     void onActionDisconnectFromServerTriggered();
-    void onActionSaveStatusDataToFileClicked();
     void onActionSaveControlDataToFileClicked();
     void onActionRestoreControlDataFromFileClicked();
+    void onActionLaunchDragon();
     void onButtonResetClicked();
     void onButtonApplyClicked();
     void onActionClearSelectionTriggered();
@@ -44,7 +44,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QMenu* fileActionMenu;
     QMenu* clearMenu;
+    QAction* restoreControlDataFromFileAction;
+    QAction* saveControlDataToFileAction;
     QAction* clearSelectionAction;
     QAction* clearAllAction;
     QLabel* statusBarLabel;
