@@ -19,6 +19,12 @@ QVariant EnumSelectionTableModel::data(const QModelIndex &index, int role) const
             return enumStrings[static_cast<unsigned>(index.row())];
         }
     }
+
+    if(role == Qt::TextAlignmentRole)
+    {
+        return Qt::AlignHCenter;
+    }
+
     return {};
 }
 
