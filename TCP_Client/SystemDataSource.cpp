@@ -3,6 +3,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonValue>
+#include <QVariant>
 #include "SemanticVersion.h"
 #include "SystemDataSource.h"
 
@@ -38,6 +39,11 @@ bool SystemDataSource::loadSystemConfiguration(const QString& configFilePath)
     return true;
 }
 
+QString SystemDataSource::getHeaderFooterText() const
+{
+    return appSettings.headerFooterText;
+}
+
 QString SystemDataSource::getSemanticVersion() const
 {
     return SemanticVersion;
@@ -55,6 +61,7 @@ void SystemDataSource::clearSystemData()
 void SystemDataSource::parseApplicationSettings()
 {
     const QJsonValue jsonAppSettings = obj.value("Application Settings");
+    appSettings.headerFooterText = jsonAppSettings.toObject().value("Header Footer Text").toVariant().toString();
     appSettings.socketPort = jsonStringToUnsigned(jsonAppSettings.toObject().value("Socket Port").toVariant().toString());
     appSettings.transmissionPeriodicity = jsonStringToUnsigned(jsonAppSettings.toObject().value("Transmission Periodicity (ms)").toVariant().toString());
 }

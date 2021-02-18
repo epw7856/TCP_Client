@@ -22,6 +22,8 @@ public:
     MainWindowController(const QString& configFilePath);
     ~MainWindowController();
 
+    QString getHeaderFooterText() const;
+
     InboundDataTableModel& getInboundDataTableModel();
     OutboundDataTableModel& getOutboundDataTableModel();
 

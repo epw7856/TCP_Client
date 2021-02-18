@@ -12,6 +12,9 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->labelHeaderText->setText(mainWindowController->getHeaderFooterText());
+    ui->labelFooterText->setText(mainWindowController->getHeaderFooterText());
+
     QFont font("Segoe UI", 10);
 
     // Setup the File Actions toolbutton and the associated dropdown menu actions

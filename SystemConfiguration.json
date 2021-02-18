@@ -2,6 +2,7 @@
 	"Local Control Application": 
 	{
 		"Application Settings": {
+			"Header Footer Text": "TEST",
 			"Socket Port": 100,
 			"Transmission Periodicity (ms)": 500
 		},

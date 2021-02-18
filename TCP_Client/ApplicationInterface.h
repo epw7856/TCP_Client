@@ -10,6 +10,7 @@ public:
     virtual ~ApplicationInterface() = default;
 
     // Application settings API
+    virtual QString getHeaderFooterText() const = 0;
     virtual QString getSemanticVersion() const = 0;
     virtual QString getSystemConfigFilePath() const = 0;
     virtual unsigned getSocketPort() const = 0;

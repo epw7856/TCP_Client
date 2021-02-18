@@ -28,6 +28,11 @@ MainWindowController::MainWindowController(const QString& configFilePath)
     connect(commsManager.get(), &CommunicationsManager::inboundDataUpdated, this, &MainWindowController::notifyInboundDataUpdated);
 }
 
+QString MainWindowController::getHeaderFooterText() const
+{
+    return sds->getHeaderFooterText();
+}
+
 MainWindowController::~MainWindowController() = default;
 
 void MainWindowController::requestConnectToServer()
