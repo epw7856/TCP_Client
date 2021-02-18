@@ -62,6 +62,7 @@ signals:
     void notifyInboundDataUpdated();
     void sendStatusBarMessage(QString msg);
     void notifyStatusChange();
+    void requestMainWindowUpdate();
 
 private:
     std::unique_ptr<SystemDataSource> sds;

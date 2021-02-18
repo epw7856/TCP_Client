@@ -263,6 +263,7 @@ void MainWindowController::loadConfiguration(const QString& configFilePath, bool
     sds->setSystemConfigFilePath(configFilePath);
 
     emit sendStatusBarMessage(commsManager->getConnectionStatusMsg());
+    emit requestMainWindowUpdate();
 }
 
 void MainWindowController::performInitialSetup()

@@ -72,6 +72,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
     connect(mainWindowController.get(), &MainWindowController::notifyInboundDataUpdated, this, &MainWindow::refreshStatusDataDisplay);
     connect(mainWindowController.get(), &MainWindowController::notifyStatusChange, this, &MainWindow::periodicUpdate);
+    connect(mainWindowController.get(), &MainWindowController::requestMainWindowUpdate, this, &MainWindow::receivedUpdateRequestFromController);
 
     // Connections from user interaction with the Control Data table
     connect(ui->tableViewControlData, &QTableView::doubleClicked, this, &MainWindow::controlDataTableDoubleClicked);
@@ -144,6 +145,12 @@ void MainWindow::periodicUpdate()
     ui->actionDisconnectFromServer->setEnabled(mainWindowController->enableActionDisconnectFromServer());
     ui->toolButtonClear->setEnabled(mainWindowController->enableClearButton());
     ui->pushButtonReset->setEnabled(mainWindowController->enableResetButton());
+}
+
+void MainWindow::receivedUpdateRequestFromController()
+{
+    ui->labelHeaderText->setText(mainWindowController->getHeaderFooterText());
+    ui->labelFooterText->setText(mainWindowController->getHeaderFooterText());
 }
 
 void MainWindow::actionViewApplicationInformation()

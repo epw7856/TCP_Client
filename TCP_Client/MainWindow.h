@@ -24,6 +24,7 @@ public slots:
     void showStatusBarMessage(QString msg);
     void refreshStatusDataDisplay();
     void periodicUpdate();
+    void receivedUpdateRequestFromController();
 
 private slots:
     void actionViewApplicationInformation();

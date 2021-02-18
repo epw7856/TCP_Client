@@ -89,8 +89,8 @@ void CommunicationsManager::stopStartTransmissionTimer(bool timerEnable)
 
 QString CommunicationsManager::getConnectionStatusMsg() const
 {
-    return (status == ConnectionStatus::Connected) ? "Connected to server on Port " + QString::number(socketPort) + "." :
-                                                     "Disconnected from server.";
+    return (status == ConnectionStatus::Connected) ? "Connected to server on Port " + QString::number(socketPort) :
+                                                     "Disconnected from server";
 }
 
 void CommunicationsManager::connectToServer()
