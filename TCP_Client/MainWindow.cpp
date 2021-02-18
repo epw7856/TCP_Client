@@ -134,7 +134,6 @@ void MainWindow::showStatusBarMessage(QString msg)
 
 void MainWindow::refreshStatusDataDisplay()
 {
-    emit mainWindowController->getInboundDataTableModel().layoutChanged();
     ui->tableViewStatusData->update();
 }
 

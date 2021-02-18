@@ -24,7 +24,7 @@ MainWindowController::MainWindowController(const QString& configFilePath)
 
     // Connections from CommunicationsManager to MainWindowController
     connect(commsManager.get(), &CommunicationsManager::sendStatusUpdate, this, &MainWindowController::receivedStatusUpdate);
-    connect(commsManager.get(), &CommunicationsManager::inboundDataUpdated, this, &MainWindowController::notifyInboundDataUpdated);
+    connect(commsManager.get(), &CommunicationsManager::inboundDataUpdated, this, &MainWindowController::updateInboundDataDisplay);
 }
 
 QString MainWindowController::getHeaderFooterText() const
@@ -202,6 +202,7 @@ void MainWindowController::saveMainWindowMaximizedSetting(bool maximized)
 
 void MainWindowController::updateInboundDataDisplay()
 {
+    emit inboundDataTableModel.layoutChanged();
     emit notifyInboundDataUpdated();
 }
 
@@ -262,29 +263,25 @@ void MainWindowController::loadConfiguration(const QString& configFilePath, bool
     configurationLoaded = true;
     sds->setSystemConfigFilePath(configFilePath);
 
+    commsManager->setSocketPort(sds->getSocketPort());
+    commsManager->setTransmissionPeriodicity(sds->getTransmissionPeriodicity());
+
     emit sendStatusBarMessage(commsManager->getConnectionStatusMsg());
     emit requestMainWindowUpdate();
 }
 
 void MainWindowController::performInitialSetup()
 {
-    if(sds->getSocketPort() > 0U)
+    if(sds->getSocketPort() > 0U &&
+       sds->getTransmissionPeriodicity() > 0U &&
+       configurationLoaded &&
+       settingsManager->getAutoConnectSetting())
     {
-        commsManager->setSocketPort(sds->getSocketPort());
-        commsManager->setTransmissionPeriodicity(sds->getTransmissionPeriodicity());
-
-        if(configurationLoaded && settingsManager->getAutoConnectSetting())
-        {
-            executeConnect();
-        }
-        else
-        {
-            emit sendStatusBarMessage("Not Connected");
-        }
+        executeConnect();
     }
     else
     {
-        emit sendStatusBarMessage("Ready to Load System Configuration");
+        emit sendStatusBarMessage("Not Connected");
     }
 
     commsManager->setConnectionNotificationEnable(settingsManager->getShowConnectionNotificationsSetting());
