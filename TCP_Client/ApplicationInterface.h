@@ -12,6 +12,9 @@ public:
     // Application settings API
     virtual QString getHeaderFooterText() const = 0;
     virtual QString getSemanticVersion() const = 0;
+    virtual QString getApplicationName() const = 0;
+    virtual QString getDepartmentName() const = 0;
+    virtual QString getOrganizationName() const = 0;
     virtual QString getSystemConfigFilePath() const = 0;
     virtual unsigned getSocketPort() const = 0;
     virtual unsigned getTransmissionPeriodicity() const = 0;

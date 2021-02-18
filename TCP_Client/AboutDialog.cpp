@@ -19,10 +19,10 @@ AboutDialog::AboutDialog(const ApplicationInterface& localAppInterface, QWidget*
     ui->graphicsViewLogo->setMinimumHeight(map.height());
     ui->graphicsViewLogo->show();
 
-    ui->labelName->setText("Test Local Control Application");
+    ui->labelName->setText(appInterface.getApplicationName());
     ui->labelVersion->setText(appInterface.getSemanticVersion());
-    ui->labelDepartment->setText("Shipboard Electrical Systems");
-    ui->labelOrganization->setText("Naval Nuclear Laboratory");
+    ui->labelDepartment->setText(appInterface.getDepartmentName());
+    ui->labelOrganization->setText(appInterface.getOrganizationName());
 
     connect(ui->pushButtonClose, &QPushButton::clicked, this, &AboutDialog::onActionClose);
 }

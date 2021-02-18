@@ -123,7 +123,6 @@ void MainWindow::setupStatusBar()
     statusBarLabel->setFont(QFont("Segoe UI", 10));
     ui->statusBar->setStyleSheet("QStatusBar{border-top: 1px outset grey;}");
     ui->statusBar->addPermanentWidget(statusBarLabel);
-    ui->statusBar->setSizeGripEnabled(false);
 }
 
 void MainWindow::showStatusBarMessage(QString msg)
@@ -243,12 +242,12 @@ void MainWindow::configureCommonTableSettings(QTableView* table)
                          "QTableView::item:selected {background-color: #3399FF; color: white;}");
 
     // Configure the horizontal header settings
-    table->horizontalHeader()->setFixedHeight(25);
-    table->resizeColumnToContents(2);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table->horizontalHeader()->setFixedHeight(25);
     table->horizontalHeader()->setSectionsClickable(false);
 
     // Configure the vertical header settings
     table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    table->verticalHeader()->setDefaultSectionSize(20);
     table->verticalHeader()->hide();
 }

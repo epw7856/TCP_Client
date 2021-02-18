@@ -4,7 +4,7 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 #include <QVariant>
-#include "SemanticVersion.h"
+#include "SemanticVersionInfo.h"
 #include "SystemDataSource.h"
 
 bool SystemDataSource::loadSystemConfiguration(const QString& configFilePath)
@@ -49,6 +49,21 @@ QString SystemDataSource::getSemanticVersion() const
     return SemanticVersion;
 }
 
+QString SystemDataSource::getApplicationName() const
+{
+    return ApplicationName;
+}
+
+QString SystemDataSource::getDepartmentName() const
+{
+    return DepartmentName;
+}
+
+QString SystemDataSource::getOrganizationName() const
+{
+    return OrganizationName;
+}
+
 void SystemDataSource::clearSystemData()
 {
     enumRegistry.clear();
@@ -63,7 +78,7 @@ void SystemDataSource::parseApplicationSettings()
     const QJsonValue jsonAppSettings = obj.value("Application Settings");
     appSettings.headerFooterText = jsonAppSettings.toObject().value("Header Footer Text").toVariant().toString();
     appSettings.socketPort = jsonStringToUnsigned(jsonAppSettings.toObject().value("Socket Port").toVariant().toString());
-    appSettings.transmissionPeriodicity = jsonStringToUnsigned(jsonAppSettings.toObject().value("Transmission Periodicity (ms)").toVariant().toString());
+    appSettings.transmissionPeriodicity = jsonStringToUnsigned(jsonAppSettings.toObject().value("Transmission Periodicity To Server (ms)").toVariant().toString());
 }
 
 void SystemDataSource::parseEnumerations()
@@ -332,6 +347,12 @@ DataItem *SystemDataSource::getInboundDataItem(int index) const
     return ((index < static_cast<int>(inboundDataItems.size())) ? inboundDataItems[index].get() : nullptr);
 }
 
+DataItem *SystemDataSource::getInboundDataItem(const QString& dataItemName) const
+{
+    auto itr = std::find_if(inboundDataItems.begin(), inboundDataItems.end(), [&](const std::shared_ptr<DataItem>& item){ return dataItemName == item->getDataItemName(); });
+    return ((itr != inboundDataItems.end()) ? itr->get() : nullptr);
+}
+
 std::vector<DataItem*> SystemDataSource::getInboundDataItems() const
 {
     std::vector<DataItem*> dataItems = {};
@@ -381,12 +402,6 @@ std::vector<std::pair<unsigned, unsigned>> SystemDataSource::getInboundDataTable
     return inboundDataTableRanges;
 }
 
-DataItem* SystemDataSource::getReservedInboundDataItem(const QString& key)
-{
-    auto itr = std::find_if(inboundDataItems.begin(), inboundDataItems.end(), [&](const std::shared_ptr<DataItem>& item){ return key == item->getDataItemName(); });
-    return ((itr != inboundDataItems.end()) ? itr->get() : nullptr);
-}
-
 void SystemDataSource::setOutboundDisplayValue(unsigned index, const QString& displayValue)
 {
     if(!displayValue.isEmpty())
@@ -413,6 +428,12 @@ void SystemDataSource::setOutboundDisplayValues(const std::vector<QString>& disp
 DataItem* SystemDataSource::getOutboundDataItem(int index) const
 {
     return ((index < static_cast<int>(outboundDataItems.size())) ? outboundDataItems[index].get() : nullptr);
+}
+
+DataItem *SystemDataSource::getOutboundDataItem(const QString& dataItemName) const
+{
+    auto itr = std::find_if(outboundDataItems.begin(), outboundDataItems.end(), [&](const std::shared_ptr<DataItem>& item){ return dataItemName == item->getDataItemName(); });
+    return ((itr != outboundDataItems.end()) ? itr->get() : nullptr);
 }
 
 std::vector<DataItem *> SystemDataSource::getOutboundDataItems() const
@@ -467,10 +488,4 @@ std::vector<unsigned> SystemDataSource::getOutboundRawValues() const
 std::vector<std::pair<unsigned, unsigned>> SystemDataSource::getOutboundDataTableRanges() const
 {
     return outboundDataTableRanges;
-}
-
-DataItem *SystemDataSource::getReservedOutboundDataItem(const QString& key)
-{
-    auto itr = std::find_if(outboundDataItems.begin(), outboundDataItems.end(), [&](const std::shared_ptr<DataItem>& item){ return key == item->getDataItemName(); });
-    return ((itr != outboundDataItems.end()) ? itr->get() : nullptr);
 }

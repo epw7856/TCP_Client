@@ -87,6 +87,12 @@ void CommunicationsManager::stopStartTransmissionTimer(bool timerEnable)
     }
 }
 
+QString CommunicationsManager::getConnectionStatusMsg() const
+{
+    return (status == ConnectionStatus::Connected) ? "Connected to server on Port " + QString::number(socketPort) + "." :
+                                                     "Disconnected from server.";
+}
+
 void CommunicationsManager::connectToServer()
 {
     status = ConnectionStatus::InProgress;
@@ -133,9 +139,7 @@ void CommunicationsManager::receivedConnectionStatusNotification(bool connection
         outboundDataTransmissionTimer.stop();
     }
 
-    QString msg = QString();
-    (status == ConnectionStatus::Connected) ? msg = "Connected to server on Port " + QString::number(socketPort) + "." :
-                                              msg = "Disconnected from server.";
+    QString msg = getConnectionStatusMsg();
 
     if(showConnectionNotifications)
     {
@@ -149,7 +153,7 @@ void CommunicationsManager::showSocketErrorMsgPopup(QString msg)
 {
     status = ConnectionStatus::Unconnected;
     showMessageBox("Connection Error", msg, QMessageBox::Critical);
-    emit sendStatusUpdate("Connection timeout.");
+    emit sendStatusUpdate("Connection timeout");
 }
 
 void CommunicationsManager::updateInboundDataItems(std::vector<unsigned> rawData)

@@ -28,6 +28,9 @@ public:
     // Implementation of Application Interface
     QString getHeaderFooterText() const override;
     QString getSemanticVersion() const override;
+    QString getApplicationName() const override;
+    QString getDepartmentName() const override;
+    QString getOrganizationName() const override;
     QString getSystemConfigFilePath() const override;
     unsigned getSocketPort() const override;
     unsigned getTransmissionPeriodicity() const override;
@@ -43,24 +46,24 @@ public:
     // Implementation of Inbound Data Interface
     void setInboundRawValues(const std::vector<unsigned>& rawValues) override;
     DataItem* getInboundDataItem(int index) const override;
+    DataItem* getInboundDataItem(const QString& dataItemName) const override;
     std::vector<DataItem*> getInboundDataItems() const override;
     std::vector<QString> getInboundDataItemNames() const override;
     std::vector<QString> getInboundDisplayValues() const override;
     std::vector<unsigned> getInboundRawValues() const override;
     std::vector<std::pair<unsigned, unsigned>> getInboundDataTableRanges() const override;
-    DataItem* getReservedInboundDataItem(const QString& key) override;
 
     // Implementation of Outbound Data Interface
     void setOutboundDisplayValue(unsigned index, const QString& displayValue) override;
     void setOutboundDisplayValues(const std::vector<QString>& displayValues) override;
     DataItem* getOutboundDataItem(int index) const override;
+    DataItem* getOutboundDataItem(const QString& dataItemName) const override;
     std::vector<DataItem*> getOutboundDataItems() const override;
     std::vector<QString> getOutboundDataItemNames() const override;
     std::vector<QString> getOutboundDisplayValues() const override;
     QString getOutboundDefaultDisplayValue(int index) const override;
     std::vector<unsigned> getOutboundRawValues() const override;
     std::vector<std::pair<unsigned, unsigned>> getOutboundDataTableRanges() const override;
-    DataItem* getReservedOutboundDataItem(const QString& key) override;
 
 private:
     QFile systemConfigFile;

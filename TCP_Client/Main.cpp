@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include <QApplication>
 #include <QCommandLineParser>
-#include "SemanticVersion.h"
+#include "SemanticVersionInfo.h"
 
 int main(int argc, char *argv[])
 {

@@ -12,16 +12,15 @@
 MainWindowController::MainWindowController(const QString& configFilePath)
 :
     sds(std::make_unique<SystemDataSource>()),
+    commsManager(std::make_unique<CommunicationsManager>(*sds, *sds)),
     settingsManager(std::make_unique<SettingsManager>()),
     inboundDataTableModel(*sds),
     outboundDataTableModel(*sds, *sds)
-{
+{   
     if(!configFilePath.isEmpty())
     {
         loadConfiguration(configFilePath, true);
     }
-
-    commsManager = std::make_unique<CommunicationsManager>(*sds, *sds);
 
     // Connections from CommunicationsManager to MainWindowController
     connect(commsManager.get(), &CommunicationsManager::sendStatusUpdate, this, &MainWindowController::receivedStatusUpdate);
@@ -262,6 +261,8 @@ void MainWindowController::loadConfiguration(const QString& configFilePath, bool
     outboundDataTableModel.setOutboundDataItems();
     configurationLoaded = true;
     sds->setSystemConfigFilePath(configFilePath);
+
+    emit sendStatusBarMessage(commsManager->getConnectionStatusMsg());
 }
 
 void MainWindowController::performInitialSetup()
@@ -279,6 +280,10 @@ void MainWindowController::performInitialSetup()
         {
             emit sendStatusBarMessage("Not Connected");
         }
+    }
+    else
+    {
+        emit sendStatusBarMessage("Ready to Load System Configuration");
     }
 
     commsManager->setConnectionNotificationEnable(settingsManager->getShowConnectionNotificationsSetting());

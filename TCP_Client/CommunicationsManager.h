@@ -27,6 +27,7 @@ public:
     void setTransmissionPeriodicity(unsigned interval);
     void setConnectionNotificationEnable(bool enabled);
     void stopStartTransmissionTimer(bool timerEnable);
+    QString getConnectionStatusMsg() const;
 
 public slots:
     void receivedConnectionStatusNotification(bool connectionStatus);
