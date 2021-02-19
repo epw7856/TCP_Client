@@ -2,7 +2,11 @@
 #include "OutboundDataInterface.h"
 #include "OutboundDataTableModel.h"
 
-OutboundDataTableModel::OutboundDataTableModel(OutboundDataInterface& localOutboundDataInterface, EnumInterface& localEnumInterface)
+OutboundDataTableModel::OutboundDataTableModel
+(
+        OutboundDataInterface& localOutboundDataInterface,
+        EnumInterface& localEnumInterface
+)
 :
     outboundDataInterface(localOutboundDataInterface),
     rangeChecker(localOutboundDataInterface, localEnumInterface)

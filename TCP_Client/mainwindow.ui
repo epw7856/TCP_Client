@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>827</width>
+    <width>821</width>
     <height>563</height>
    </rect>
   </property>
@@ -597,13 +597,26 @@
                 <layout class="QVBoxLayout" name="verticalLayout_6">
                  <item>
                   <layout class="QGridLayout" name="gridLayout">
-                   <item row="0" column="0">
-                    <spacer name="horizontalSpacer_22">
+                   <item row="1" column="3">
+                    <widget class="QLabel" name="labelMaxTempGroup">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>&lt;MaxTempGroup&gt;</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <spacer name="horizontalSpacer_27">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeType">
-                      <enum>QSizePolicy::Minimum</enum>
                      </property>
                      <property name="sizeHint" stdset="0">
                       <size>
@@ -613,7 +626,7 @@
                      </property>
                     </spacer>
                    </item>
-                   <item row="2" column="0">
+                   <item row="2" column="1">
                     <widget class="QLabel" name="label_7">
                      <property name="font">
                       <font>
@@ -631,7 +644,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="1">
+                   <item row="2" column="2">
                     <widget class="QLabel" name="labelMinTempIndiv">
                      <property name="font">
                       <font>
@@ -647,73 +660,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="2">
-                    <widget class="QLabel" name="labelMinTempGroup">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>9</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>&lt;MinTempGroup&gt;</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QLabel" name="label_3">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>9</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Indiv.</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
                    <item row="1" column="1">
-                    <widget class="QLabel" name="labelMaxTempIndiv">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>9</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>&lt;MaxTempIndiv&gt;</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="2">
-                    <widget class="QLabel" name="labelMaxTempGroup">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>9</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>&lt;MaxTempGroup&gt;</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
                     <widget class="QLabel" name="label_2">
                      <property name="font">
                       <font>
@@ -731,7 +678,23 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="0" column="2">
+                   <item row="2" column="3">
+                    <widget class="QLabel" name="labelMinTempGroup">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>&lt;MinTempGroup&gt;</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="3">
                     <widget class="QLabel" name="label_4">
                      <property name="font">
                       <font>
@@ -748,6 +711,82 @@
                       <set>Qt::AlignCenter</set>
                      </property>
                     </widget>
+                   </item>
+                   <item row="1" column="4">
+                    <spacer name="horizontalSpacer_26">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item row="0" column="1">
+                    <spacer name="horizontalSpacer_22">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Minimum</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item row="1" column="2">
+                    <widget class="QLabel" name="labelMaxTempIndiv">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>&lt;MaxTempIndiv&gt;</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="2">
+                    <widget class="QLabel" name="label_3">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>9</pointsize>
+                       <weight>75</weight>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Indiv.</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <spacer name="horizontalSpacer_28">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
                  </item>
@@ -768,19 +807,6 @@
                 <layout class="QVBoxLayout" name="verticalLayout_8">
                  <item>
                   <layout class="QGridLayout" name="gridLayout_2">
-                   <item row="0" column="0">
-                    <spacer name="horizontalSpacer_23">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
                    <item row="0" column="1">
                     <widget class="QLabel" name="label_5">
                      <property name="font">
@@ -796,24 +822,6 @@
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="label_8">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>9</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Op Parameter:  </string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
                     </widget>
                    </item>
@@ -833,6 +841,32 @@
                      </property>
                     </widget>
                    </item>
+                   <item row="2" column="0">
+                    <spacer name="horizontalSpacer_24">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item row="1" column="3">
+                    <spacer name="horizontalSpacer_25">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
                    <item row="1" column="2">
                     <widget class="QLabel" name="label_SetPoint2">
                      <property name="font">
@@ -848,6 +882,37 @@
                       <set>Qt::AlignCenter</set>
                      </property>
                     </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_8">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>9</pointsize>
+                       <weight>75</weight>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Op Param:  </string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <spacer name="horizontalSpacer_23">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                    <item row="0" column="2">
                     <widget class="QLabel" name="label_6">
@@ -867,8 +932,8 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="0">
-                    <spacer name="horizontalSpacer_24">
+                   <item row="3" column="0">
+                    <spacer name="horizontalSpacer_29">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
                      </property>
@@ -898,9 +963,9 @@
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_9">
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_8">
+                  <layout class="QHBoxLayout" name="horizontalLayout_11">
                    <item>
-                    <spacer name="horizontalSpacer_12">
+                    <spacer name="horizontalSpacer_30">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
                      </property>
@@ -913,33 +978,72 @@
                     </spacer>
                    </item>
                    <item>
-                    <widget class="QLabel" name="label">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>9</pointsize>
-                      </font>
+                    <layout class="QFormLayout" name="formLayout">
+                     <property name="labelAlignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
-                     <property name="text">
-                      <string>Mode:  </string>
-                     </property>
-                    </widget>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_9">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>9</pointsize>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>Commanded:  </string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="labelCommandedMode">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>9</pointsize>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>&lt;Command&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>9</pointsize>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>Mode:  </string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLabel" name="labelCurrentMode">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>9</pointsize>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>&lt;Mode&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </item>
                    <item>
-                    <widget class="QLabel" name="labelCurrentMode">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>9</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>&lt;Mode&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="horizontalSpacer_13">
+                    <spacer name="horizontalSpacer_31">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
                      </property>
@@ -952,22 +1056,6 @@
                     </spacer>
                    </item>
                   </layout>
-                 </item>
-                 <item>
-                  <spacer name="verticalSpacer_9">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeType">
-                    <enum>QSizePolicy::Fixed</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>5</height>
-                    </size>
-                   </property>
-                  </spacer>
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -1224,7 +1312,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>827</width>
+     <width>821</width>
      <height>23</height>
     </rect>
    </property>
