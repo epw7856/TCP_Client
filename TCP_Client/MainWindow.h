@@ -22,7 +22,7 @@ public:
 
 public slots:
     void showStatusBarMessage(QString msg);
-    void refreshInboundDataDisplays();
+    void refreshDataDisplays();
     void periodicUpdate();
     void receivedUpdateRequestFromController();
 
@@ -40,6 +40,8 @@ private slots:
     void onActionClearSelectionTriggered();
     void onActionClearAllTriggered();
     void controlDataTableDoubleClicked(const QModelIndex& index);
+    void onPushButtonMode1Clicked();
+    void onPushButtonMode2Clicked();
     void showEvent(QShowEvent* event) override;
     void closeEvent(QCloseEvent* event) override;
 

@@ -58,6 +58,7 @@ public:
 
     // Implementation of Outbound Data Interface
     void setOutboundDisplayValue(unsigned index, const QString& displayValue) override;
+    void setOutboundDisplayValue(const QString& key, const QString& displayValue) override;
     void setOutboundDisplayValues(const std::vector<QString>& displayValues) override;
     DataItem* getOutboundDataItem(int index) const override;
     DataItem* getOutboundDataItem(const QString& dataItemName) const override;

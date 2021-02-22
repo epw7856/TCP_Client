@@ -11,6 +11,7 @@ class ApplicationSettingsDialog;
 class CommunicationsManager;
 class InboundDataInterface;
 class OutboundDataInterface;
+class RangeCheckHandler;
 class SettingsManager;
 class SystemDataSource;
 
@@ -61,6 +62,8 @@ public:
     QString getSetPoint2() const;
     QString getCurrentMode() const;
     QString getCommandedMode() const;
+    void setMode1Command();
+    void setMode2Command();
 
 public slots:
     void updateInboundDataDisplay();
@@ -68,7 +71,7 @@ public slots:
     void refreshSettings(bool reconnect);
 
 signals:
-    void notifyInboundDataUpdated();
+    void notifyDataUpdated();
     void sendStatusBarMessage(QString msg);
     void notifyStatusChange();
     void requestMainWindowUpdate();
@@ -79,6 +82,7 @@ private:
     std::unique_ptr<SettingsManager> settingsManager;
     std::unique_ptr<AboutDialog> aboutDialog;
     std::unique_ptr<ApplicationSettingsDialog> appSettingsDialog;
+    std::unique_ptr<RangeCheckHandler> rangeCheckHandler;
     bool configurationLoaded = false;
     InboundDataTableModel inboundDataTableModel;
     OutboundDataTableModel outboundDataTableModel;

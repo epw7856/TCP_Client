@@ -15,12 +15,14 @@ public:
         outboundDataInterface(localOutboundDataInterface), enumInterface(localEnumInterface) {}
 
     bool validateOutboundDataItem(int index, QString& value);
+    bool validateOutboundDataItem(const QString& key, QString& value);
     bool validateOutboundData(const std::vector<unsigned>& indices, std::vector<QString>& values);
 
 private:
     const OutboundDataInterface& outboundDataInterface;
     const EnumInterface& enumInterface;
 
+    bool validate(DataItem* item, QString& value);
     bool verifyUnsignedIntegerValue(QString& value, std::pair<unsigned, unsigned> range);
     bool verifyIntegerValue(QString& value, std::pair<int, int> range);
     bool verifyNumericValue(QString& value, std::pair<float, float> range);

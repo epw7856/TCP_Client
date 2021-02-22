@@ -6,6 +6,7 @@
 #include "FileOperationsHandler.h"
 #include "MainWindowController.h"
 #include <QMessageBox>
+#include "RangeCheckHandler.h"
 #include "SettingsManager.h"
 #include "SystemDataSource.h"
 
@@ -14,6 +15,7 @@ MainWindowController::MainWindowController(const QString& configFilePath)
     sds(std::make_unique<SystemDataSource>()),
     commsManager(std::make_unique<CommunicationsManager>(*sds, *sds)),
     settingsManager(std::make_unique<SettingsManager>()),
+    rangeCheckHandler(std::make_unique<RangeCheckHandler>(*sds, *sds)),
     inboundDataTableModel(*sds),
     outboundDataTableModel(*sds, *sds)
 {   
@@ -238,10 +240,38 @@ QString MainWindowController::getCommandedMode() const
     return sds->getOutboundDataItemDisplayValue("CurrentOpModeCommand");
 }
 
+void MainWindowController::setMode1Command()
+{
+    QString currentOpModeDataItem = "CurrentOpModeCommand";
+    QString mode1Option = "Mode 1";
+
+    if(rangeCheckHandler->validateOutboundDataItem(currentOpModeDataItem, mode1Option))
+    {
+        sds->setOutboundDisplayValue(currentOpModeDataItem, mode1Option);
+
+        emit outboundDataTableModel.layoutChanged();
+        emit notifyDataUpdated();
+    }
+}
+
+void MainWindowController::setMode2Command()
+{
+    QString currentOpModeDataItem = "CurrentOpModeCommand";
+    QString mode2Option = "Mode 2";
+
+    if(rangeCheckHandler->validateOutboundDataItem(currentOpModeDataItem, mode2Option))
+    {
+        sds->setOutboundDisplayValue(currentOpModeDataItem, mode2Option);
+
+        emit outboundDataTableModel.layoutChanged();
+        emit notifyDataUpdated();
+    }
+}
+
 void MainWindowController::updateInboundDataDisplay()
 {
     emit inboundDataTableModel.layoutChanged();
-    emit notifyInboundDataUpdated();
+    emit notifyDataUpdated();
 }
 
 void MainWindowController::receivedStatusUpdate(QString msg)

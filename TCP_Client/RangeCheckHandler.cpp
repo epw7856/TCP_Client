@@ -9,6 +9,37 @@
 bool RangeCheckHandler::validateOutboundDataItem(int index, QString& value)
 {
     DataItem* item = outboundDataInterface.getOutboundDataItem(index);
+    return (item != nullptr) ? validate(item, value) : false;
+}
+
+bool RangeCheckHandler::validateOutboundDataItem(const QString& key, QString& value)
+{
+    DataItem* item = outboundDataInterface.getOutboundDataItem(key);
+    return (item != nullptr) ? validate(item, value) : false;
+}
+
+bool RangeCheckHandler::validateOutboundData(const std::vector<unsigned>& indices, std::vector<QString>& values)
+{
+    if(indices.size() != values.size())
+    {
+        return false;
+    }
+
+    for(quint32 i = 0; i < indices.size(); i++)
+    {
+        if(!values[i].isEmpty())
+        {
+            if(!validateOutboundDataItem(indices[i], values[i]))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool RangeCheckHandler::validate(DataItem *item, QString &value)
+{
     std::pair<unsigned, unsigned> range = item->getDataItemRange();
     QString type = item->getDataItemType();
 
@@ -36,26 +67,6 @@ bool RangeCheckHandler::validateOutboundDataItem(int index, QString& value)
     }
 
     return status;
-}
-
-bool RangeCheckHandler::validateOutboundData(const std::vector<unsigned>& indices, std::vector<QString>& values)
-{
-    if(indices.size() != values.size())
-    {
-        return false;
-    }
-
-    for(quint32 i = 0; i < indices.size(); i++)
-    {
-        if(!values[i].isEmpty())
-        {
-            if(!validateOutboundDataItem(indices[i], values[i]))
-            {
-                return false;
-            }
-        }
-    }
-    return true;
 }
 
 bool RangeCheckHandler::verifyUnsignedIntegerValue(QString& value, std::pair<unsigned, unsigned> range)

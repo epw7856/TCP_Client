@@ -67,10 +67,12 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(restoreControlDataFromFileAction, &QAction::triggered, this, &MainWindow::onActionRestoreControlDataFromFileClicked);
     connect(clearSelectionAction, &QAction::triggered, this, &MainWindow::onActionClearSelectionTriggered);
     connect(clearAllAction, &QAction::triggered, this, &MainWindow::onActionClearAllTriggered);
+    connect(ui->pushButtonMode1, &QPushButton::clicked, this, &MainWindow::onPushButtonMode1Clicked);
+    connect(ui->pushButtonMode2, &QPushButton::clicked, this, &MainWindow::onPushButtonMode2Clicked);
 
     // Connections from MainWindowController to MainWindow
     connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
-    connect(mainWindowController.get(), &MainWindowController::notifyInboundDataUpdated, this, &MainWindow::refreshInboundDataDisplays);
+    connect(mainWindowController.get(), &MainWindowController::notifyDataUpdated, this, &MainWindow::refreshDataDisplays);
     connect(mainWindowController.get(), &MainWindowController::notifyStatusChange, this, &MainWindow::periodicUpdate);
     connect(mainWindowController.get(), &MainWindowController::requestMainWindowUpdate, this, &MainWindow::receivedUpdateRequestFromController);
 
@@ -145,9 +147,10 @@ void MainWindow::showStatusBarMessage(QString msg)
     statusBarLabel->setText("Status: " + msg + "  ");
 }
 
-void MainWindow::refreshInboundDataDisplays()
+void MainWindow::refreshDataDisplays()
 {
     ui->tableViewStatusData->update();
+    ui->tableViewControlData->update();
     updateMonitoringAndControlItems();
 }
 
@@ -229,6 +232,16 @@ void MainWindow::onActionClearAllTriggered()
 void MainWindow::controlDataTableDoubleClicked(const QModelIndex& index)
 {
     mainWindowController->outboundTableDoubleClicked(index);
+}
+
+void MainWindow::onPushButtonMode1Clicked()
+{
+    mainWindowController->setMode1Command();
+}
+
+void MainWindow::onPushButtonMode2Clicked()
+{
+    mainWindowController->setMode2Command();
 }
 
 void MainWindow::configureInboundDataTableView()

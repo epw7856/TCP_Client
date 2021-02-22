@@ -432,6 +432,15 @@ void SystemDataSource::setOutboundDisplayValue(unsigned index, const QString& di
     }
 }
 
+void SystemDataSource::setOutboundDisplayValue(const QString& key, const QString& displayValue)
+{
+    auto itr = std::find_if(outboundDataItems.begin(), outboundDataItems.end(), [&](const std::shared_ptr<DataItem>& item){ return key == item->getDataItemName(); });
+    if(itr != outboundDataItems.end())
+    {
+        setOutboundDisplayValue(std::distance(outboundDataItems.begin(), itr), displayValue);
+    }
+}
+
 void SystemDataSource::setOutboundDisplayValues(const std::vector<QString>& displayValues)
 {
     if(displayValues.size() == outboundDataItems.size())
