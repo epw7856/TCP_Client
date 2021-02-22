@@ -90,7 +90,7 @@ void CommunicationsManager::stopStartTransmissionTimer(bool timerEnable)
 QString CommunicationsManager::getConnectionStatusMsg() const
 {
     return (status == ConnectionStatus::Connected) ? "Connected to server on Port " + QString::number(socketPort) :
-                                                     "Not Connected";
+                                                     "Not connected to server";
 }
 
 void CommunicationsManager::connectToServer()
@@ -143,7 +143,7 @@ void CommunicationsManager::receivedConnectionStatusNotification(bool connection
 
     if(showConnectionNotifications)
     {
-        showMessageBox("Connection Status", msg, QMessageBox::Information);
+        showMessageBox("Connection Status Notification", msg, QMessageBox::Information);
     }
 
     emit sendStatusUpdate(msg);

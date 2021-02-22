@@ -18,6 +18,8 @@ public:
     virtual DataItem* getInboundDataItem(const QString& dataItemName) const = 0;
     virtual std::vector<DataItem*> getInboundDataItems() const = 0;
     virtual std::vector<QString> getInboundDataItemNames() const = 0;
+    virtual QString getInboundDataItemDisplayValue(int index) const = 0;
+    virtual QString getInboundDataItemDisplayValue(const QString& key) const = 0;
     virtual std::vector<QString> getInboundDisplayValues() const = 0;
     virtual std::vector<unsigned> getInboundRawValues() const = 0;
     virtual std::vector<std::pair<unsigned, unsigned>> getInboundDataTableRanges() const = 0;

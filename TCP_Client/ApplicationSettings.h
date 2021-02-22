@@ -5,6 +5,7 @@
 
 struct ApplicationSettings
 {
+    QString configurationVersion = "";
     QString headerFooterText = "";
     QString systemConfigFilePath = "";
     unsigned socketPort = 0U;

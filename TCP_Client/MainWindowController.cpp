@@ -119,10 +119,8 @@ void MainWindowController::outboundTableDoubleClicked(const QModelIndex& index)
             enumDialog.setCurrentValue(item->getDisplayValue());
             enumDialog.exec();
 
-            if(enumDialog.isAccepted())
-            {
-                outboundDataTableModel.setData(index, enumDialog.getNewValue(), Qt::EditRole);
-            }
+            (enumDialog.isAccepted()) ? outboundDataTableModel.setData(index, enumDialog.getNewValue(), Qt::EditRole) :
+                                        outboundDataTableModel.setData(index, QString(), Qt::EditRole);
         }
     }
 }
@@ -198,6 +196,46 @@ bool MainWindowController::getMainWindowMaximizedSetting() const
 void MainWindowController::saveMainWindowMaximizedSetting(bool maximized)
 {
     settingsManager->setMainWindowMaximizedSetting(maximized);
+}
+
+QString MainWindowController::getMaxTempIndiv() const
+{
+    return sds->getInboundDataItemDisplayValue("MaxTempIndiv");
+}
+
+QString MainWindowController::getMaxTempGroup() const
+{
+    return sds->getInboundDataItemDisplayValue("MaxTempGroup");
+}
+
+QString MainWindowController::getMinTempIndiv() const
+{
+    return sds->getInboundDataItemDisplayValue("MinTempIndiv");
+}
+
+QString MainWindowController::getMinTempGroup() const
+{
+    return sds->getInboundDataItemDisplayValue("MinTempGroup");
+}
+
+QString MainWindowController::getSetPoint1() const
+{
+    return sds->getInboundDataItemDisplayValue("SetPoint1");
+}
+
+QString MainWindowController::getSetPoint2() const
+{
+    return sds->getInboundDataItemDisplayValue("SetPoint2");
+}
+
+QString MainWindowController::getCurrentMode() const
+{
+    return sds->getInboundDataItemDisplayValue("CurrentOpMode");
+}
+
+QString MainWindowController::getCommandedMode() const
+{
+    return sds->getOutboundDataItemDisplayValue("CurrentOpModeCommand");
 }
 
 void MainWindowController::updateInboundDataDisplay()

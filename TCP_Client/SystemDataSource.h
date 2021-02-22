@@ -26,6 +26,7 @@ public:
     bool loadSystemConfiguration(const QString& configFilePath);
 
     // Implementation of Application Interface
+    QString getConfigurationVersion() const override;
     QString getHeaderFooterText() const override;
     QString getSemanticVersion() const override;
     QString getApplicationName() const override;
@@ -49,6 +50,8 @@ public:
     DataItem* getInboundDataItem(const QString& dataItemName) const override;
     std::vector<DataItem*> getInboundDataItems() const override;
     std::vector<QString> getInboundDataItemNames() const override;
+    QString getInboundDataItemDisplayValue(int index) const override;
+    QString getInboundDataItemDisplayValue(const QString& key) const override;
     std::vector<QString> getInboundDisplayValues() const override;
     std::vector<unsigned> getInboundRawValues() const override;
     std::vector<std::pair<unsigned, unsigned>> getInboundDataTableRanges() const override;
@@ -60,6 +63,8 @@ public:
     DataItem* getOutboundDataItem(const QString& dataItemName) const override;
     std::vector<DataItem*> getOutboundDataItems() const override;
     std::vector<QString> getOutboundDataItemNames() const override;
+    QString getOutboundDataItemDisplayValue(int index) const override;
+    QString getOutboundDataItemDisplayValue(const QString& key) const override;
     std::vector<QString> getOutboundDisplayValues() const override;
     QString getOutboundDefaultDisplayValue(int index) const override;
     std::vector<unsigned> getOutboundRawValues() const override;

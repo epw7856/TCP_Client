@@ -53,6 +53,15 @@ public:
     bool getMainWindowMaximizedSetting() const;
     void saveMainWindowMaximizedSetting(bool maximized);
 
+    QString getMaxTempIndiv() const;
+    QString getMaxTempGroup() const;
+    QString getMinTempIndiv() const;
+    QString getMinTempGroup() const;
+    QString getSetPoint1() const;
+    QString getSetPoint2() const;
+    QString getCurrentMode() const;
+    QString getCommandedMode() const;
+
 public slots:
     void updateInboundDataDisplay();
     void receivedStatusUpdate(QString msg);

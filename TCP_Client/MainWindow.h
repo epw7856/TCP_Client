@@ -22,7 +22,7 @@ public:
 
 public slots:
     void showStatusBarMessage(QString msg);
-    void refreshStatusDataDisplay();
+    void refreshInboundDataDisplays();
     void periodicUpdate();
     void receivedUpdateRequestFromController();
 
@@ -58,5 +58,6 @@ private:
     void configureOutboundDataTableView();
     void configureCommonTableSettings(QTableView* table);
     void setupStatusBar();
+    void updateMonitoringAndControlItems();
 };
 #endif // MAINWINDOW_H

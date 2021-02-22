@@ -70,7 +70,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 
     // Connections from MainWindowController to MainWindow
     connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
-    connect(mainWindowController.get(), &MainWindowController::notifyInboundDataUpdated, this, &MainWindow::refreshStatusDataDisplay);
+    connect(mainWindowController.get(), &MainWindowController::notifyInboundDataUpdated, this, &MainWindow::refreshInboundDataDisplays);
     connect(mainWindowController.get(), &MainWindowController::notifyStatusChange, this, &MainWindow::periodicUpdate);
     connect(mainWindowController.get(), &MainWindowController::requestMainWindowUpdate, this, &MainWindow::receivedUpdateRequestFromController);
 
@@ -80,6 +80,7 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     // Perform initial setup and refresh the UI
     mainWindowController->performInitialSetup();
     periodicUpdate();
+    updateMonitoringAndControlItems();
 }
 
 MainWindow::~MainWindow()
@@ -126,15 +127,28 @@ void MainWindow::setupStatusBar()
     ui->statusBar->addPermanentWidget(statusBarLabel);
 }
 
+void MainWindow::updateMonitoringAndControlItems()
+{
+    ui->labelMaxTempIndiv->setText(mainWindowController->getMaxTempIndiv());
+    ui->labelMaxTempGroup->setText(mainWindowController->getMaxTempGroup());
+    ui->labelMinTempIndiv->setText(mainWindowController->getMinTempIndiv());
+    ui->labelMinTempGroup->setText(mainWindowController->getMinTempGroup());
+    ui->labelSetPoint1->setText(mainWindowController->getSetPoint1());
+    ui->labelSetPoint2->setText(mainWindowController->getSetPoint2());
+    ui->labelCurrentMode->setText(mainWindowController->getCurrentMode());
+    ui->labelCommandedMode->setText(mainWindowController->getCommandedMode());
+}
+
 void MainWindow::showStatusBarMessage(QString msg)
 {
     statusBarLabel->clear();
     statusBarLabel->setText("Status: " + msg + "  ");
 }
 
-void MainWindow::refreshStatusDataDisplay()
+void MainWindow::refreshInboundDataDisplays()
 {
     ui->tableViewStatusData->update();
+    updateMonitoringAndControlItems();
 }
 
 void MainWindow::periodicUpdate()

@@ -39,6 +39,11 @@ bool SystemDataSource::loadSystemConfiguration(const QString& configFilePath)
     return true;
 }
 
+QString SystemDataSource::getConfigurationVersion() const
+{
+    return appSettings.configurationVersion;
+}
+
 QString SystemDataSource::getHeaderFooterText() const
 {
     return appSettings.headerFooterText;
@@ -76,6 +81,7 @@ void SystemDataSource::clearSystemData()
 void SystemDataSource::parseApplicationSettings()
 {
     const QJsonValue jsonAppSettings = obj.value("Application Settings");
+    appSettings.configurationVersion = jsonAppSettings.toObject().value("Configuration Version").toVariant().toString();
     appSettings.headerFooterText = jsonAppSettings.toObject().value("Header Footer Text").toVariant().toString();
     appSettings.socketPort = jsonStringToUnsigned(jsonAppSettings.toObject().value("Socket Port").toVariant().toString());
     appSettings.transmissionPeriodicity = jsonStringToUnsigned(jsonAppSettings.toObject().value("Transmission Periodicity To Server (ms)").toVariant().toString());
@@ -375,6 +381,18 @@ std::vector<QString> SystemDataSource::getInboundDataItemNames() const
     return displayName;
 }
 
+QString SystemDataSource::getInboundDataItemDisplayValue(int index) const
+{
+    DataItem* item = getInboundDataItem(index);
+    return (item != nullptr) ? item->getDisplayValue() : QString();
+}
+
+QString SystemDataSource::getInboundDataItemDisplayValue(const QString& key) const
+{
+    DataItem* item = getInboundDataItem(key);
+    return (item != nullptr) ? item->getDisplayValue() : QString();
+}
+
 std::vector<QString> SystemDataSource::getInboundDisplayValues() const
 {
     std::vector<QString> displayValues = {};
@@ -456,6 +474,18 @@ std::vector<QString> SystemDataSource::getOutboundDataItemNames() const
     }
 
     return displayName;
+}
+
+QString SystemDataSource::getOutboundDataItemDisplayValue(int index) const
+{
+    DataItem* item = getOutboundDataItem(index);
+    return (item != nullptr) ? item->getDisplayValue() : QString();
+}
+
+QString SystemDataSource::getOutboundDataItemDisplayValue(const QString& key) const
+{
+    DataItem* item = getOutboundDataItem(key);
+    return (item != nullptr) ? item->getDisplayValue() : QString();
 }
 
 std::vector<QString> SystemDataSource::getOutboundDisplayValues() const

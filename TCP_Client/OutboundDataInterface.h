@@ -19,6 +19,8 @@ public:
     virtual DataItem* getOutboundDataItem(const QString& dataItemName) const = 0;
     virtual std::vector<DataItem*> getOutboundDataItems() const = 0;
     virtual std::vector<QString> getOutboundDataItemNames() const = 0;
+    virtual QString getOutboundDataItemDisplayValue(int index) const = 0;
+    virtual QString getOutboundDataItemDisplayValue(const QString& key) const = 0;
     virtual std::vector<QString> getOutboundDisplayValues() const = 0;
     virtual QString getOutboundDefaultDisplayValue(int index) const = 0;
     virtual std::vector<unsigned> getOutboundRawValues() const = 0;

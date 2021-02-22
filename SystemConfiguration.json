@@ -2,7 +2,8 @@
 	"Local Control Application": 
 	{
 		"Application Settings": {
-			"Header Footer Text": "TEST",
+			"Configuration Version": "Test App #1 Config 12345",
+			"Header Footer Text": "DEVELOPMENT USE ONLY",
 			"Socket Port": 100,
 			"Transmission Periodicity To Server (ms)": 500
 		},
@@ -21,7 +22,7 @@
 				]
 			},
 			{
-				"Set Name": "Mode",
+				"Set Name": "OpMode",
 				"Enum Names": [
 					{
 						"Name": "Mode 1",
@@ -42,20 +43,20 @@
 			"Status Data Table Displayed Ranges": [
 				{
 					"Starting Index (Inclusive)": 0,
-					"Ending Index (Exclusive)": 4
+					"Ending Index (Exclusive)": 9
 				}
 			],
 			"Data Items": [
 				{
 					"Index": 0,
-					"Name": "TestInputSignal1",
+					"Name": "SetPoint1",
 					"Data Type": "Unsigned",
-					"Format": "%.2f",
+					"Format": "",
 					"Units": "kW"
 				},
 				{
 					"Index": 1,
-					"Name": "TestInputSignal2",
+					"Name": "SetPoint2",
 					"Data Type": "Unsigned",
 					"Format": "",
 					"Units": "Unitless"
@@ -70,9 +71,37 @@
 				{
 					"Index": 3,
 					"Name": "CurrentOpMode",
-					"Data Type": "Mode",
+					"Data Type": "OpMode",
 					"Format": "",
 					"Units": "Unitless"
+				},
+				{
+					"Index": 4,
+					"Name": "MaxTempIndiv",
+					"Data Type": "Numeric",
+					"Format": "%.1f",
+					"Units": ""
+				},
+				{
+					"Index": 5,
+					"Name": "MaxTempGroup",
+					"Data Type": "Numeric",
+					"Format": "%.1f",
+					"Units": ""
+				},
+				{
+					"Index": 6,
+					"Name": "MinTempIndiv",
+					"Data Type": "Numeric",
+					"Format": "%.1f",
+					"Units": ""
+				},
+				{
+					"Index": 7,
+					"Name": "MinTempGroup",
+					"Data Type": "Numeric",
+					"Format": "%.1f",
+					"Units": ""
 				}
 			]
 		},
@@ -147,7 +176,7 @@
 				{
 					"Index": 6,
 					"Name": "CurrentOpModeCommand",
-					"Data Type": "Mode",
+					"Data Type": "OpMode",
 					"Default Value": "Mode 3",
 					"Min Value": "",
 					"Max Value": "",
