@@ -62,8 +62,12 @@ public:
     QString getSetPoint2() const;
     QString getCurrentMode() const;
     QString getCommandedMode() const;
-    void setMode1Command();
-    void setMode2Command();
+    QString getEquipmentStatus() const;
+    QString getLinkDisplayStatus() const;
+    void setModeCommand(bool mode1Command);
+    void setEquipmentStatus(bool openCommand);
+    void setLinkStatus(bool link1EnabledCommand);
+    bool areFaultsPresent() const;
 
 public slots:
     void updateInboundDataDisplay();
@@ -91,6 +95,7 @@ private:
     void executeConnect();
     void executeDisconnect();
     void showUserActionErrorPopup(const QString& title, const QString& msg);
+    void validateOutboundCommand(QString& dataItemName, QString& input);
 };
 
 inline InboundDataTableModel& MainWindowController::getInboundDataTableModel()

@@ -69,6 +69,9 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(clearAllAction, &QAction::triggered, this, &MainWindow::onActionClearAllTriggered);
     connect(ui->pushButtonMode1, &QPushButton::clicked, this, &MainWindow::onPushButtonMode1Clicked);
     connect(ui->pushButtonMode2, &QPushButton::clicked, this, &MainWindow::onPushButtonMode2Clicked);
+    connect(ui->pushButtonOpen, &QPushButton::clicked, this, &MainWindow::onPushButtonOpenClicked);
+    connect(ui->pushButtonClose, &QPushButton::clicked, this, &MainWindow::onPushButtonCloseClicked);
+    connect(ui->pushButtonEnable, &QPushButton::clicked, this, &MainWindow::onPushButtonEnableClicked);
 
     // Connections from MainWindowController to MainWindow
     connect(mainWindowController.get(), &MainWindowController::sendStatusBarMessage, this, &MainWindow::showStatusBarMessage);
@@ -78,6 +81,10 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
 
     // Connections from user interaction with the Control Data table
     connect(ui->tableViewControlData, &QTableView::doubleClicked, this, &MainWindow::controlDataTableDoubleClicked);
+
+    // Connection to blink the fault indicator every 500ms if faults are present
+    connect(&faultIndicatorBlinkTimer, &QTimer::timeout, this, &MainWindow::blinkFaultIndicator);
+    faultIndicatorBlinkTimer.setInterval(500);
 
     // Perform initial setup and refresh the UI
     mainWindowController->performInitialSetup();
@@ -121,6 +128,14 @@ void MainWindow::closeEvent(QCloseEvent* event)
     event->accept();
 }
 
+void MainWindow::blinkFaultIndicator()
+{
+    (faultIndicatorIsOn) ? ui->faultIndicator->setStyleSheet("background-color:white;") :
+                           ui->faultIndicator->setStyleSheet("background-color:red;");
+
+    faultIndicatorIsOn = !faultIndicatorIsOn;
+}
+
 void MainWindow::setupStatusBar()
 {
     statusBarLabel = new QLabel();
@@ -139,6 +154,11 @@ void MainWindow::updateMonitoringAndControlItems()
     ui->labelSetPoint2->setText(mainWindowController->getSetPoint2());
     ui->labelCurrentMode->setText(mainWindowController->getCurrentMode());
     ui->labelCommandedMode->setText(mainWindowController->getCommandedMode());
+    ui->labelStatus->setText(mainWindowController->getEquipmentStatus());
+    ui->labelLinkStatus->setText(mainWindowController->getLinkDisplayStatus());
+
+    (mainWindowController->areFaultsPresent()) ? faultIndicatorBlinkTimer.start() :
+                                                 faultIndicatorBlinkTimer.stop();
 }
 
 void MainWindow::showStatusBarMessage(QString msg)
@@ -238,12 +258,27 @@ void MainWindow::controlDataTableDoubleClicked(const QModelIndex& index)
 
 void MainWindow::onPushButtonMode1Clicked()
 {
-    mainWindowController->setMode1Command();
+    mainWindowController->setModeCommand(true);
 }
 
 void MainWindow::onPushButtonMode2Clicked()
 {
-    mainWindowController->setMode2Command();
+    mainWindowController->setModeCommand(false);
+}
+
+void MainWindow::onPushButtonOpenClicked()
+{
+    mainWindowController->setEquipmentStatus(true);
+}
+
+void MainWindow::onPushButtonCloseClicked()
+{
+    mainWindowController->setEquipmentStatus(false);
+}
+
+void MainWindow::onPushButtonEnableClicked()
+{
+    mainWindowController->setLinkStatus(ui->radioButtonLink1->isChecked());
 }
 
 void MainWindow::configureInboundDataTableView()

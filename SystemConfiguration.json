@@ -37,13 +37,43 @@
 						"Value": 2
 					}
 				]
+			},
+			{
+				"Set Name": "Status",
+				"Enum Names": [
+					{
+						"Name": "OPENED",
+						"Value": 0
+					},
+					{
+						"Name": "CLOSED",
+						"Value": 1
+					}
+				]
+			},
+			{
+				"Set Name": "LinkStatus",
+				"Enum Names": [
+					{
+						"Name": "Disabled",
+						"Value": 0
+					},
+					{
+						"Name": "Link 1 Enabled",
+						"Value": 1
+					},
+					{
+						"Name": "Link 2 Enabled",
+						"Value": 2
+					}
+				]
 			}
 		],
 		"Data From Server": {
 			"Status Data Table Displayed Ranges": [
 				{
 					"Starting Index (Inclusive)": 0,
-					"Ending Index (Exclusive)": 9
+					"Ending Index (Exclusive)": 11
 				}
 			],
 			"Data Items": [
@@ -102,6 +132,27 @@
 					"Data Type": "Numeric",
 					"Format": "%.1f",
 					"Units": ""
+				},
+				{
+					"Index": 8,
+					"Name": "EquipmentStatus",
+					"Data Type": "Status",
+					"Format": "",
+					"Units": ""
+				},
+				{
+					"Index": 9,
+					"Name": "LinkDisplayStatus",
+					"Data Type": "LinkStatus",
+					"Format": "",
+					"Units": ""
+				},
+				{
+					"Index": 10,
+					"Name": "FaultStatus",
+					"Data Type": "Boolean",
+					"Format": "",
+					"Units": ""
 				}
 			]
 		},
@@ -109,7 +160,7 @@
 			"Control Data Table Displayed Ranges": [
 				{
 					"Starting Index (Inclusive)": 0,
-					"Ending Index (Exclusive)": 7
+					"Ending Index (Exclusive)": 9
 				}
 			],
 			"Data Items": [
@@ -182,6 +233,26 @@
 					"Max Value": "",
 					"Format": "",
 					"Units": "Radians"
+				},
+				{
+					"Index": 7,
+					"Name": "EquipmentStatusCommand",
+					"Data Type": "Status",
+					"Default Value": "OPENED",
+					"Min Value": "",
+					"Max Value": "",
+					"Format": "",
+					"Units": ""
+				},
+				{
+					"Index": 8,
+					"Name": "LinkDisplayStatusCommand",
+					"Data Type": "LinkStatus",
+					"Default Value": "Disabled",
+					"Min Value": "",
+					"Max Value": "",
+					"Format": "",
+					"Units": ""
 				}
 			]
 		}

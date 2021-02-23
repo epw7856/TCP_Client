@@ -240,32 +240,46 @@ QString MainWindowController::getCommandedMode() const
     return sds->getOutboundDataItemDisplayValue("CurrentOpModeCommand");
 }
 
-void MainWindowController::setMode1Command()
+QString MainWindowController::getEquipmentStatus() const
 {
-    QString currentOpModeDataItem = "CurrentOpModeCommand";
-    QString mode1Option = "Mode 1";
-
-    if(rangeCheckHandler->validateOutboundDataItem(currentOpModeDataItem, mode1Option))
-    {
-        sds->setOutboundDisplayValue(currentOpModeDataItem, mode1Option);
-
-        emit outboundDataTableModel.layoutChanged();
-        emit notifyDataUpdated();
-    }
+    return sds->getInboundDataItemDisplayValue("EquipmentStatus");
 }
 
-void MainWindowController::setMode2Command()
+QString MainWindowController::getLinkDisplayStatus() const
 {
+    return sds->getInboundDataItemDisplayValue("LinkDisplayStatus");
+}
+
+void MainWindowController::setModeCommand(bool mode1Command)
+{
+    QString modeOption;
+    (mode1Command) ? modeOption = "Mode 1" : modeOption = "Mode 2";
     QString currentOpModeDataItem = "CurrentOpModeCommand";
-    QString mode2Option = "Mode 2";
 
-    if(rangeCheckHandler->validateOutboundDataItem(currentOpModeDataItem, mode2Option))
-    {
-        sds->setOutboundDisplayValue(currentOpModeDataItem, mode2Option);
+    validateOutboundCommand(currentOpModeDataItem, modeOption);
+}
 
-        emit outboundDataTableModel.layoutChanged();
-        emit notifyDataUpdated();
-    }
+void MainWindowController::setEquipmentStatus(bool openCommand)
+{
+    QString statusOption;
+    (openCommand) ? statusOption = "OPENED" : statusOption = "CLOSED";
+    QString equipmentStatusDataItem = "EquipmentStatusCommand";
+
+    validateOutboundCommand(equipmentStatusDataItem, statusOption);
+}
+
+void MainWindowController::setLinkStatus(bool link1EnabledCommand)
+{
+    QString enableOption;
+    (link1EnabledCommand) ? enableOption = "Link 1 Enabled" : enableOption = "Link 2 Enabled";
+    QString linkStatusDataItem = "LinkDisplayStatusCommand";
+
+    validateOutboundCommand(linkStatusDataItem, enableOption);
+}
+
+bool MainWindowController::areFaultsPresent() const
+{
+    return (sds->getInboundDataItemDisplayValue("FaultStatus") == "True");
 }
 
 void MainWindowController::updateInboundDataDisplay()
@@ -377,4 +391,15 @@ void MainWindowController::showUserActionErrorPopup(const QString& title, const 
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
+}
+
+void MainWindowController::validateOutboundCommand(QString& dataItemName, QString& input)
+{
+    if(rangeCheckHandler->validateOutboundDataItem(dataItemName, input))
+    {
+        sds->setOutboundDisplayValue(dataItemName, input);
+
+        emit outboundDataTableModel.layoutChanged();
+        emit notifyDataUpdated();
+    }
 }

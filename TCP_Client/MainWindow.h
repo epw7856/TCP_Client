@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <QMainWindow>
+#include <QTimer>
 
 class MainWindowController;
 class QLabel;
@@ -42,8 +43,13 @@ private slots:
     void controlDataTableDoubleClicked(const QModelIndex& index);
     void onPushButtonMode1Clicked();
     void onPushButtonMode2Clicked();
+    void onPushButtonOpenClicked();
+    void onPushButtonCloseClicked();
+    void onPushButtonEnableClicked();
     void showEvent(QShowEvent* event) override;
     void closeEvent(QCloseEvent* event) override;
+
+    void blinkFaultIndicator();
 
 private:
     Ui::MainWindow *ui;
@@ -55,6 +61,8 @@ private:
     QAction* clearAllAction;
     QLabel* statusBarLabel;
     std::unique_ptr<MainWindowController> mainWindowController;
+    QTimer faultIndicatorBlinkTimer;
+    bool faultIndicatorIsOn = false;
 
     void configureInboundDataTableView();
     void configureOutboundDataTableView();
