@@ -4,7 +4,9 @@
 #include "DataItem.h"
 #include "EnumSelectionDialog.h"
 #include "FileOperationsHandler.h"
+#include "InboundDataItemNames.h"
 #include "MainWindowController.h"
+#include "OutboundDataItemNames.h"
 #include <QMessageBox>
 #include "RangeCheckHandler.h"
 #include "SettingsManager.h"
@@ -202,84 +204,81 @@ void MainWindowController::saveMainWindowMaximizedSetting(bool maximized)
 
 QString MainWindowController::getMaxTempIndiv() const
 {
-    return sds->getInboundDataItemDisplayValue("MaxTempIndiv");
+    return sds->getInboundDataItemDisplayValue(MaxTempIndiv);
 }
 
 QString MainWindowController::getMaxTempGroup() const
 {
-    return sds->getInboundDataItemDisplayValue("MaxTempGroup");
+    return sds->getInboundDataItemDisplayValue(MaxTempGroup);
 }
 
 QString MainWindowController::getMinTempIndiv() const
 {
-    return sds->getInboundDataItemDisplayValue("MinTempIndiv");
+    return sds->getInboundDataItemDisplayValue(MinTempIndiv);
 }
 
 QString MainWindowController::getMinTempGroup() const
 {
-    return sds->getInboundDataItemDisplayValue("MinTempGroup");
+    return sds->getInboundDataItemDisplayValue(MinTempGroup);
 }
 
 QString MainWindowController::getSetPoint1() const
 {
-    return sds->getInboundDataItemDisplayValue("SetPoint1");
+    return sds->getInboundDataItemDisplayValue(SetPoint1);
 }
 
 QString MainWindowController::getSetPoint2() const
 {
-    return sds->getInboundDataItemDisplayValue("SetPoint2");
+    return sds->getInboundDataItemDisplayValue(SetPoint2);
 }
 
 QString MainWindowController::getCurrentMode() const
 {
-    return sds->getInboundDataItemDisplayValue("CurrentOpMode");
+    return sds->getInboundDataItemDisplayValue(CurrentOpMode);
 }
 
 QString MainWindowController::getCommandedMode() const
 {
-    return sds->getOutboundDataItemDisplayValue("CurrentOpModeCommand");
+    return sds->getOutboundDataItemDisplayValue(CurrentOpModeCommand);
 }
 
 QString MainWindowController::getEquipmentStatus() const
 {
-    return sds->getInboundDataItemDisplayValue("EquipmentStatus");
+    return sds->getInboundDataItemDisplayValue(EquipmentStatus);
 }
 
 QString MainWindowController::getLinkDisplayStatus() const
 {
-    return sds->getInboundDataItemDisplayValue("LinkDisplayStatus");
+    return sds->getInboundDataItemDisplayValue(LinkDisplayStatus);
 }
 
 void MainWindowController::setModeCommand(bool mode1Command)
 {
     QString modeOption;
     (mode1Command) ? modeOption = "Mode 1" : modeOption = "Mode 2";
-    QString currentOpModeDataItem = "CurrentOpModeCommand";
 
-    validateOutboundCommand(currentOpModeDataItem, modeOption);
+    validateOutboundCommand(CurrentOpModeCommand, modeOption);
 }
 
 void MainWindowController::setEquipmentStatus(bool openCommand)
 {
     QString statusOption;
     (openCommand) ? statusOption = "OPENED" : statusOption = "CLOSED";
-    QString equipmentStatusDataItem = "EquipmentStatusCommand";
 
-    validateOutboundCommand(equipmentStatusDataItem, statusOption);
+    validateOutboundCommand(EquipmentStatusCommand, statusOption);
 }
 
 void MainWindowController::setLinkStatus(bool link1EnabledCommand)
 {
     QString enableOption;
     (link1EnabledCommand) ? enableOption = "Link 1 Enabled" : enableOption = "Link 2 Enabled";
-    QString linkStatusDataItem = "LinkDisplayStatusCommand";
 
-    validateOutboundCommand(linkStatusDataItem, enableOption);
+    validateOutboundCommand(LinkDisplayStatusCommand, enableOption);
 }
 
 bool MainWindowController::areFaultsPresent() const
 {
-    return (sds->getInboundDataItemDisplayValue("FaultStatus") == "True");
+    return (sds->getInboundDataItemDisplayValue(FaultStatus) == "True");
 }
 
 void MainWindowController::updateInboundDataDisplay()
@@ -393,7 +392,7 @@ void MainWindowController::showUserActionErrorPopup(const QString& title, const 
     msgBox.exec();
 }
 
-void MainWindowController::validateOutboundCommand(QString& dataItemName, QString& input)
+void MainWindowController::validateOutboundCommand(const QString& dataItemName, QString& input)
 {
     if(rangeCheckHandler->validateOutboundDataItem(dataItemName, input))
     {

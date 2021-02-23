@@ -4,7 +4,6 @@
 #include "InboundDataTableModel.h"
 #include <memory>
 #include "OutboundDataTableModel.h"
-#include <QObject>
 
 class AboutDialog;
 class ApplicationSettingsDialog;
@@ -95,7 +94,7 @@ private:
     void executeConnect();
     void executeDisconnect();
     void showUserActionErrorPopup(const QString& title, const QString& msg);
-    void validateOutboundCommand(QString& dataItemName, QString& input);
+    void validateOutboundCommand(const QString& dataItemName, QString& input);
 };
 
 inline InboundDataTableModel& MainWindowController::getInboundDataTableModel()

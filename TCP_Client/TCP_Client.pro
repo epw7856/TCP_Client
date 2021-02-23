@@ -58,10 +58,12 @@ HEADERS += \
     EnumType.h \
     FileOperationsHandler.h \
     InboundDataInterface.h \
+    InboundDataItemNames.h \
     InboundDataTableModel.h \
     MainWindow.h \
     MainWindowController.h \
     OutboundDataInterface.h \
+    OutboundDataItemNames.h \
     OutboundDataTableModel.h \
     RangeCheckHandler.h \
     SemanticVersionInfo.h \
