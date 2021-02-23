@@ -292,7 +292,6 @@ void MainWindowController::refreshSettings(bool reconnect)
        {
            executeDisconnect();
        }
-       executeConnect();
     }
 }
 

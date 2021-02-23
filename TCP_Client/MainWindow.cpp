@@ -167,6 +167,8 @@ void MainWindow::receivedUpdateRequestFromController()
 {
     ui->labelHeaderText->setText(mainWindowController->getHeaderFooterText());
     ui->labelFooterText->setText(mainWindowController->getHeaderFooterText());
+    periodicUpdate();
+    refreshDataDisplays();
 }
 
 void MainWindow::actionViewApplicationInformation()
@@ -276,7 +278,7 @@ void MainWindow::configureCommonTableSettings(QTableView* table)
 
     // Configure the horizontal header settings
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    table->horizontalHeader()->setFixedHeight(25);
+    table->horizontalHeader()->setFixedHeight(20);
     table->horizontalHeader()->setSectionsClickable(false);
 
     // Configure the vertical header settings
