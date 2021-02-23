@@ -299,12 +299,10 @@ void MainWindowController::refreshSettings(bool reconnect)
     commsManager->setSocketPort(sds->getSocketPort());
     commsManager->setTransmissionPeriodicity(sds->getTransmissionPeriodicity());
 
-    if(reconnect)
+    if(reconnect && (commsManager->getConnectionStatus() == ConnectionStatus::Connected))
     {
-       if(commsManager->getConnectionStatus() == ConnectionStatus::Connected)
-       {
-           executeDisconnect();
-       }
+       executeDisconnect();
+       executeConnect();
     }
 }
 
