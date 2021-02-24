@@ -219,8 +219,8 @@
 					"Name": "TestOutputSignal6",
 					"Data Type": "Unsigned",
 					"Default Value": 1384,
-					"Min Value": 0,
-					"Max Value": 1399,
+					"Min Value": "",
+					"Max Value": "",
 					"Format": "",
 					"Units": "Radians"
 				},

@@ -149,20 +149,30 @@ void RangeCheckHandler::showInvalidValueErrorPopup(DataItem* item, const QString
     msg += "Type: " + type + "\n";
     msg += "Desired Value: " + value + "\n";
 
+    bool rangeExists = item->getDataItemRange().first != item->getDataItemRange().second;
     if(type == TypeUnsignedInteger)
     {
-        msg += "Range: " + QString::number(item->getDataItemRange().first) +
-               " to " + QString::number(item->getDataItemRange().second) + "\n";
+        if(rangeExists)
+        {
+            msg += "Range: " + QString::number(item->getDataItemRange().first) +
+                   " to " + QString::number(item->getDataItemRange().second) + "\n";
+        }
     }
     else if(type == TypeInteger)
     {
-        msg += "Range: " + QString::number(unsignedToInt(item->getDataItemRange().first)) +
-               " to " + QString::number(unsignedToInt(item->getDataItemRange().second)) + "\n";
+        if(rangeExists)
+        {
+            msg += "Range: " + QString::number(unsignedToInt(item->getDataItemRange().first)) +
+                   " to " + QString::number(unsignedToInt(item->getDataItemRange().second)) + "\n";
+        }
     }
     else if(type == TypeNumeric)
     {
-        msg += "Range: " + QString::number(unsignedToFloat(item->getDataItemRange().first)) +
-               " to " + QString::number(unsignedToFloat(item->getDataItemRange().second)) + "\n";
+        if(rangeExists)
+        {
+            msg += "Range: " + QString::number(unsignedToFloat(item->getDataItemRange().first)) +
+                   " to " + QString::number(unsignedToFloat(item->getDataItemRange().second)) + "\n";
+        }
     }
     else
     {
