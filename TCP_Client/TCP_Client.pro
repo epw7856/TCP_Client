@@ -51,6 +51,7 @@ HEADERS += \
     ConnectionStatus.h \
     DataItem.h \
     DataUtilities.h \
+    EnumDefinitionNames.h \
     EnumInterface.h \
     EnumSelectionController.h \
     EnumSelectionDialog.h \

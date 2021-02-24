@@ -2,6 +2,7 @@
 #include "ApplicationSettingsDialog.h"
 #include "CommunicationsManager.h"
 #include "DataItem.h"
+#include "EnumDefinitionNames.h"
 #include "EnumSelectionDialog.h"
 #include "FileOperationsHandler.h"
 #include "InboundDataItemNames.h"
@@ -255,7 +256,8 @@ QString MainWindowController::getLinkDisplayStatus() const
 void MainWindowController::setModeCommand(bool mode1Command)
 {
     QString modeOption;
-    (mode1Command) ? modeOption = "Mode 1" : modeOption = "Mode 2";
+    (mode1Command) ? modeOption = enumOpModeMode1 :
+                     modeOption = enumOpModeMode2;
 
     validateOutboundCommand(CurrentOpModeCommand, modeOption);
 }
@@ -263,7 +265,8 @@ void MainWindowController::setModeCommand(bool mode1Command)
 void MainWindowController::setEquipmentStatus(bool openCommand)
 {
     QString statusOption;
-    (openCommand) ? statusOption = "OPENED" : statusOption = "CLOSED";
+    (openCommand) ? statusOption = enumStatusOpened :
+                    statusOption = enumStatusClosed;
 
     validateOutboundCommand(EquipmentStatusCommand, statusOption);
 }
@@ -271,14 +274,15 @@ void MainWindowController::setEquipmentStatus(bool openCommand)
 void MainWindowController::setLinkStatus(bool link1EnabledCommand)
 {
     QString enableOption;
-    (link1EnabledCommand) ? enableOption = "Link 1 Enabled" : enableOption = "Link 2 Enabled";
+    (link1EnabledCommand) ? enableOption = enumLinkStatusLink1Enabled :
+                            enableOption = enumLinkStatusLink2Enabled;
 
     validateOutboundCommand(LinkDisplayStatusCommand, enableOption);
 }
 
 bool MainWindowController::areFaultsPresent() const
 {
-    return (sds->getInboundDataItemDisplayValue(FaultStatus) == "True");
+    return (sds->getInboundDataItemDisplayValue(FaultStatus) == enumBooleanTrue);
 }
 
 void MainWindowController::updateInboundDataDisplay()
