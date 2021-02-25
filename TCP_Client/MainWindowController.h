@@ -8,6 +8,7 @@
 class AboutDialog;
 class ApplicationSettingsDialog;
 class CommunicationsManager;
+class FileOperationsHandler;
 class InboundDataInterface;
 class OutboundDataInterface;
 class RangeCheckHandler;
@@ -44,6 +45,9 @@ public:
     void clearDesiredOutboundValues();
     void resetDesiredOutboundValuesToDefaults();
     void resetSelectedDesiredOutboundValuesToDefaults(const QModelIndexList& selection);
+
+    void saveControlDataToFile(QWidget* parent);
+    void restoreControlDataFromFile(QWidget* parent);
 
     void showAboutDialog(QWidget* parent);
     void showApplicationSettingsDialog(QWidget* parent);
@@ -86,6 +90,7 @@ private:
     std::unique_ptr<AboutDialog> aboutDialog;
     std::unique_ptr<ApplicationSettingsDialog> appSettingsDialog;
     std::unique_ptr<RangeCheckHandler> rangeCheckHandler;
+    std::unique_ptr<FileOperationsHandler> fileOperationsHandler;
     bool configurationLoaded = false;
     InboundDataTableModel inboundDataTableModel;
     OutboundDataTableModel outboundDataTableModel;

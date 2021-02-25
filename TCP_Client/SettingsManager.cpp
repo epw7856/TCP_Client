@@ -8,6 +8,7 @@ const QString AutoConnectIdentifier = "Auto Connect";
 const QString MainWindowSizeIdentifier = "Main Window Size";
 const QString MainWindowMaximized = "Main Window Maximized";
 const QString DisplayConnectionNotificationsIdentifier = "Display Connection Notifications";
+const QString FileSelectionPath = "File Selection Path";
 
 SettingsManager::SettingsManager()
 {
@@ -35,6 +36,11 @@ bool SettingsManager::getMainWindowMaximizedSetting() const
 bool SettingsManager::getShowConnectionNotificationsSetting() const
 {
     return (persistentSettings != nullptr) ? persistentSettings->value(DisplayConnectionNotificationsIdentifier).toBool() : false;
+}
+
+QString SettingsManager::getFileSelectionPath() const
+{
+    return (persistentSettings != nullptr) ? persistentSettings->value(FileSelectionPath).toString() : QString();
 }
 
 void SettingsManager::setAutoConnectSetting(bool enabled)
@@ -69,6 +75,15 @@ void SettingsManager::setShowConnectionNotificationsSetting(bool enabled)
     if(persistentSettings != nullptr)
     {
         persistentSettings->setValue(DisplayConnectionNotificationsIdentifier, enabled);
+        persistentSettings->sync();
+    }
+}
+
+void SettingsManager::setFileSelectionPath(const QString& path)
+{
+    if(persistentSettings != nullptr)
+    {
+        persistentSettings->setValue(FileSelectionPath, path);
         persistentSettings->sync();
     }
 }

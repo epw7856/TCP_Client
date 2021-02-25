@@ -218,12 +218,12 @@ void MainWindow::onActionDisconnectFromServerTriggered()
 
 void MainWindow::onActionSaveControlDataToFileClicked()
 {
-
+    mainWindowController->saveControlDataToFile(this);
 }
 
 void MainWindow::onActionRestoreControlDataFromFileClicked()
 {
-
+    mainWindowController->restoreControlDataFromFile(this);
 }
 
 void MainWindow::onActionLaunchDragon()

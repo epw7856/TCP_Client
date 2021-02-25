@@ -18,11 +18,13 @@ public:
     QSize getMainWindowSizeSetting() const override;
     bool getMainWindowMaximizedSetting() const override;
     bool getShowConnectionNotificationsSetting() const override;
+    QString getFileSelectionPath() const override;
 
     void setAutoConnectSetting(bool enabled) override;
     void setMainWindowSizeSetting(const QSize& size) override;
     void setMainWindowMaximizedSetting(bool maximized) override;
     void setShowConnectionNotificationsSetting(bool enabled) override;
+    void setFileSelectionPath(const QString& path) override;
 
 private:
     std::unique_ptr<QSettings> persistentSettings;

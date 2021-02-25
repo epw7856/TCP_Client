@@ -24,6 +24,7 @@ public:
 
     int getNewValueColumn() const;
     const std::vector<QString>& getDesiredOutboundValues() const;
+    std::map<unsigned, DataItem*>& getOutboundDataItemMap();
     void setOutboundDataItems();
     void setDesiredOutboundValue(int index, QString value);
     void setDesiredOutboundValues(const std::vector<QString>& values);

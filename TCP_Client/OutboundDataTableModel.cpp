@@ -125,6 +125,11 @@ const std::vector<QString>& OutboundDataTableModel::getDesiredOutboundValues() c
     return desiredOutboundValues;
 }
 
+std::map<unsigned, DataItem*>& OutboundDataTableModel::getOutboundDataItemMap()
+{
+    return outboundDataItemMap;
+}
+
 void OutboundDataTableModel::setOutboundDataItems()
 {
     beginResetModel();

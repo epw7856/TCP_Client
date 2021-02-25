@@ -19,6 +19,7 @@ MainWindowController::MainWindowController(const QString& configFilePath)
     commsManager(std::make_unique<CommunicationsManager>(*sds, *sds)),
     settingsManager(std::make_unique<SettingsManager>()),
     rangeCheckHandler(std::make_unique<RangeCheckHandler>(*sds, *sds)),
+    fileOperationsHandler(std::make_unique<FileOperationsHandler>(*sds, *settingsManager)),
     inboundDataTableModel(*sds),
     outboundDataTableModel(*sds, *sds)
 {   
@@ -75,12 +76,12 @@ void MainWindowController::selectConfigurationFile(QWidget* parent)
     if((commsManager->getConnectionStatus() == ConnectionStatus::Connected) &&
        (commsManager->getOutboundDataTransmissionStatus()))
     {
-        status = FileOperationsHandler::showFileSelectionWarning();
+        status = FileOperationsHandler::showConfigFileSelectionWarning();
     }
 
     if(status)
     {
-        const QString configFile = FileOperationsHandler::showFileSelectionDialog(parent);
+        const QString configFile = fileOperationsHandler->showFileSelectionDialog("Select Configuration File", parent);
         loadConfiguration(configFile, false);
     }
 }
@@ -154,6 +155,16 @@ void MainWindowController::resetSelectedDesiredOutboundValuesToDefaults(const QM
     }
 
     outboundDataTableModel.clearDesiredOutboundValues(indices);
+}
+
+void MainWindowController::saveControlDataToFile(QWidget* parent)
+{
+    fileOperationsHandler->initiateSaveOutboundDataToFile(outboundDataTableModel.getOutboundDataItemMap(), parent);
+}
+
+void MainWindowController::restoreControlDataFromFile(QWidget* parent)
+{
+
 }
 
 void MainWindowController::showAboutDialog(QWidget* parent)
@@ -312,12 +323,12 @@ void MainWindowController::refreshSettings(bool reconnect)
 
 void MainWindowController::loadConfiguration(const QString& configFilePath, bool initialLoad)
 {
-    if(!FileOperationsHandler::verifyFilePath(configFilePath))
+    if(!FileOperationsHandler::verifyFileSelection(configFilePath))
     {
         if(!configFilePath.isEmpty())
         {
             const QString msg = QString("%1").arg("The configuration file '" + configFilePath + "' is invalid or does not exist.");
-            FileOperationsHandler::showConfigFileErrorPopup(msg);
+            FileOperationsHandler::showFileErrorPopup("Configuration Error", msg);
         }
         return;
     }
@@ -331,7 +342,7 @@ void MainWindowController::loadConfiguration(const QString& configFilePath, bool
     if(!sds->loadSystemConfiguration(configFilePath))
     {
         const QString msg = QString("%1").arg("Error encountered while attempting to open configuration file '" + configFilePath + "'.");
-        FileOperationsHandler::showConfigFileErrorPopup(msg);
+        FileOperationsHandler::showFileErrorPopup("Configuration Error", msg);
         return;
     }
 
