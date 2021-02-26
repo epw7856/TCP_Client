@@ -1,6 +1,7 @@
 #include "ApplicationInterface.h"
 #include "DataItem.h"
 #include "FileOperationsHandler.h"
+#include "FileTask.h"
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QJsonDocument>
@@ -10,6 +11,9 @@
 #include <QStandardPaths>
 #include "SettingsInterface.h"
 
+Q_DECLARE_METATYPE(QJsonDocument);
+Q_DECLARE_METATYPE(QString);
+
 FileOperationsHandler::FileOperationsHandler
 (
     ApplicationInterface& localAppInterface,
@@ -17,9 +21,20 @@ FileOperationsHandler::FileOperationsHandler
 )
 :
     appInterface(localAppInterface),
-    settingsInterface(localSettingsInterface)
+    settingsInterface(localSettingsInterface),
+    fileTask(std::make_unique<FileTask>())
 {
+    qRegisterMetaType<QJsonDocument>();
+    qRegisterMetaType<QString>();
 
+    fileTask->moveToThread(&fileOpsThread);
+    fileOpsThread.start();
+}
+
+FileOperationsHandler::~FileOperationsHandler()
+{
+    fileOpsThread.quit();
+    fileOpsThread.wait(2000);
 }
 
 bool FileOperationsHandler::isFileOperationInProgress() const
@@ -60,16 +75,61 @@ bool FileOperationsHandler::verifyFileExtension(const QString& filePath)
 
 QString FileOperationsHandler::showFileSelectionDialog(const QString& title, QWidget* parent)
 {
-    const QString fileSelection = QFileDialog::getOpenFileName(parent, title, getDefaultPath(), "JSON File (*.json)");
+    const QString fileSelection = QFileDialog::getOpenFileName(parent,
+                                                               title,
+                                                               getDefaultPath(),
+                                                               "JSON File (*.json)");
     saveDefaultPath(fileSelection);
     return fileSelection;
 }
 
 QString FileOperationsHandler::showFileSaveDialog(const QString& title, QWidget* parent)
 {
-    const QString fileSelection = QFileDialog::getSaveFileName(parent, title, getDefaultPath(), "JSON File (*.json)");
+    const QString fileSelection = QFileDialog::getSaveFileName(parent,
+                                                               title,
+                                                               getDefaultPath(),
+                                                               "JSON File (*.json)");
     saveDefaultPath(fileSelection);
     return fileSelection;
+}
+
+void FileOperationsHandler::saveDefaultPath(const QString& filePath)
+{
+    QFileInfo file(filePath);
+    settingsInterface.setFileSelectionPath(file.path());
+}
+
+QString FileOperationsHandler::getDefaultPath() const
+{
+    QString defaultPath = settingsInterface.getFileSelectionPath();
+
+    QDir dir(defaultPath);
+    return (dir.exists() ? defaultPath :
+                           QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+}
+
+void FileOperationsHandler::buildControlDataFileContent(const std::map<unsigned, DataItem*>& dataItems)
+{
+    QJsonObject lcaObj;
+    QJsonObject obj;
+
+    obj.insert("File Type", "Saved Control Data");
+    obj.insert("Configuration Version", appInterface.getConfigurationVersion());
+
+    QJsonArray dataItemArray;
+    for(const auto& i : dataItems)
+    {
+        QJsonObject dataItemObj;
+        dataItemObj.insert("Index", QString::number(i.first));
+        dataItemObj.insert("Data Item Name", i.second->getDataItemName());
+        dataItemObj.insert("Data Item Type", i.second->getDataItemType());
+        dataItemObj.insert("Value", i.second->getDisplayValue());
+
+        dataItemArray.push_back(dataItemObj);
+    }
+    obj.insert("Control Data Items", QJsonValue(dataItemArray));
+    lcaObj.insert("Local Control Application", QJsonValue(obj));
+    fileContent.setObject(lcaObj);
 }
 
 void FileOperationsHandler::showFileErrorPopup(const QString& title, const QString& message)
@@ -112,43 +172,4 @@ void FileOperationsHandler::showFileOperationInProgressWarning()
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.setIcon(QMessageBox::Warning);
     msgBox.exec();
-}
-
-void FileOperationsHandler::saveDefaultPath(const QString& filePath)
-{
-    QFileInfo file(filePath);
-    settingsInterface.setFileSelectionPath(file.path());
-}
-
-QString FileOperationsHandler::getDefaultPath() const
-{
-    QString defaultPath = settingsInterface.getFileSelectionPath();
-
-    QDir dir(defaultPath);
-    return (dir.exists() ? defaultPath :
-                           QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-}
-
-void FileOperationsHandler::buildControlDataFileContent(const std::map<unsigned, DataItem*>& dataItems)
-{
-    QJsonObject lcaObj;
-    QJsonObject obj;
-
-    obj.insert("File Type", "Saved Control Data");
-    obj.insert("Configuration Version", appInterface.getConfigurationVersion());
-
-    QJsonArray dataItemArray;
-    for(const auto& i : dataItems)
-    {
-        QJsonObject dataItemObj;
-        dataItemObj.insert("Index", QString::number(i.first));
-        dataItemObj.insert("Data Item Name", i.second->getDataItemName());
-        dataItemObj.insert("Data Item Type", i.second->getDataItemType());
-        dataItemObj.insert("Value", i.second->getDisplayValue());
-
-        dataItemArray.push_back(dataItemObj);
-    }
-    obj.insert("Control Data Items", QJsonValue(dataItemArray));
-    lcaObj.insert("Local Control Application", QJsonValue(obj));
-    fileContent.setObject(lcaObj);
 }

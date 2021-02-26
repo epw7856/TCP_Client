@@ -1,21 +1,28 @@
 #ifndef FILEOPERATIONSHANDLER_H
 #define FILEOPERATIONSHANDLER_H
 
+#include <memory>
 #include <QJsonDocument>
+#include <QThread>
 
 class ApplicationInterface;
 class DataItem;
+class FileTask;
 class SettingsInterface;
 
-class FileOperationsHandler
+class FileOperationsHandler : public QObject
 {
+    Q_OBJECT
+
 public:
-    FileOperationsHandler(ApplicationInterface& localAppInterface, SettingsInterface& localSettingsInterface);
+    FileOperationsHandler(ApplicationInterface& localAppInterface,
+                          SettingsInterface& localSettingsInterface);
+
+    ~FileOperationsHandler();
 
     bool isFileOperationInProgress() const;
     void initiateSaveOutboundDataToFile(const std::map<unsigned, DataItem*>& dataItems,
                                         QWidget* parent = nullptr);
-
 
     QString showFileSelectionDialog(const QString& title, QWidget* parent = nullptr);
     QString showFileSaveDialog(const QString& title, QWidget* parent = nullptr);
@@ -26,11 +33,16 @@ public:
     static bool showConfigFileSelectionWarning();
     static void showFileOperationInProgressWarning();
 
+signals:
+    void requestWriteToFile(QJsonDocument document);
+
 private:
     ApplicationInterface& appInterface;
     SettingsInterface& settingsInterface;
-    bool fileOperationInProgress = false;
+    QThread fileOpsThread;
     QJsonDocument fileContent;
+    std::unique_ptr<FileTask> fileTask;
+    bool fileOperationInProgress = false;
 
     void saveDefaultPath(const QString& filePath);
     QString getDefaultPath() const;

@@ -30,6 +30,7 @@ SOURCES += \
     EnumSelectionTableModel.cpp \
     EnumType.cpp \
     FileOperationsHandler.cpp \
+    FileTask.cpp \
     InboundDataTableModel.cpp \
     Main.cpp \
     MainWindowController.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     EnumSelectionTableModel.h \
     EnumType.h \
     FileOperationsHandler.h \
+    FileTask.h \
     InboundDataInterface.h \
     InboundDataItemNames.h \
     InboundDataTableModel.h \
