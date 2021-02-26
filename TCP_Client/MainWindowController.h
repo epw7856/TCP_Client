@@ -37,6 +37,7 @@ public:
     bool enableFileActionsButton() const;
     bool enableActionConnectToServer() const;
     bool enableActionDisconnectFromServer() const;
+    bool enableApplyButton() const;
     bool enableClearButton() const;
     bool enableResetButton() const;
 

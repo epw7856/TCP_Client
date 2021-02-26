@@ -180,6 +180,7 @@ void MainWindow::periodicUpdate()
     ui->actionConnectToServer->setEnabled(mainWindowController->enableActionConnectToServer());
     ui->actionDisconnectFromServer->setEnabled(mainWindowController->enableActionDisconnectFromServer());
     ui->toolButtonClear->setEnabled(mainWindowController->enableClearButton());
+    ui->pushButtonApply->setEnabled(mainWindowController->enableApplyButton());
     ui->pushButtonReset->setEnabled(mainWindowController->enableResetButton());
 }
 

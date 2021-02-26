@@ -42,7 +42,12 @@ MainWindowController::~MainWindowController() = default;
 
 void MainWindowController::requestConnectToServer()
 {
-    if(sds->getSocketPort() <= 0U)
+    if(!configurationLoaded)
+    {
+        showUserActionErrorPopup("Configuration Error",
+                                 "Please load a configuration file prior to connecting to the server.");
+    }
+    else if(sds->getSocketPort() <= 0U)
     {
         showUserActionErrorPopup("Socket Port Error",
                                  "Please configure the local socket port number prior to connecting to the server.");
@@ -93,12 +98,17 @@ bool MainWindowController::enableFileActionsButton() const
 
 bool MainWindowController::enableActionConnectToServer() const
 {
-    return (commsManager->getConnectionStatus() == ConnectionStatus::Unconnected);
+    return (configurationLoaded && (commsManager->getConnectionStatus() == ConnectionStatus::Unconnected));
 }
 
 bool MainWindowController::enableActionDisconnectFromServer() const
 {
     return (commsManager->getConnectionStatus() == ConnectionStatus::Connected);
+}
+
+bool MainWindowController::enableApplyButton() const
+{
+    return configurationLoaded;
 }
 
 bool MainWindowController::enableClearButton() const
