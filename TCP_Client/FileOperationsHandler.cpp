@@ -2,6 +2,7 @@
 #include "DataItem.h"
 #include "FileOperationsHandler.h"
 #include "FileTask.h"
+#include <QDateTime>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QJsonDocument>
@@ -12,7 +13,7 @@
 #include "SettingsInterface.h"
 
 Q_DECLARE_METATYPE(QJsonDocument);
-Q_DECLARE_METATYPE(QString);
+Q_DECLARE_METATYPE(FileOperationStatus);
 
 FileOperationsHandler::FileOperationsHandler
 (
@@ -25,7 +26,10 @@ FileOperationsHandler::FileOperationsHandler
     fileTask(std::make_unique<FileTask>())
 {
     qRegisterMetaType<QJsonDocument>();
-    qRegisterMetaType<QString>();
+    qRegisterMetaType<FileOperationStatus>();
+
+    connect(this, &FileOperationsHandler::requestWriteToFile, fileTask.get(), &FileTask::writeControlDataToFile);
+    connect(fileTask.get(), &FileTask::writeOperationComplete, this, &FileOperationsHandler::receivedWriteOperationCompleteNotification);
 
     fileTask->moveToThread(&fileOpsThread);
     fileOpsThread.start();
@@ -39,7 +43,7 @@ FileOperationsHandler::~FileOperationsHandler()
 
 bool FileOperationsHandler::isFileOperationInProgress() const
 {
-    return fileOperationInProgress;
+    return (writeOperationInProgress || readOperationInProgress);
 }
 
 void FileOperationsHandler::initiateSaveOutboundDataToFile(const std::map<unsigned, DataItem*>& dataItems, QWidget* parent)
@@ -57,8 +61,9 @@ void FileOperationsHandler::initiateSaveOutboundDataToFile(const std::map<unsign
         return;
     }
 
-    fileOperationInProgress = true;
+    writeOperationInProgress = true;
     buildControlDataFileContent(dataItems);
+    emit requestWriteToFile(fileSaveName, fileContent);
 }
 
 bool FileOperationsHandler::verifyFileSelection(const QString& filePath)
@@ -113,8 +118,8 @@ void FileOperationsHandler::buildControlDataFileContent(const std::map<unsigned,
     QJsonObject lcaObj;
     QJsonObject obj;
 
-    obj.insert("File Type", "Saved Control Data");
     obj.insert("Configuration Version", appInterface.getConfigurationVersion());
+    obj.insert("Date Saved", QDateTime::currentDateTime().toString("dd MMM yyyy hh:mm:ss"));
 
     QJsonArray dataItemArray;
     for(const auto& i : dataItems)
@@ -127,9 +132,15 @@ void FileOperationsHandler::buildControlDataFileContent(const std::map<unsigned,
 
         dataItemArray.push_back(dataItemObj);
     }
-    obj.insert("Control Data Items", QJsonValue(dataItemArray));
+    obj.insert("Saved Control Data", QJsonValue(dataItemArray));
     lcaObj.insert("Local Control Application", QJsonValue(obj));
     fileContent.setObject(lcaObj);
+}
+
+void FileOperationsHandler::receivedWriteOperationCompleteNotification(FileOperationStatus status)
+{
+    writeOperationInProgress = false;
+    showFileOperationStatusMsg("Save Control Data", status);
 }
 
 void FileOperationsHandler::showFileErrorPopup(const QString& title, const QString& message)
@@ -171,5 +182,18 @@ void FileOperationsHandler::showFileOperationInProgressWarning()
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.setIcon(QMessageBox::Warning);
+    msgBox.exec();
+}
+
+void FileOperationsHandler::showFileOperationStatusMsg(const QString& title, const FileOperationStatus& status)
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(title);
+    msgBox.setText("<p align='center'>" + status.message + "</p>");
+    msgBox.setFont(QFont("Segoe UI", 10));
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    (status.success) ? msgBox.setIcon(QMessageBox::Information) :
+                       msgBox.setIcon(QMessageBox::Warning);
     msgBox.exec();
 }

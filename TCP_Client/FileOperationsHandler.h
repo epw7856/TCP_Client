@@ -1,6 +1,7 @@
 #ifndef FILEOPERATIONSHANDLER_H
 #define FILEOPERATIONSHANDLER_H
 
+#include "FileOperationStatus.h"
 #include <memory>
 #include <QJsonDocument>
 #include <QThread>
@@ -32,9 +33,13 @@ public:
     static void showFileErrorPopup(const QString& title, const QString& message);
     static bool showConfigFileSelectionWarning();
     static void showFileOperationInProgressWarning();
+    static void showFileOperationStatusMsg(const QString& title, const FileOperationStatus& status);
+
+public slots:
+    void receivedWriteOperationCompleteNotification(FileOperationStatus status);
 
 signals:
-    void requestWriteToFile(QJsonDocument document);
+    void requestWriteToFile(QString filePath, QJsonDocument document);
 
 private:
     ApplicationInterface& appInterface;
@@ -42,7 +47,8 @@ private:
     QThread fileOpsThread;
     QJsonDocument fileContent;
     std::unique_ptr<FileTask> fileTask;
-    bool fileOperationInProgress = false;
+    bool writeOperationInProgress = false;
+    bool readOperationInProgress = false;
 
     void saveDefaultPath(const QString& filePath);
     QString getDefaultPath() const;

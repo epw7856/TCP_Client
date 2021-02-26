@@ -58,6 +58,7 @@ HEADERS += \
     EnumSelectionDialog.h \
     EnumSelectionTableModel.h \
     EnumType.h \
+    FileOperationStatus.h \
     FileOperationsHandler.h \
     FileTask.h \
     InboundDataInterface.h \
