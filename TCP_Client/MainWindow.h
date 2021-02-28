@@ -33,10 +33,11 @@ private slots:
     void onActionViewApplicationSettingsTriggered();
     void onActionConnectToServerTriggered();
     void onActionDisconnectFromServerTriggered();
-    void onActionSaveControlDataToFileClicked();
-    void onActionRestoreControlDataFromFileClicked();
+    void onActionSaveControlDataToFileTriggered();
+    void onActionRestoreControlDataFromFileTriggered();
     void onActionLaunchDragon();
-    void onButtonResetClicked();
+    void onActionRestoreAllDefaultsTriggered();
+    void onActionRestoreSelectedDefaultsTriggered();
     void onButtonApplyClicked();
     void onActionClearSelectionTriggered();
     void onActionClearAllTriggered();
@@ -54,9 +55,12 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QMenu* fileActionMenu;
+    QMenu* restoreDefaultsMenu;
     QMenu* clearMenu;
     QAction* restoreControlDataFromFileAction;
     QAction* saveControlDataToFileAction;
+    QAction* restoreAllDefaultsAction;
+    QAction* restoreSelectedDefaultsAction;
     QAction* clearSelectionAction;
     QAction* clearAllAction;
     QLabel* statusBarLabel;
@@ -68,6 +72,7 @@ private:
     void configureOutboundDataTableView();
     void configureCommonTableSettings(QTableView* table);
     void setupStatusBar();
+    void setupToolButtons();
     void updateMonitoringAndControlItems();
 };
 #endif // MAINWINDOW_H

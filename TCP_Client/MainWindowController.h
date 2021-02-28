@@ -39,12 +39,13 @@ public:
     bool enableActionDisconnectFromServer() const;
     bool enableApplyButton() const;
     bool enableClearButton() const;
-    bool enableResetButton() const;
+    bool enableRestoreButton() const;
 
     void outboundTableDoubleClicked(const QModelIndex& index);
     void applyDesiredOutboundValues();
-    void clearDesiredOutboundValues();
-    void resetDesiredOutboundValuesToDefaults();
+    void restoreAllDesiredOutboundValuesToDefaults();
+    void restoreSelectedDesiredOutboundValuesToDefaults(const QModelIndexList& selection);
+    void clearAllDesiredOutboundValues();
     void clearSelectedDesiredOutboundValues(const QModelIndexList& selection);
 
     void saveControlDataToFile(QWidget* parent);

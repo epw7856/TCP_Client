@@ -15,35 +15,8 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     ui->labelHeaderText->setText(mainWindowController->getHeaderFooterText());
     ui->labelFooterText->setText(mainWindowController->getHeaderFooterText());
 
-    QFont font("Segoe UI", 10);
-
-    // Setup the File Actions toolbutton and the associated dropdown menu actions
-    saveControlDataToFileAction = new QAction("Save Control Data To File", this);
-    saveControlDataToFileAction->setFont(font);
-
-    restoreControlDataFromFileAction = new QAction("Restore Control Data From File", this);
-    restoreControlDataFromFileAction->setFont(font);
-
-    fileActionMenu = new QMenu(this);
-    fileActionMenu->addAction(saveControlDataToFileAction);
-    fileActionMenu->addAction(restoreControlDataFromFileAction);
-
-    ui->toolButtonFileActions->setMenu(fileActionMenu);
-    ui->toolButtonFileActions->setPopupMode(QToolButton::InstantPopup);
-
-    // Setup the Clear toolbutton and the associated dropdown menu actions
-    clearSelectionAction = new QAction("Clear Selected Data Items", this);
-    clearSelectionAction->setFont(font);
-
-    clearAllAction = new QAction("Clear All Data Items", this);
-    clearAllAction->setFont(font);
-
-    clearMenu = new QMenu(this);
-    clearMenu->addAction(clearAllAction);
-    clearMenu->addAction(clearSelectionAction);
-
-    ui->toolButtonClear->setMenu(clearMenu);
-    ui->toolButtonClear->setPopupMode(QToolButton::InstantPopup);
+    // Setup tool buttons and dropdown menus
+    setupToolButtons();
 
     // Setup the tables
     configureInboundDataTableView();
@@ -61,10 +34,11 @@ MainWindow::MainWindow(const QString& configFilePathArg, QWidget *parent)
     connect(ui->actionLaunchDragon, &QAction::triggered, this, &MainWindow::onActionLaunchDragon);
 
     // Connections with the pushbuttons in the UI
-    connect(ui->pushButtonReset, &QPushButton::clicked, this, &MainWindow::onButtonResetClicked);
     connect(ui->pushButtonApply, &QPushButton::clicked, this, &MainWindow::onButtonApplyClicked);
-    connect(saveControlDataToFileAction, &QAction::triggered, this, &MainWindow::onActionSaveControlDataToFileClicked);
-    connect(restoreControlDataFromFileAction, &QAction::triggered, this, &MainWindow::onActionRestoreControlDataFromFileClicked);
+    connect(saveControlDataToFileAction, &QAction::triggered, this, &MainWindow::onActionSaveControlDataToFileTriggered);
+    connect(restoreControlDataFromFileAction, &QAction::triggered, this, &MainWindow::onActionRestoreControlDataFromFileTriggered);
+    connect(restoreAllDefaultsAction, &QAction::triggered, this, &MainWindow::onActionRestoreAllDefaultsTriggered);
+    connect(restoreSelectedDefaultsAction, &QAction::triggered, this, &MainWindow::onActionRestoreSelectedDefaultsTriggered);
     connect(clearSelectionAction, &QAction::triggered, this, &MainWindow::onActionClearSelectionTriggered);
     connect(clearAllAction, &QAction::triggered, this, &MainWindow::onActionClearAllTriggered);
     connect(ui->pushButtonMode1, &QPushButton::clicked, this, &MainWindow::onPushButtonMode1Clicked);
@@ -144,6 +118,53 @@ void MainWindow::setupStatusBar()
     ui->statusBar->addPermanentWidget(statusBarLabel);
 }
 
+void MainWindow::setupToolButtons()
+{
+    QFont font("Segoe UI", 10);
+
+    // Setup the File Actions toolbutton and the associated dropdown menu actions
+    saveControlDataToFileAction = new QAction("Save Control Data To File", this);
+    saveControlDataToFileAction->setFont(font);
+
+    restoreControlDataFromFileAction = new QAction("Restore Control Data From File", this);
+    restoreControlDataFromFileAction->setFont(font);
+
+    fileActionMenu = new QMenu(this);
+    fileActionMenu->addAction(saveControlDataToFileAction);
+    fileActionMenu->addAction(restoreControlDataFromFileAction);
+
+    ui->toolButtonFileActions->setMenu(fileActionMenu);
+    ui->toolButtonFileActions->setPopupMode(QToolButton::InstantPopup);
+
+    // Setup the Clear toolbutton and the associated dropdown menu actions
+    clearSelectionAction = new QAction("Clear Selected", this);
+    clearSelectionAction->setFont(font);
+
+    clearAllAction = new QAction("Clear All", this);
+    clearAllAction->setFont(font);
+
+    clearMenu = new QMenu(this);
+    clearMenu->addAction(clearAllAction);
+    clearMenu->addAction(clearSelectionAction);
+
+    ui->toolButtonClear->setMenu(clearMenu);
+    ui->toolButtonClear->setPopupMode(QToolButton::InstantPopup);
+
+    // Setup the Restore Defaults toolbutton and the associated dropdown menu actions
+    restoreAllDefaultsAction = new QAction("Restore All", this);
+    restoreAllDefaultsAction->setFont(font);
+
+    restoreSelectedDefaultsAction = new QAction("Restore Selected", this);
+    restoreSelectedDefaultsAction->setFont(font);
+
+    restoreDefaultsMenu = new QMenu(this);
+    restoreDefaultsMenu->addAction(restoreAllDefaultsAction);
+    restoreDefaultsMenu->addAction(restoreSelectedDefaultsAction);
+
+    ui->toolButtonRestore->setMenu(restoreDefaultsMenu);
+    ui->toolButtonRestore->setPopupMode(QToolButton::InstantPopup);
+}
+
 void MainWindow::updateMonitoringAndControlItems()
 {
     ui->labelMaxTempIndiv->setText(mainWindowController->getMaxTempIndiv());
@@ -181,7 +202,7 @@ void MainWindow::periodicUpdate()
     ui->actionDisconnectFromServer->setEnabled(mainWindowController->enableActionDisconnectFromServer());
     ui->toolButtonClear->setEnabled(mainWindowController->enableClearButton());
     ui->pushButtonApply->setEnabled(mainWindowController->enableApplyButton());
-    ui->pushButtonReset->setEnabled(mainWindowController->enableResetButton());
+    ui->toolButtonRestore->setEnabled(mainWindowController->enableRestoreButton());
 }
 
 void MainWindow::receivedUpdateRequestFromController()
@@ -217,12 +238,12 @@ void MainWindow::onActionDisconnectFromServerTriggered()
     mainWindowController->requestDisconnectFromServer();
 }
 
-void MainWindow::onActionSaveControlDataToFileClicked()
+void MainWindow::onActionSaveControlDataToFileTriggered()
 {
     mainWindowController->saveControlDataToFile(this);
 }
 
-void MainWindow::onActionRestoreControlDataFromFileClicked()
+void MainWindow::onActionRestoreControlDataFromFileTriggered()
 {
     mainWindowController->restoreControlDataFromFile(this);
 }
@@ -232,9 +253,14 @@ void MainWindow::onActionLaunchDragon()
 
 }
 
-void MainWindow::onButtonResetClicked()
+void MainWindow::onActionRestoreAllDefaultsTriggered()
 {
-    mainWindowController->resetDesiredOutboundValuesToDefaults();
+    mainWindowController->restoreAllDesiredOutboundValuesToDefaults();
+}
+
+void MainWindow::onActionRestoreSelectedDefaultsTriggered()
+{
+    mainWindowController->restoreSelectedDesiredOutboundValuesToDefaults(ui->tableViewControlData->selectionModel()->selectedRows());
 }
 
 void MainWindow::onButtonApplyClicked()
@@ -249,7 +275,7 @@ void MainWindow::onActionClearSelectionTriggered()
 
 void MainWindow::onActionClearAllTriggered()
 {
-    mainWindowController->clearDesiredOutboundValues();
+    mainWindowController->clearAllDesiredOutboundValues();
 }
 
 void MainWindow::controlDataTableDoubleClicked(const QModelIndex& index)

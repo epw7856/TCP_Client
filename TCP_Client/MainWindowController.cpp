@@ -118,7 +118,7 @@ bool MainWindowController::enableClearButton() const
     return configurationLoaded;
 }
 
-bool MainWindowController::enableResetButton() const
+bool MainWindowController::enableRestoreButton() const
 {
     return configurationLoaded;
 }
@@ -141,9 +141,7 @@ void MainWindowController::outboundTableDoubleClicked(const QModelIndex& index)
             (enumDialog.isAccepted()) ? newVal = enumDialog.getNewValue() :
                                         newVal = QString();
 
-            outboundDataTableModel.setData(outboundDataTableModel.index(index.sibling(index.row(), 0).data().toInt(), outboundDataTableModel.getNewValueColumn()),
-                                           newVal,
-                                           Qt::EditRole);
+            outboundDataTableModel.setData(index, newVal, Qt::EditRole);
         }
     }
 }
@@ -153,14 +151,25 @@ void MainWindowController::applyDesiredOutboundValues()
     outboundDataTableModel.applyDesiredOutboundValues();
 }
 
-void MainWindowController::clearDesiredOutboundValues()
+void MainWindowController::clearAllDesiredOutboundValues()
 {
     outboundDataTableModel.clearDesiredOutboundValues();
 }
 
-void MainWindowController::resetDesiredOutboundValuesToDefaults()
+void MainWindowController::restoreAllDesiredOutboundValuesToDefaults()
 {
     outboundDataTableModel.resetDesiredOutboundValuesToDefaults();
+}
+
+void MainWindowController::restoreSelectedDesiredOutboundValuesToDefaults(const QModelIndexList& selection)
+{
+    std::vector<unsigned> indices;
+    for(const auto& i : selection)
+    {
+        indices.push_back(i.row());
+    }
+
+    outboundDataTableModel.resetDesiredOutboundValuesToDefaults(indices);
 }
 
 void MainWindowController::clearSelectedDesiredOutboundValues(const QModelIndexList& selection)
@@ -168,7 +177,7 @@ void MainWindowController::clearSelectedDesiredOutboundValues(const QModelIndexL
     std::vector<unsigned> indices;
     for(const auto& i : selection)
     {
-        indices.push_back(i.sibling(i.row(), 0).data().toInt());
+        indices.push_back(i.row());
     }
 
     outboundDataTableModel.clearDesiredOutboundValues(indices);

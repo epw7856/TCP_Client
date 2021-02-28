@@ -391,7 +391,7 @@
                 <widget class="QToolButton" name="toolButtonFileActions">
                  <property name="minimumSize">
                   <size>
-                   <width>115</width>
+                   <width>125</width>
                    <height>25</height>
                   </size>
                  </property>
@@ -425,16 +425,10 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButtonReset">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
+                <widget class="QToolButton" name="toolButtonRestore">
                  <property name="minimumSize">
                   <size>
-                   <width>115</width>
+                   <width>125</width>
                    <height>25</height>
                   </size>
                  </property>
@@ -447,7 +441,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>Reset to Defaults</string>
+                  <string>Restore Defaults</string>
                  </property>
                 </widget>
                </item>
@@ -500,7 +494,7 @@
                 <widget class="QPushButton" name="pushButtonApply">
                  <property name="minimumSize">
                   <size>
-                   <width>115</width>
+                   <width>125</width>
                    <height>25</height>
                   </size>
                  </property>
@@ -537,7 +531,7 @@
                 <widget class="QToolButton" name="toolButtonClear">
                  <property name="minimumSize">
                   <size>
-                   <width>115</width>
+                   <width>125</width>
                    <height>25</height>
                   </size>
                  </property>

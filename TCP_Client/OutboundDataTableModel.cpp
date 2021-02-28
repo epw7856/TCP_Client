@@ -202,7 +202,19 @@ void OutboundDataTableModel::resetDesiredOutboundValuesToDefaults()
     clearDesiredOutboundValues();
 
     beginResetModel();
+    auto itr = outboundDataItemMap.begin();
     for(unsigned i = 0; i < outboundDataItemMap.size(); i++)
+    {
+        desiredOutboundValues[i] = outboundDataInterface.getOutboundDefaultDisplayValue(itr->first);
+        itr++;
+    }
+    endResetModel();
+}
+
+void OutboundDataTableModel::resetDesiredOutboundValuesToDefaults(const std::vector<unsigned>& indices)
+{
+    beginResetModel();
+    for(const auto& i : indices)
     {
         auto itr = outboundDataItemMap.begin();
         std::advance(itr, i);

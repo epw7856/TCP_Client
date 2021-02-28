@@ -30,6 +30,7 @@ public:
     void setDesiredOutboundValues(const std::vector<QString>& values);
     void applyDesiredOutboundValues();
     void resetDesiredOutboundValuesToDefaults();
+    void resetDesiredOutboundValuesToDefaults(const std::vector<unsigned>& indices);
     void clearDesiredOutboundValues();
     void clearDesiredOutboundValues(const std::vector<unsigned>& indices);
 
