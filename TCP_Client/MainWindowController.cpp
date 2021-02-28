@@ -31,6 +31,8 @@ MainWindowController::MainWindowController(const QString& configFilePath)
     // Connections from CommunicationsManager to MainWindowController
     connect(commsManager.get(), &CommunicationsManager::sendStatusUpdate, this, &MainWindowController::receivedStatusUpdate);
     connect(commsManager.get(), &CommunicationsManager::inboundDataUpdated, this, &MainWindowController::updateInboundDataDisplay);
+
+    connect(fileOperationsHandler.get(), &FileOperationsHandler::transmitRestoredDisplayValues, this, &MainWindowController::receivedRestoredControlData);
 }
 
 QString MainWindowController::getHeaderFooterText() const
@@ -169,12 +171,12 @@ void MainWindowController::resetSelectedDesiredOutboundValuesToDefaults(const QM
 
 void MainWindowController::saveControlDataToFile(QWidget* parent)
 {
-    fileOperationsHandler->initiateSaveOutboundDataToFile(outboundDataTableModel.getOutboundDataItemMap(), parent);
+    fileOperationsHandler->initiateSaveControlDataToFile(outboundDataTableModel.getOutboundDataItemMap(), parent);
 }
 
 void MainWindowController::restoreControlDataFromFile(QWidget* parent)
 {
-
+    fileOperationsHandler->initiateRestoreControlDataFromFile(outboundDataTableModel.getOutboundDataItemMap(), parent);
 }
 
 void MainWindowController::showAboutDialog(QWidget* parent)
@@ -329,6 +331,11 @@ void MainWindowController::refreshSettings(bool reconnect)
        executeDisconnect();
        executeConnect();
     }
+}
+
+void MainWindowController::receivedRestoredControlData(std::vector<QString> values)
+{
+    outboundDataTableModel.setDesiredOutboundValues(values);
 }
 
 void MainWindowController::loadConfiguration(const QString& configFilePath, bool initialLoad)

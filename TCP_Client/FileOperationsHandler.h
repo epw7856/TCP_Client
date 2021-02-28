@@ -22,8 +22,10 @@ public:
     ~FileOperationsHandler();
 
     bool isFileOperationInProgress() const;
-    void initiateSaveOutboundDataToFile(const std::map<unsigned, DataItem*>& dataItems,
-                                        QWidget* parent = nullptr);
+    void initiateSaveControlDataToFile(const std::map<unsigned, DataItem*>& dataItems,
+                                       QWidget* parent = nullptr);
+    void initiateRestoreControlDataFromFile(const std::map<unsigned, DataItem*>& dataItems,
+                                            QWidget* parent = nullptr);
 
     QString showFileSelectionDialog(const QString& title, QWidget* parent = nullptr);
     QString showFileSaveDialog(const QString& title, QWidget* parent = nullptr);
@@ -36,23 +38,26 @@ public:
     static void showFileOperationStatusMsg(const QString& title, const FileOperationStatus& status);
 
 public slots:
-    void receivedWriteOperationCompleteNotification(FileOperationStatus status);
+    void receivedFileWriteCompleteNotification(FileOperationStatus status);
+    void receivedFileLoadCompleteNotification(FileOperationStatus status, QJsonDocument contents);
 
 signals:
     void requestWriteToFile(QString filePath, QJsonDocument document);
+    void requestRestoreFromFile(QString filePath);
+    void transmitRestoredDisplayValues(std::vector<QString> values);
 
 private:
     ApplicationInterface& appInterface;
     SettingsInterface& settingsInterface;
     QThread fileOpsThread;
-    QJsonDocument fileContent;
     std::unique_ptr<FileTask> fileTask;
     bool writeOperationInProgress = false;
     bool readOperationInProgress = false;
+    std::map<unsigned, DataItem*> restoreDataItems;
 
     void saveDefaultPath(const QString& filePath);
     QString getDefaultPath() const;
-    void buildControlDataFileContent(const std::map<unsigned, DataItem*>& dataItems);
-};
+    QJsonDocument buildJsonForSave(const std::map<unsigned, DataItem*>& dataItems);
+;};
 
 #endif // FILEOPERATIONSHANDLER_H

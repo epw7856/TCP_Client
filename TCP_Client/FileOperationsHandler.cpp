@@ -29,7 +29,10 @@ FileOperationsHandler::FileOperationsHandler
     qRegisterMetaType<FileOperationStatus>();
 
     connect(this, &FileOperationsHandler::requestWriteToFile, fileTask.get(), &FileTask::writeControlDataToFile);
-    connect(fileTask.get(), &FileTask::writeOperationComplete, this, &FileOperationsHandler::receivedWriteOperationCompleteNotification);
+    connect(fileTask.get(), &FileTask::writeOperationComplete, this, &FileOperationsHandler::receivedFileWriteCompleteNotification);
+
+    connect(this, &FileOperationsHandler::requestRestoreFromFile, fileTask.get(), &FileTask::loadControlDataFromFile);
+    connect(fileTask.get(), &FileTask::loadOperationComplete, this, &FileOperationsHandler::receivedFileLoadCompleteNotification);
 
     fileTask->moveToThread(&fileOpsThread);
     fileOpsThread.start();
@@ -46,7 +49,7 @@ bool FileOperationsHandler::isFileOperationInProgress() const
     return (writeOperationInProgress || readOperationInProgress);
 }
 
-void FileOperationsHandler::initiateSaveOutboundDataToFile(const std::map<unsigned, DataItem*>& dataItems, QWidget* parent)
+void FileOperationsHandler::initiateSaveControlDataToFile(const std::map<unsigned, DataItem*>& dataItems, QWidget* parent)
 {
     if(isFileOperationInProgress())
     {
@@ -57,13 +60,35 @@ void FileOperationsHandler::initiateSaveOutboundDataToFile(const std::map<unsign
     QString fileSaveName = showFileSaveDialog("Save Control Data", parent);
     if(!verifyFileExtension(fileSaveName))
     {
-        showFileErrorPopup("File Save Error", "Invalid file name specified.");
+        showFileErrorPopup("File Error", "Invalid file name specified.");
         return;
     }
 
     writeOperationInProgress = true;
-    buildControlDataFileContent(dataItems);
+    QJsonDocument fileContent = buildJsonForSave(dataItems);
     emit requestWriteToFile(fileSaveName, fileContent);
+}
+
+void FileOperationsHandler::initiateRestoreControlDataFromFile(const std::map<unsigned, DataItem*>& dataItems, QWidget* parent)
+{
+    restoreDataItems.clear();
+    restoreDataItems = dataItems;
+
+    if(isFileOperationInProgress())
+    {
+        showFileOperationInProgressWarning();
+        return;
+    }
+
+    QString fileRestoreName = showFileSelectionDialog("Restore Control Data", parent);
+    if(!verifyFileSelection(fileRestoreName))
+    {
+        showFileErrorPopup("File Error", "Invalid file name specified.");
+        return;
+    }
+
+    readOperationInProgress = true;
+    emit requestRestoreFromFile(fileRestoreName);
 }
 
 bool FileOperationsHandler::verifyFileSelection(const QString& filePath)
@@ -113,7 +138,7 @@ QString FileOperationsHandler::getDefaultPath() const
                            QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
 }
 
-void FileOperationsHandler::buildControlDataFileContent(const std::map<unsigned, DataItem*>& dataItems)
+QJsonDocument FileOperationsHandler::buildJsonForSave(const std::map<unsigned, DataItem*>& dataItems)
 {
     QJsonObject lcaObj;
     QJsonObject obj;
@@ -127,20 +152,87 @@ void FileOperationsHandler::buildControlDataFileContent(const std::map<unsigned,
         QJsonObject dataItemObj;
         dataItemObj.insert("Index", QString::number(i.first));
         dataItemObj.insert("Data Item Name", i.second->getDataItemName());
-        dataItemObj.insert("Data Item Type", i.second->getDataItemType());
+        dataItemObj.insert("Data Type", i.second->getDataItemType());
         dataItemObj.insert("Value", i.second->getDisplayValue());
 
         dataItemArray.push_back(dataItemObj);
     }
+
     obj.insert("Saved Control Data", QJsonValue(dataItemArray));
     lcaObj.insert("Local Control Application", QJsonValue(obj));
+    QJsonDocument fileContent;
     fileContent.setObject(lcaObj);
+    return fileContent;
 }
 
-void FileOperationsHandler::receivedWriteOperationCompleteNotification(FileOperationStatus status)
+void FileOperationsHandler::receivedFileWriteCompleteNotification(FileOperationStatus status)
 {
     writeOperationInProgress = false;
     showFileOperationStatusMsg("Save Control Data", status);
+}
+
+void FileOperationsHandler::receivedFileLoadCompleteNotification(FileOperationStatus status, QJsonDocument contents)
+{
+    readOperationInProgress = false;
+
+    const QString dialogTitle = "Restore Control Data";
+
+    if(!status.success)
+    {
+        showFileOperationStatusMsg(dialogTitle, status);
+        return;
+    }
+
+    QJsonObject lcaObj = contents.object().value("Local Control Application").toObject();
+
+    if(!lcaObj.contains("Configuration Version") || !lcaObj.contains("Saved Control Data"))
+    {
+        status.success = false;
+        status.message = "Unable to restore control data due to invalid or corrupted file content format.";
+
+        showFileOperationStatusMsg(dialogTitle, status);
+        return;
+    }
+
+    if(appInterface.getConfigurationVersion() != lcaObj.value("Configuration Version").toString())
+    {
+        status.success = false;
+        status.message = "Unable to restore control data due to mismatched configuration version information.<br><br>"
+                         "Current configuration version: " + appInterface.getConfigurationVersion() + "<br>"
+                         "Detected configuration version from file: " + lcaObj.value("Configuration Version").toString();
+
+        showFileOperationStatusMsg(dialogTitle, status);
+        return;
+    }
+
+    std::vector<QString> displayValues;
+    auto itr = restoreDataItems.begin();
+
+    for (const QJsonValue& item : lcaObj.value("Saved Control Data").toArray())
+    {
+        if((item.toObject().value("Index").toVariant().toUInt() != (*itr).first) ||
+           (item.toObject().value("Data Item Name").toString() != (*itr).second->getDataItemName()) ||
+           (item.toObject().value("Data Type").toString() != (*itr).second->getDataItemType()))
+        {
+            status.success = false;
+            break;
+        }
+
+        displayValues.push_back(item.toObject().value("Value").toString());
+        itr++;
+    }
+
+    if(status.success)
+    {
+        status.message = "Successfully restored data items.";
+        emit transmitRestoredDisplayValues(displayValues);
+    }
+    else
+    {
+        status.message = "Unable to restore control data due to mismatched data item information.";
+    }
+
+    showFileOperationStatusMsg(dialogTitle, status);
 }
 
 void FileOperationsHandler::showFileErrorPopup(const QString& title, const QString& message)
@@ -194,6 +286,6 @@ void FileOperationsHandler::showFileOperationStatusMsg(const QString& title, con
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.setDefaultButton(QMessageBox::Ok);
     (status.success) ? msgBox.setIcon(QMessageBox::Information) :
-                       msgBox.setIcon(QMessageBox::Warning);
+                       msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
 }

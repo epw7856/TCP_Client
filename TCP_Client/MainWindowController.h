@@ -77,6 +77,7 @@ public slots:
     void updateInboundDataDisplay();
     void receivedStatusUpdate(QString msg);
     void refreshSettings(bool reconnect);
+    void receivedRestoredControlData(std::vector<QString> values);
 
 signals:
     void notifyDataUpdated();
