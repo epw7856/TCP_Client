@@ -63,7 +63,7 @@ QVariant OutboundDataTableModel::data(const QModelIndex& index, int role) const
     return {};
 }
 
-bool OutboundDataTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool OutboundDataTableModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     if (role == Qt::EditRole)
     {
@@ -152,9 +152,7 @@ void OutboundDataTableModel::setDesiredOutboundValue(int index, QString value)
     if((index >= 0) &&
        (index <= static_cast<int>(desiredOutboundValues.size() - 1)))
     {
-        beginResetModel();
         desiredOutboundValues[index] = value;
-        endResetModel();
     }
 }
 

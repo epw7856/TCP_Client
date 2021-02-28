@@ -127,7 +127,7 @@ void MainWindowController::outboundTableDoubleClicked(const QModelIndex& index)
 {
     if(index.column() == outboundDataTableModel.getNewValueColumn())
     {
-        DataItem* item = sds->getOutboundDataItem(outboundDataTableModel.index(index.row(), 0).data().toInt());
+        DataItem* item = sds->getOutboundDataItem(index.sibling(index.row(), 0).data().toInt());
         if(item->isEnumType())
         {
             EnumSelectionDialog enumDialog;
@@ -137,8 +137,13 @@ void MainWindowController::outboundTableDoubleClicked(const QModelIndex& index)
             enumDialog.setCurrentValue(item->getDisplayValue());
             enumDialog.exec();
 
-            (enumDialog.isAccepted()) ? outboundDataTableModel.setData(index, enumDialog.getNewValue(), Qt::EditRole) :
-                                        outboundDataTableModel.setData(index, QString(), Qt::EditRole);
+            QString newVal;
+            (enumDialog.isAccepted()) ? newVal = enumDialog.getNewValue() :
+                                        newVal = QString();
+
+            outboundDataTableModel.setData(outboundDataTableModel.index(index.sibling(index.row(), 0).data().toInt(), outboundDataTableModel.getNewValueColumn()),
+                                           newVal,
+                                           Qt::EditRole);
         }
     }
 }
@@ -158,12 +163,12 @@ void MainWindowController::resetDesiredOutboundValuesToDefaults()
     outboundDataTableModel.resetDesiredOutboundValuesToDefaults();
 }
 
-void MainWindowController::resetSelectedDesiredOutboundValuesToDefaults(const QModelIndexList& selection)
+void MainWindowController::clearSelectedDesiredOutboundValues(const QModelIndexList& selection)
 {
     std::vector<unsigned> indices;
     for(const auto& i : selection)
     {
-        indices.push_back(outboundDataTableModel.index(i.row(), 0).data().toInt());
+        indices.push_back(i.sibling(i.row(), 0).data().toInt());
     }
 
     outboundDataTableModel.clearDesiredOutboundValues(indices);

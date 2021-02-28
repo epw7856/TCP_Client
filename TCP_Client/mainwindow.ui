@@ -108,7 +108,7 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="tabIeIOData">
+        <widget class="QWidget" name="tabIOData">
          <attribute name="title">
           <string>I/O Data</string>
          </attribute>

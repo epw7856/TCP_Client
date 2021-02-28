@@ -4,6 +4,7 @@
 #include "InboundDataTableModel.h"
 #include <memory>
 #include "OutboundDataTableModel.h"
+#include <QSortFilterProxyModel>
 
 class AboutDialog;
 class ApplicationSettingsDialog;
@@ -25,8 +26,8 @@ public:
 
     QString getHeaderFooterText() const;
 
-    InboundDataTableModel& getInboundDataTableModel();
-    OutboundDataTableModel& getOutboundDataTableModel();
+    QSortFilterProxyModel& getInboundDataTableModel();
+    QSortFilterProxyModel& getOutboundDataTableModel();
 
     void performInitialSetup();
     void requestConnectToServer();
@@ -45,7 +46,7 @@ public:
     void applyDesiredOutboundValues();
     void clearDesiredOutboundValues();
     void resetDesiredOutboundValuesToDefaults();
-    void resetSelectedDesiredOutboundValuesToDefaults(const QModelIndexList& selection);
+    void clearSelectedDesiredOutboundValues(const QModelIndexList& selection);
 
     void saveControlDataToFile(QWidget* parent);
     void restoreControlDataFromFile(QWidget* parent);
@@ -94,7 +95,9 @@ private:
     std::unique_ptr<RangeCheckHandler> rangeCheckHandler;
     std::unique_ptr<FileOperationsHandler> fileOperationsHandler;
     bool configurationLoaded = false;
+    QSortFilterProxyModel inboundDataProxyModel;
     InboundDataTableModel inboundDataTableModel;
+    QSortFilterProxyModel outboundDataProxyModel;
     OutboundDataTableModel outboundDataTableModel;
 
     void loadConfiguration(const QString& configFilePath, bool initialLoad);
@@ -104,14 +107,16 @@ private:
     void validateOutboundCommand(const QString& dataItemName, QString& input);
 };
 
-inline InboundDataTableModel& MainWindowController::getInboundDataTableModel()
+inline QSortFilterProxyModel& MainWindowController::getInboundDataTableModel()
 {
-    return inboundDataTableModel;
+    inboundDataProxyModel.setSourceModel(&inboundDataTableModel);
+    return inboundDataProxyModel;
 }
 
-inline OutboundDataTableModel& MainWindowController::getOutboundDataTableModel()
+inline QSortFilterProxyModel& MainWindowController::getOutboundDataTableModel()
 {
-    return outboundDataTableModel;
+    outboundDataProxyModel.setSourceModel(&outboundDataTableModel);
+    return outboundDataProxyModel;
 }
 
 #endif // MAINWINDOWCONTROLLER_H
