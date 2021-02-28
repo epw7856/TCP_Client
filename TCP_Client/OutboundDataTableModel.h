@@ -23,7 +23,6 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
     int getNewValueColumn() const;
-    const std::vector<QString>& getDesiredOutboundValues() const;
     std::map<unsigned, DataItem*>& getOutboundDataItemMap();
     void setOutboundDataItems();
     void setDesiredOutboundValue(int index, QString value);

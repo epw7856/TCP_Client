@@ -110,7 +110,7 @@ QVariant OutboundDataTableModel::headerData(int section, Qt::Orientation orienta
 
 Qt::ItemFlags OutboundDataTableModel::flags(const QModelIndex& index) const
 {
-    if(index.column() == 3)
+    if(index.column() == getNewValueColumn())
     {
         return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
     }
@@ -118,11 +118,6 @@ Qt::ItemFlags OutboundDataTableModel::flags(const QModelIndex& index) const
     {
         return (QAbstractTableModel::flags(index) & ~Qt::ItemIsEditable);
     }
-}
-
-const std::vector<QString>& OutboundDataTableModel::getDesiredOutboundValues() const
-{
-    return desiredOutboundValues;
 }
 
 std::map<unsigned, DataItem*>& OutboundDataTableModel::getOutboundDataItemMap()
