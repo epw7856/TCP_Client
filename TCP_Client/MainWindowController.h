@@ -4,7 +4,6 @@
 #include "InboundDataTableModel.h"
 #include <memory>
 #include "OutboundDataTableModel.h"
-#include <QSortFilterProxyModel>
 
 class AboutDialog;
 class ApplicationSettingsDialog;
@@ -26,8 +25,8 @@ public:
 
     QString getHeaderFooterText() const;
 
-    QSortFilterProxyModel& getInboundDataTableModel();
-    QSortFilterProxyModel& getOutboundDataTableModel();
+    InboundDataTableModel& getInboundDataTableModel();
+    OutboundDataTableModel& getOutboundDataTableModel();
 
     void performInitialSetup();
     void requestConnectToServer();
@@ -95,9 +94,7 @@ private:
     std::unique_ptr<RangeCheckHandler> rangeCheckHandler;
     std::unique_ptr<FileOperationsHandler> fileOperationsHandler;
     bool configurationLoaded = false;
-    QSortFilterProxyModel inboundDataProxyModel;
     InboundDataTableModel inboundDataTableModel;
-    QSortFilterProxyModel outboundDataProxyModel;
     OutboundDataTableModel outboundDataTableModel;
 
     void loadConfiguration(const QString& configFilePath, bool initialLoad);
@@ -107,16 +104,14 @@ private:
     void validateOutboundCommand(const QString& dataItemName, QString& input);
 };
 
-inline QSortFilterProxyModel& MainWindowController::getInboundDataTableModel()
+inline InboundDataTableModel& MainWindowController::getInboundDataTableModel()
 {
-    inboundDataProxyModel.setSourceModel(&inboundDataTableModel);
-    return inboundDataProxyModel;
+    return inboundDataTableModel;
 }
 
-inline QSortFilterProxyModel& MainWindowController::getOutboundDataTableModel()
+inline OutboundDataTableModel& MainWindowController::getOutboundDataTableModel()
 {
-    outboundDataProxyModel.setSourceModel(&outboundDataTableModel);
-    return outboundDataProxyModel;
+    return outboundDataTableModel;
 }
 
 #endif // MAINWINDOWCONTROLLER_H

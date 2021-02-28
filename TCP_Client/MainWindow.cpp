@@ -305,11 +305,6 @@ void MainWindow::configureCommonTableSettings(QTableView* table)
     table->setSelectionMode(QAbstractItemView::MultiSelection);
     table->setFocusPolicy(Qt::NoFocus);
 
-    // Enable sorting functionality and sort a non-existent column to maintain original data item order
-    // from configuration file
-    table->setSortingEnabled(true);
-    table->sortByColumn(100, Qt::DescendingOrder);
-
     // Set font styles
     QFont font(table->font());
     font.setBold(true);
@@ -320,6 +315,7 @@ void MainWindow::configureCommonTableSettings(QTableView* table)
     // Configure the horizontal header settings
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->horizontalHeader()->setFixedHeight(20);
+    table->horizontalHeader()->setSectionsClickable(false);
 
     // Configure the vertical header settings
     table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
