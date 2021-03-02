@@ -10,6 +10,7 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QStandardPaths>
+#include <QVariant>
 #include "SettingsInterface.h"
 
 Q_DECLARE_METATYPE(QJsonDocument);
