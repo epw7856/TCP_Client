@@ -250,7 +250,7 @@ void FileOperationsHandler::showFileErrorPopup(const QString& title, const QStri
 
 bool FileOperationsHandler::showConfigFileSelectionWarning()
 {
-    const QString message = "A connection with the server is active and data is currently being transmitted."
+    const QString message = "A connection with the server is active and data is currently being transmitted. "
                             "Do you wish to proceed with the selection of a new configuration file?";
 
     QMessageBox msgBox;

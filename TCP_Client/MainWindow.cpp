@@ -177,9 +177,20 @@ void MainWindow::updateMonitoringAndControlItems()
     ui->labelCommandedMode->setText(mainWindowController->getCommandedMode());
     ui->labelStatus->setText(mainWindowController->getEquipmentStatus());
     ui->labelLinkStatus->setText(mainWindowController->getLinkDisplayStatus());
+    setFaultIndicator(mainWindowController->areFaultsPresent());
+}
 
-    (mainWindowController->areFaultsPresent()) ? faultIndicatorBlinkTimer.start() :
-                                                 faultIndicatorBlinkTimer.stop();
+void MainWindow::setFaultIndicator(bool faultsPresent)
+{
+    if(faultsPresent)
+    {
+        faultIndicatorBlinkTimer.start();
+    }
+    else
+    {
+        faultIndicatorBlinkTimer.stop();
+        ui->faultIndicator->setStyleSheet("background-color:white;");
+    }
 }
 
 void MainWindow::showStatusBarMessage(QString msg)

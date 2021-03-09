@@ -143,7 +143,7 @@ void CommunicationsManager::receivedConnectionStatusNotification(bool connection
 
     if(showConnectionNotifications)
     {
-        showMessageBox("Connection Status Notification", msg, QMessageBox::Information);
+        showMessageBox("Connection Status", msg, QMessageBox::Information);
     }
 
     emit sendStatusUpdate(msg);
